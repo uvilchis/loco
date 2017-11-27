@@ -1,0 +1,42 @@
+{
+  "name": "loco",
+  "version": "1.0.0",
+  "description": "Crowd-sourced data A crowdsourced subway status tracker where users can keep the public updated on line delays in real time.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "react-dev": "webpack -d --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enterprissee/loco.git"
+  },
+  "author": "Samuel Kwak, Christine Kong, Uciel Vilchis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Enterprissee/loco/issues"
+  },
+  "homepage": "https://github.com/Enterprissee/loco#readme",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongoose": "^4.13.5",
+    "node": "^9.2.0",
+    "path": "^0.12.7",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^1.12.1",
+    "webpack": "^3.8.1"
+  }
+}
