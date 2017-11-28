@@ -9,7 +9,7 @@ class App extends React.Component {
 
   onClick() {
     axios.get('/test')
-    .then((data) => console.log('fetched'))
+    .then((data) => console.log('fetched', data))
     .catch((error) => console.log('failed'));
   }
 
