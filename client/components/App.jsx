@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import TrainLine from './TrainLine.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,8 +23,9 @@ export default class App extends React.Component {
       <div>
         Hello and welcome to loco, your one stop resource for MTA delays
         <div className="train-lines">
-          {this.state.trains.map((line) => {
-            return <TrainLine />
+          {this.state.trains.map((line, idx) => {
+            return <TrainLine line={line}
+              key={idx} />
           })}
         </div>
         <button onClick={this.onClick}>Click</button>
