@@ -24,10 +24,10 @@ export default class Login extends React.Component {
     tempObj.username = this.state.username;
     tempObj.password = this.state.password;
     axios.post('/users', tempObj)
-    .then(() => {
+    .then((data) => {
       // redirect to page to submit complaint
     })
-    .catch(() => {
+    .catch((err) => {
       console.log('ISSUE WITH SUBMISSION');
     })
   }
