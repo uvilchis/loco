@@ -17,7 +17,6 @@ export default class App extends React.Component {
     .catch((error) => console.log('failed'));
   }
 
-
   render() {
     return (
       <div>

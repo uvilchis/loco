@@ -42,5 +42,17 @@ app.get('/stoptimes', (req, res) => {
   })
 })
 
+app.get('/routes', (req, res) => {
+  txtParser.getRoutes()
+  .then((data) => {
+    console.log(data)
+    res.send(data)
+  })
+  .catch((error) => {
+    console.log(error)
+    res.send(404)
+  })
+})
+
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));
