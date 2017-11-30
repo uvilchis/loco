@@ -1,11 +1,17 @@
-var knex = require('knex')({
-  client: 'mysql',
-  connection: {
-    host : '127.0.0.1',
-    user: 'root',
-    password: 'plantlife',
-    database: 'mta_test_db'
-  }
+const mongoose = require('mongoose');
+const UserSchema = require('../models/user');
+
+const DB_CREDENTIALS = require('../env/key.js').db_creds;
+
+const db = mongoose.connection;
+db.on('error', (error) => console.log(error));
+db.once('open', () => console.log('mongo loaded'));
+
+mongoose.Promise = global.Promise;
+mongoose.connect(DB_CREDENTIALS, {
+  useMongoClient: true
 });
 
-// quick note, we'll be needing a different configuration once we get to the AWS server
+module.exports = {
+  mongoose
+}

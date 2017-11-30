@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var axios = require('axios');
 var protobuf = require('protobufjs');
 var protoParser = require('./lib/proto');
+var mongoose = require('./db/config').mongoose;
 var { router } = require('./routes');
 var txtParser = require('./lib/txt')
 
@@ -13,7 +14,7 @@ var logger = (req, res, next) => {
   next();
 };
 app.use(logger);
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/dist'));
 app.use('/', router);
 
