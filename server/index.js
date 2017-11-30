@@ -56,8 +56,11 @@ app.get('/routes', (req, res) => {
 })
 
 env.initialize();
+<<<<<<< HEAD
 // fetches all data, unordered, not parsed
 // returns an array of objects which have been parsed
+=======
+>>>>>>> added init func
 
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));
