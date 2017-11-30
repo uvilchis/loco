@@ -5,7 +5,8 @@ var protobuf = require('protobufjs');
 var protoParser = require('./lib/proto');
 var mongoose = require('./db/config').mongoose;
 var { router } = require('./routes');
-var txtParser = require('./lib/txt')
+var txtParser = require('./lib/txt');
+var env = require('./env/index.js');
 
 var app = express();
 
@@ -55,6 +56,8 @@ app.get('/routes', (req, res) => {
 })
 
 env.initialize();
+// fetches all data, unordered, not parsed
+// returns an array of objects which have been parsed
 
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));
