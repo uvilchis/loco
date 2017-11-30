@@ -1,3 +1,4 @@
+const textParser 
 const { key } = require('./key.js');
 
 const URLS = {
@@ -5,6 +6,9 @@ const URLS = {
   RT_MAIN: `http://datamine.mta.info/mta_esi.php?key=${key}&feed_id=1`,
   RT_YELLOW: `http://datamine.mta.info/mta_esi.php?key=${key}&feed_id=26`
 };
+
+var stops = [];
+textParser.getStops()
 
 module.exports = {
   URLS
