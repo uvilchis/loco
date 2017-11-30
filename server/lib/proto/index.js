@@ -1,8 +1,9 @@
-var protobuf = require('protobufjs');
-var path = require('path');
-var http = require('http');
+const protobuf = require('protobufjs');
+const path = require('path');
+const http = require('http');
+const { URLS } = require('../../env');
 
-module.exports = (data) => {
+const fetchMain = (data) => {
   return new Promise((resolve, reject) => {
     let decoder;
     let file = path.resolve(__dirname, 'nyct-subway.proto');
@@ -28,6 +29,10 @@ module.exports = (data) => {
       });
       res.on('error', (error) => reject(error));
     };
-    http.get('http://datamine.mta.info/mta_esi.php?key=b9562b987b663ac9940c5d42f1194cad', parse);
+    http.get(URLS.RT_MAIN, parse);
   });
-}
+};
+
+module.exports = {
+  fetchMain
+};
