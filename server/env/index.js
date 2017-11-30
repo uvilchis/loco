@@ -8,7 +8,7 @@ const URLS = {
   RT_YELLOW: `http://datamine.mta.info/mta_esi.php?key=${key}&feed_id=26`
 };
 
-initialize() {
+var initialize = () => {
   const stops = textParser.getStops();
   const stopTimes = textParser.getStopTimes();
   // const routes = textParser.getRoutes();
