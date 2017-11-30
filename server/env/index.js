@@ -17,8 +17,6 @@ initialize() {
   storage.stopTimes = stopTimes;
   storage.dummydata = dummydata;
 }
-// fetching all data from textfiles
-// parse it
 
 module.exports = {
   URLS
