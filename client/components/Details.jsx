@@ -5,15 +5,15 @@ export default class Details extends React.Component {
     super(props);
     this.state = {
       upvotes: 0,
-      downvotes: 0, 
+      downvotes: 0,
       comments: [],
       staticSched: [],
       realTimeSched: []
     }
     this.addVote = this.addVote.bind(this)
     this.downVote = this.downVote.bind(this)
-  } 
-  
+  }
+
   addVote(e) {
     e.preventDefault()
     this.setState({

@@ -5,10 +5,10 @@ export default class Survey extends React.Component {
     super(props);
     this.state = {
       late: 0,
-      delayed: 0, 
-      noShow: 0, 
-      accident: 0, 
-      crowded: 0, 
+      delayed: 0,
+      noShow: 0,
+      accident: 0,
+      crowded: 0,
       other: 0
     }
     this.handleClick = this.handleClick.bind(this)
@@ -30,37 +30,37 @@ export default class Survey extends React.Component {
   render() {
     return (
       <div>
-        How was your transportation disrupted? 
+        How was your transportation disrupted?
         <div className="suvey-buttons">
           <button
             name="late"
             onClick={this.handleClick}
           >
-            LATE 
+            LATE
           </button>
           <button
             name="delayed"
             onClick={this.handleClick}
           >
-            DELAYED 
+            DELAYED
           </button>
           <button
             name="noShow"
             onClick={this.handleClick}
           >
-            NO SHOW 
+            NO SHOW
           </button>
           <button
             name="accident"
             onClick={this.handleClick}
           >
-            ACCIDENT 
+            ACCIDENT
           </button>
           <button
             name="other"
             onClick={this.handleComplaint}
           >
-            OTHER  
+            OTHER
           </button>
         </div>
       </div>

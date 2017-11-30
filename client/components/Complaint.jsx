@@ -32,7 +32,7 @@ export default class Complaint extends React.Component {
   render() {
     return (
       <div className="complaint">
-        Let us know how NYC can serve you better by providing additonal 
+        Let us know how NYC can serve you better by providing additonal
         information about your delay below!
         <input
           name="complaint"
@@ -41,7 +41,7 @@ export default class Complaint extends React.Component {
           onChange={this.handleInput}
         />
         <button onClick={this.submitComplaint} >
-          Submit 
+          Submit
         </button>
       </div>
     )

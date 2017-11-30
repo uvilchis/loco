@@ -1,5 +1,3 @@
-const express = require('express');
-const app = express();
 const fs = require('fs');
 const util = require('util');
 
@@ -49,6 +47,25 @@ module.exports.getStopTimes = (data) => {
   })
 }
 
-// app.listen(5700, () => {
-//   console.log('listening on localhost:5700');
-// })
+module.exports.getRoutes = (data) => {
+  return new Promise ((resolve, reject) => {
+    fs.readFile(__dirname + '/google_transit/routes.txt', 'utf8', (err, content) => {
+      if (err) {
+        reject(err)
+      }  else {
+        const keys = content.split('\r\n').shift().split(',');
+        const vals = content.split('\r\n').slice(1,-1).map((a) => a.split(/,(?!\s)/))
+        const parsed = [];
+        for (let i = 0; i < vals.length; i++) {
+          const datObj = {};
+          item = vals[i];
+          for (let j = 0; j < keys.length; j++) {
+            datObj[keys[j]] = item[j];
+          }
+          parsed.push(datObj);
+        }
+        resolve(parsed);
+      }
+    })
+  })
+}
