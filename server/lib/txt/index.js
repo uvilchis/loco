@@ -44,7 +44,7 @@ module.exports.getStopTimes = (data) => {
           let routeId = tripArray[2].split('.')[0];
           let routeType = tripArray[0].slice(-3);
           dataObj.route_id = routeId;
-          dataObj.routeType = routeType;
+          dataObj.route_type = routeType;
           dataObj[keys[1]] = val[1];
           dataObj[keys[3]] = val[3];
           parsed.push(dataObj);
