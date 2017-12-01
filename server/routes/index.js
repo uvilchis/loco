@@ -17,6 +17,8 @@ router.get('/api/stations/:station', controller.stations.getStationSchedule);
 router.get('/api/test/proto', controller.test.testProto);
 router.get('/api/test/service', controller.test.testService);
 router.get('/api/init', env.initialize) // testing env
+router.get('/api/test/routes', controller.test.testRoutes);
+router.get('/api/test/stoptimes', controller.test.testStopTimes);
 
 module.exports = {
   router
