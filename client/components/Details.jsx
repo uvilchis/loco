@@ -18,7 +18,7 @@ export default class Details extends React.Component {
 
   componentDidMount() {
     // create a query that grabs both the times and the stops in one go
-    axios.get(`/stops?route_id=${this.props.displayed}`)
+    axios.get('/api/test/stoptimes')
     .then((stopDeets) => {
       res.send(stopDeets)
     })

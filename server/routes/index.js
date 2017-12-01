@@ -10,14 +10,14 @@ router.post('/login', controller.users.authUser); // Login
 router.post('/signup', controller.users.signUpUser); // Signup
 
 // Stops
-router.get('/stops', controller.stops.getStops);
+// router.get('/stops', controller.stops.getStops);
 
 // Stations
 router.get('/api/stations', controller.stations.getStations);
 router.get('/api/stations/:station', controller.stations.getStationSchedule);
 
 // Complaints
-router.post('/complaints', controller.users.postComplaint);
+// router.post('/complaints', controller.users.postComplaint);
 
 // Test endpoints
 router.get('/api/test/proto', controller.test.testProto);
