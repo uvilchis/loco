@@ -25,9 +25,8 @@ export default class Details extends React.Component {
     e.preventDefault()
     this.setState({
       downVotes: this.state.downVotes + 1
-    } () => {
-      // redirect to page to specify/make complaint
-    })
+    });
+    // include function to  redirect to page to specify/make complaint
   }
 
   render() {

@@ -3,7 +3,11 @@ import React from 'react';
 export default class TrainLine extends React.Component {
   constructor(props) {
     super(props);
-    // this.redirect = this.redirect.bind(this);
+    this.redirect = this.redirect.bind(this);
+  }
+
+  redirect () {
+    this.props.setAppState('display')
   }
 
   render() {
