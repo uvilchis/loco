@@ -12,7 +12,7 @@ const storage = {};
 var initialize = () => {  
   textParser.getStops()
   .then((stopsData) => {
-    console.log(stopsData)
+    console.log('succeeded!')
     storage.stops = stopsData;
   })
   .catch((err) => {
@@ -21,6 +21,7 @@ var initialize = () => {
 
   textParser.getStopTimes()
   .then((stopTimesDeets) => {
+    console.log('succeeded!')
     storage.stopTimes = stopTimesDeets
   })
   .catch((err) => {
@@ -30,3 +31,4 @@ var initialize = () => {
 
 module.exports.URLS = URLS;
 module.exports.initialize = initialize;
+module.exports.storage = storage;
