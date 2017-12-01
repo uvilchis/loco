@@ -3,21 +3,23 @@ import React from 'react';
 export default class TrainLine extends React.Component {
   constructor(props) {
     super(props);
-    this.redirect = this.redirect.bind(this);
+    // this.redirect = this.redirect.bind(this);
   }
 
   render() {
     return (
-      <div className="trainline-row">
-        <div className="line">
-          {this.props.line.route_id}
+      <div className="trainline_row">
+        <div className="trainline_routes">
+          {this.props.line.name}
         </div>
-        <div className="status">
+        <div className="trainline_status">
           {this.props.line.status}
         </div>
-        <button onClick={this.redirect}>
+        <div className="trainline_user">
+        </div>
+        <div className="trainline_details" onClick={this.redirect}>
           Details
-        </button>
+        </div>
       </div>
     )
   }
