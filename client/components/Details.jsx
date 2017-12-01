@@ -1,4 +1,5 @@
 import React from 'react';
+import Survey from './Survey.jsx';
 
 export default class Details extends React.Component {
   constructor(props) {
@@ -8,7 +9,8 @@ export default class Details extends React.Component {
       downvotes: 0,
       comments: [],
       staticSched: [],
-      realTimeSched: []
+      realTimeSched: [],
+      display: 'deets'
     }
     this.addVote = this.addVote.bind(this)
     this.downVote = this.downVote.bind(this)
@@ -30,7 +32,7 @@ export default class Details extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.displayed === 'deets' ? (
       <div>
         <div className="vote-row">
           <div className="vote-count">
@@ -66,6 +68,8 @@ export default class Details extends React.Component {
           </div>
         </div>
       </div>
-    )
+    ) : (
+      <Survey />
+    );
   }
 }
