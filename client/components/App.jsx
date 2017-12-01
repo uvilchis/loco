@@ -56,8 +56,7 @@ export default class App extends React.Component {
                   key={idx}
                   loggedIn={this.state.user ? true : false}
                   setAppState={this.setAppState}
-                  />
-
+                />
               )}
             </div>
           </div>

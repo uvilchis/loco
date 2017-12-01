@@ -21,9 +21,9 @@ export default class TrainLine extends React.Component {
         </div>
         <div className="trainline_user">
         </div>
-        <div className="trainline_details" onClick={this.redirect}>
+        <button onClick={this.redirect} >
           Details
-        </div>
+        </button>
       </div>
     )
   }

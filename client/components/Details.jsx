@@ -52,6 +52,9 @@ export default class Details extends React.Component {
   render() {
     return (
       <div>
+        <div className="line-logo">
+          
+        </div>
         <div className="vote-row">
           <div className="vote-count">
             {this.state.upvotes}
