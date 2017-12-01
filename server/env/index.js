@@ -21,8 +21,17 @@ var initialize = () => {
 
   textParser.getStopTimes()
   .then((stopTimesDeets) => {
-    console.log('succeeded!')
+    console.log('succeeded!!')
     storage.stopTimes = stopTimesDeets
+  })
+  .catch((err) => {
+    console.log('ERROR IN INIT IN ENV:', err);
+  })
+
+  textParser.getRoutes()
+  .then((routes) => {
+    console.log('succeeded!!!')
+    storage.routes = routes
   })
   .catch((err) => {
     console.log('ERROR IN INIT IN ENV:', err);
