@@ -63,18 +63,18 @@ export default class App extends React.Component {
           </div>
         </div>
       )
-    } else if (this.state.displayed === 'deets') {
+    } else if (this.state.displayed === 'details') {
       return (<Details 
         displayed={this.state.displayed}
-        setAppState={setAppState}
+        setAppState={this.setAppState}
       />)
     } else if (this.state.displayed === 'survey') {
       return (<Survey 
-        setAppState={setAppState}
+        setAppState={this.setAppState}
       />)
     } else if (this.state.displayed === 'complaint') {
       return (<Complaint 
-        setAppState={setAppState} 
+        setAppState={this.setAppState} 
       />)
     }
   }

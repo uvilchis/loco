@@ -1,5 +1,7 @@
 import React from 'react';
 import Survey from './Survey.jsx';
+import StaticDeets from './StaticDeets.jsx';
+import axios from 'axios';
 
 export default class Details extends React.Component {
   constructor(props) {
@@ -20,7 +22,12 @@ export default class Details extends React.Component {
     // create a query that grabs both the times and the stops in one go
     axios.get('/api/test/stoptimes')
     .then((stopDeets) => {
-      res.send(stopDeets)
+      this.setState({
+        staticSched: stopDeets.data
+      }, (newState) => {
+        console.log(this.state)
+      })
+      console.log(this.state.staticSched)
     })
     .catch((err) => {
       console.error('ERROR IN GETTING STOP DATA', err);
@@ -62,6 +69,7 @@ export default class Details extends React.Component {
           </button>
         </div>
         <div className="user-comments">
+          Complaints:
           {this.state.comments.map((comment, idx) => {
             return <div>{comment}</div>
           })}
@@ -73,8 +81,11 @@ export default class Details extends React.Component {
             })}
           </div>
           <div className="adj-sched">
+            Schedule:
             {this.state.staticSched.map((element, idx) => {
-              return <div>{element}</div>
+              return <StaticDeets sched={element}
+                key={idx}
+              />
             })}
           </div>
         </div>

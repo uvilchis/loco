@@ -7,7 +7,7 @@ export default class TrainLine extends React.Component {
   }
 
   redirect () {
-    this.props.setAppState('display')
+    this.props.setAppState('details')
   }
 
   render() {
