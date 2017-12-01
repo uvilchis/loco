@@ -1,3 +1,4 @@
+const textParser = require('../lib/txt/index.js')
 const { key } = require('./key.js');
 
 const URLS = {
@@ -6,6 +7,28 @@ const URLS = {
   RT_YELLOW: `http://datamine.mta.info/mta_esi.php?key=${key}&feed_id=26`
 };
 
-module.exports = {
-  URLS
+const storage = {};
+
+var initialize = () => {  
+  textParser.getStops()
+  .then((stopsData) => {
+    console.log('succeeded!')
+    storage.stops = stopsData;
+  })
+  .catch((err) => {
+    console.log('ERROR IN INIT IN ENV:', err);
+  })
+
+  textParser.getStopTimes()
+  .then((stopTimesDeets) => {
+    console.log('succeeded!')
+    storage.stopTimes = stopTimesDeets
+  })
+  .catch((err) => {
+    console.log('ERROR IN INIT IN ENV:', err);
+  })
 }
+
+module.exports.URLS = URLS;
+module.exports.initialize = initialize;
+module.exports.storage = storage;
