@@ -16,6 +16,10 @@ export default class Details extends React.Component {
     this.downVote = this.downVote.bind(this)
   }
 
+  componentDidMount() {
+    axios.get('/stops')
+  }
+
   addVote(e) {
     e.preventDefault()
     this.setState({
@@ -27,12 +31,12 @@ export default class Details extends React.Component {
     e.preventDefault()
     this.setState({
       downVotes: this.state.downVotes + 1
-    });
-    // include function to  redirect to page to specify/make complaint
+    }, this.props.setAppState('deets'));
+    
   }
 
   render() {
-    return this.state.displayed === 'deets' ? (
+    return (
       <div>
         <div className="vote-row">
           <div className="vote-count">
@@ -68,8 +72,6 @@ export default class Details extends React.Component {
           </div>
         </div>
       </div>
-    ) : (
-      <Survey />
-    );
+    ) 
   }
 }

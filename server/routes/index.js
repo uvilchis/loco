@@ -9,6 +9,9 @@ const env = require('../env/index.js')
 router.post('/login', controller.users.authUser); // Login
 router.post('/signup', controller.users.signUpUser); // Signup
 
+// Stops
+router.get('/stops', controller.stops.getStops);
+
 // Stations
 router.get('/api/stations', controller.stations.getStations);
 router.get('/api/stations/:station', controller.stations.getStationSchedule);

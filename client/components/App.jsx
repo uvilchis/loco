@@ -37,7 +37,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    return this.state.displayed === 'main' ? (
+    if (this.state.displayed === 'main') {
+      return (
         <div>
           <div className="navbar">
             <div className="logo_container">
@@ -59,8 +60,19 @@ export default class App extends React.Component {
             </div>
           </div>
         </div>
-      ) : (
-        <Details />
-      );
+      )
+    } else if (this.state.displayed === 'deets') {
+      return (<Details 
+        setAppState={setAppState}
+      />)
+    } else if (this.state.displayed === 'survey') {
+      return (<Survey 
+        setAppState={setAppState}
+      />)
+    } else if (this.state.displayed === 'complaint') {
+      return (<Complaint 
+        setAppState={setAppState} 
+      />)
+    }
   }
 }
