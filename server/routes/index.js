@@ -16,6 +16,9 @@ router.get('/stops', controller.stops.getStops);
 router.get('/api/stations', controller.stations.getStations);
 router.get('/api/stations/:station', controller.stations.getStationSchedule);
 
+// Complaints
+router.post('/complaints', controller.users.postComplaint);
+
 // Test endpoints
 router.get('/api/test/proto', controller.test.testProto);
 router.get('/api/test/service', controller.test.testService);

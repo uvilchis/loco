@@ -20,7 +20,7 @@ export default class Complaint extends React.Component {
     e.preventDefault();
     tempObj = {};
     tempObj.complaint = this.state.complaint;
-    axios.post('/complaints', tempObj);
+    axios.post('/postComplaint', tempObj)
     .then((response) => {
       res.send(response);
     })

@@ -3,6 +3,8 @@ import axios from 'axios';
 import TrainLine from './TrainLine.jsx';
 import mockData from '../mockservice.json';
 import Details from './Details.jsx';
+import Survey from './Survey.jsx';
+import Complaint from './Complaint.jsx';
 
 
 export default class App extends React.Component {
@@ -63,6 +65,7 @@ export default class App extends React.Component {
       )
     } else if (this.state.displayed === 'deets') {
       return (<Details 
+        displayed={this.state.displayed}
         setAppState={setAppState}
       />)
     } else if (this.state.displayed === 'survey') {
