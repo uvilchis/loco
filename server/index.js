@@ -7,6 +7,7 @@ const mongoose = require('./db/mongo').mongoose;
 const mysql = require('./db/mtaSched');
 const { router } = require('./routes');
 const txtParser = require('./lib/txt');
+const instance = require('./instance');
 
 var app = express();
 
@@ -18,6 +19,8 @@ app.use(logger);
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/dist'));
 app.use('/', router);
+
+instance.initialize(); // Start tracking user input
 
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));

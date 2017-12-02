@@ -30,7 +30,7 @@ class Complaint {
    */
   subtractReport(param) {
     let report = this.getReport(param);
-    
+
     // Not found
     if (!report) { return -1; }
 
@@ -46,10 +46,12 @@ class Complaint {
    * will fetch all results matching those fields
    * 
    * e.g. 
-   * let param1 = { stopId: 101N, routeId: 1 }, param2 = {stopId: 101S, routeId: 1};
+   * let complaint = new Complaint();
+   * let param1 = { stopId: '101N', routeId: '1' };
+   * let param2 = { stopId: '101S', routeId: '1' };
    * let params = [param1, param2];
-   * getReport(params) -> [...results];
-   * getReport(param1) -> [result];
+   * complaint.getReport(params) -> [...results];
+   * complaint.getReport(param1) -> [result];
    */
   getReport(params) {
     if (Array.isArray(params)) {
