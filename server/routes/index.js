@@ -3,7 +3,7 @@ const controller = require('../controllers');
 const { checkUser } = require('../util');
 const env = require('../env/index.js')
 
-// router.use('/api/*', checkUser);
+// router.use('/api/user/*', checkUser);
 
 // User routes
 router.post('/login', controller.users.authUser); // Login

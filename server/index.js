@@ -1,13 +1,12 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var axios = require('axios');
-var protobuf = require('protobufjs');
-var protoParser = require('./lib/proto');
-var mongoose = require('./db/config').mongoose;
-var mysql = require('./db/mtaSched');
-var { router } = require('./routes');
-var txtParser = require('./lib/txt');
-var env = require('./env/index.js');
+const express = require('express');
+const bodyParser = require('body-parser');
+const axios = require('axios');
+const protobuf = require('protobufjs');
+const protoParser = require('./lib/proto');
+const mongoose = require('./db/mongo').mongoose;
+const mysql = require('./db/mtaSched');
+const { router } = require('./routes');
+const txtParser = require('./lib/txt');
 
 var app = express();
 
@@ -19,8 +18,6 @@ app.use(logger);
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/dist'));
 app.use('/', router);
-
-env.initialize();
 
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));
