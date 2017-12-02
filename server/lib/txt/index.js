@@ -2,7 +2,7 @@ const fs = require('fs');
 const util = require('util');
 
 // All arrays for pushing into sql database
-module.exports.getStops = (data) => {
+const getStops = () => {
   return new Promise((resolve, reject) => {
     fs.readFile(__dirname + '/google_transit/stops.txt', 'utf8', (err, content) => {
       if (err) {
@@ -26,7 +26,7 @@ module.exports.getStops = (data) => {
   })
 }
 
-module.exports.getStopTimes = (data) => {
+const getStopTimes = () => {
   return new Promise ((resolve, reject) => {
     fs.readFile(__dirname + '/google_transit/stop_times.txt', 'utf8', (err, content) => {
       if (err) {
@@ -36,7 +36,6 @@ module.exports.getStopTimes = (data) => {
         const keys = content.shift().split(',');
         const parsed = [];
         for (let i = 0; i < content.length; i++) {
-          let dataObj = [];
           let vals = content[i].split(',');
           if (vals[0].includes('GS')) { continue; }
           // 0 = trip_id, 1 = arrival_time, 4 = stop_id
@@ -53,7 +52,7 @@ module.exports.getStopTimes = (data) => {
   })
 }
 
-module.exports.getRoutes = (data) => {
+const getRoutes = () => {
   return new Promise ((resolve, reject) => {
     fs.readFile(__dirname + '/google_transit/routes.txt', 'utf8', (err, content) => {
       if (err) {
@@ -71,6 +70,34 @@ module.exports.getRoutes = (data) => {
         });
         resolve(parsed);
       }
-    })
+    });
+  });
+};
+
+const getAll = () => new Promise((resolve, reject) => {
+  let dataObj = {};
+  getStops()
+  .then((stops) => {
+    dataObj.stops = stops;
+    return getRoutes();
   })
-}
+  .then((routes) => {
+    dataObj.routes = routes;
+    return getStopTimes();
+  })
+  .then((stoptimes) => {
+    dataObj.stoptimes = stoptimes;
+    resolve(dataObj);
+  })
+  .catch((error) => {
+    console.log(error);
+    reject(error);
+  });
+});
+
+module.exports = {
+  getStops,
+  getRoutes,
+  getStopTimes,
+  getAll
+};
