@@ -1,22 +1,24 @@
 const fs = require('fs');
 const util = require('util');
 
+// All arrays for pushing into sql database
 module.exports.getStops = (data) => {
   return new Promise((resolve, reject) => {
     fs.readFile(__dirname + '/google_transit/stops.txt', 'utf8', (err, content) => {
       if (err) {
         reject(err);
       } else {
-        const keys = content.split('\n').shift().split(',') // the first line at the document's head
-        const vals = content.split('\n').slice(1,-1); // the values to be assigned to each key
+        content = content.split('\n').slice(0, -1);
+        const keys = content.shift().split(',') // the first line at the document's head
         const parsed = [];
-        for (let i = 0; i < vals.length; i++) {
-          const datObj = {};
-          item = vals[i].split(',');
-          for (let j = 0; j < keys.length; j++) {
-            datObj[keys[j]] = item[j];
-          }
-          parsed.push(datObj);
+        for (let i = 0; i < content.length; i++) {
+          vals = content[i].split(',');
+          // 0: stop_id, 2: stop_name, 4: stop_lat, 5: stop_lon
+          let stopId = vals[0];
+          let stopName = vals[2];
+          let stopLat = vals[4];
+          let stopLon = vals[5];
+          parsed.push([stopId, stopName, stopLat, stopLon]);
         }
         resolve(parsed);
       }
@@ -30,30 +32,20 @@ module.exports.getStopTimes = (data) => {
       if (err) {
         reject(err)
       } else {
-        content = content.split('\n');
-        content.pop(); // Don't want last item
+        content = content.split('\n').slice(0, -1);
         const keys = content.shift().split(',');
-        const vals = content;
         const parsed = [];
-        for (let i = 0; i < vals.length; i++) {
+        for (let i = 0; i < content.length; i++) {
           let dataObj = [];
-          let val = vals[i].split(',');
-          if (val[0].includes('GS')) { continue; }
+          let vals = content[i].split(',');
+          if (vals[0].includes('GS')) { continue; }
           // 0 = trip_id, 1 = arrival_time, 4 = stop_id
-          let tripArray = val[0].split('_');
+          let tripArray = vals[0].split('_');
           let routeId = tripArray[2].split('.')[0];
           let routeType = tripArray[0].slice(-3);
-          let arrivalTime = val[1];
-          let stopId = val[3];
-          dataObj.push(routeId);
-          dataObj.push(routeType);
-          dataObj.push(arrivalTime);
-          dataObj.push(stopId);
-          // dataObj.route_id = routeId;
-          // dataObj.route_type = routeType;
-          // dataObj[keys[1]] = val[1];
-          // dataObj[keys[3]] = val[3];
-          parsed.push(dataObj);
+          let arrivalTime = vals[1];
+          let stopId = vals[3];
+          parsed.push([routeId, routeType, arrivalTime, stopId]);
         }
         resolve(parsed);
       }
@@ -67,18 +59,15 @@ module.exports.getRoutes = (data) => {
       if (err) {
         reject(err)
       }  else {
-        content = content.split('\r\n');
-        // const desiredKeys = [0, 4];
-        content.pop(); // Last element is undesired
+        content = content.split('\r\n').slice(0, -1);
         const keys = content.shift().split(',');
         const vals = content.map((a) => a.split(/,(?!\s)/))
         const parsed = [];
         vals.forEach((val) => {
-          let dataObj = {};
           // 0 = route_id, 4 = route_desc
-          dataObj[keys[0]] = val[0];
-          dataObj[keys[4]] = val[4].replace(/\"/g, '');
-          parsed.push(dataObj);
+          let routeId = val[0];
+          let routeDesc = val[4].replace(/\"/g, '');
+          parsed.push([routeId, routeDesc]);
         });
         resolve(parsed);
       }

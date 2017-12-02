@@ -12,10 +12,6 @@ router.post('/signup', controller.users.signUpUser); // Signup
 // Stops
 // router.get('/stops', controller.stops.getStops);
 
-// Stations
-router.get('/api/stations', controller.stations.getStations);
-router.get('/api/stations/:station', controller.stations.getStationSchedule);
-
 // Stop_times - These will break if you call them without parameters
 
 // Params: stop_id, route_type
@@ -40,6 +36,7 @@ router.get('/api/test/updatedb', controller.test.testUpdateDb);
 router.get('/api/test/timesbystop', controller.test.testSchedByStop);
 router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
 router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
+router.get('/api/test/stops', controller.test.testGetStops);
 
 module.exports = {
   router

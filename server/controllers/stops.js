@@ -1,16 +1,9 @@
-const db = require('../db/index')
+const env = require('../env');
 
-// const getStops = (req, res) => {
-//   queryStr = `SELECT stop_id, stop_name from stops`;
-//   db.query(queryStr, (err, data)) => {
-//     if (err) {
-//       console.log('ERROR GETTING STOPS!', err)
-//     } else {
-//       res.send(data)
-//     }
-//   }
-// }
+const getStops = (req, res) => {
+  res.send(env.storage.stops);
+};
 
 module.exports = {
   getStops
-}
+};

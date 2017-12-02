@@ -13,3 +13,18 @@ CREATE TABLE stop_times (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE stops (
+  id int NOT NULL AUTO_INCREMENT,
+  stop_id varchar(10) NOT NULL,
+  stop_name varchar(50) NOT NULL,
+  stop_lat varchar(20) NOT NULL,
+  stop_lon varchar(20) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE routes (
+  id int NOT NULL AUTO_INCREMENT,
+  route_id varchar(10) NOT NULL,
+  route_desc varchar(2000) NOT NULL,
+  PRIMARY KEY (id)
+);

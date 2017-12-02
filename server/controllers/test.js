@@ -1,6 +1,7 @@
 const protoParser = require('../lib/proto');
 const textParser = require('../lib/txt');
 const db = require('../db/mtaSched');
+const env = require('../env');
 const { fetchServiceStatus } = require('../lib/txt/service.js');
 
 const testProto = (req, res) => {
@@ -111,6 +112,10 @@ const testSchedByStopRoute = (req, res) => {
   })
 };
 
+const testGetStops = (req, res) => {
+  res.send(env.storage.stops);
+}
+
 module.exports = {
   testProto,
   testService,
@@ -119,5 +124,6 @@ module.exports = {
   testUpdateDb,
   testSchedByStop,
   testSchedByRoute,
-  testSchedByStopRoute
+  testSchedByStopRoute,
+  testGetStops
 };
