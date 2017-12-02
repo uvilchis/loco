@@ -90,26 +90,25 @@ export default class App extends React.Component {
             {this.state.currentTrain.length > 0 ? (
               this.state.currentTrain.map((route, idx) => 
                 <Nav route={route.route_id}
-                    status={this.state.currentStatus}
+                     status={this.state.currentStatus}
                 />
-              )               
-            ) : (
-              <div>
-              <h3 className="trainline_header">Train Status</h3>
-              <div className="trainline_container">
-                {this.state.trains.map((line, idx) =>
-                  <TrainLine
-                    line={line || line.route_id}
-                    key={idx}
-                    loggedIn={this.state.user ? true : false}
-                    setAppState={this.setAppState}
-                    info={this.state.organized[line.name]}
-                    showCurrentRoute={this.showCurrentRoute}
-                  />
-                )}
-              </div>
-              </div>
-            )}           
+                )) : (
+                  <div>
+                    <h3 className="trainline_header">Train Status</h3>
+                      <div className="trainline_container">
+                        {this.state.trains.map((line, idx) =>
+                          <TrainLine
+                            line={line || line.route_id}
+                            key={idx}
+                            loggedIn={this.state.user ? true : false}
+                            setAppState={this.setAppState}
+                            info={this.state.organized[line.name]}
+                            showCurrentRoute={this.showCurrentRoute}
+                          /> 
+                        )}
+                      </div>
+                  </div>
+            )}
           </div>
         </div>
       )

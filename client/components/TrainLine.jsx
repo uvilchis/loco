@@ -15,7 +15,6 @@ export default class TrainLine extends React.Component {
   }
 
   render() {
-    console.log('TRAINLINE PROPS: ', this.props)
     return (
       <div>
           <div className="trainline_row">
