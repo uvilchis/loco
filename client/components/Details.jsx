@@ -58,11 +58,11 @@ export default class Details extends React.Component {
     return (
       <div>
         <div className="line-logo">
-
         </div>
         <button onClick={this.goBack}>
           Go Back
-        </button>        <div className="vote-row">
+        </button>
+          <div className="vote-row">
           <div className="vote-count">
             {this.state.upvotes}
           </div>

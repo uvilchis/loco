@@ -54,7 +54,7 @@ export default class App extends React.Component {
   setAppState(input) {
     // lets call setState on this.state.trains
     // change the array being mapped over to the appropriate info from organized
-    this.setState({displayed: input})
+    this.setState({trains: input})
   }
 
   routeOrganizer () {
@@ -86,7 +86,7 @@ export default class App extends React.Component {
             <div className="trainline_container">
               {this.state.trains.map((line, idx) =>
                 <TrainLine
-                  line={line}
+                  line={line || line.route_id}
                   key={idx}
                   loggedIn={this.state.user ? true : false}
                   setAppState={this.setAppState}
