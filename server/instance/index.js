@@ -1,3 +1,5 @@
+const { setTimeout } = require('timers');
+const serviceParser = require('../lib/txt/service');
 const Models = require('../models/complaint');
 const Complaint = Models.Complaint;
 const Report = Models.Report;
@@ -8,11 +10,21 @@ let initialized = false;
 
 const initialize = () => {
   if (initialized) { return; }
+  _serviceScheduler();
   let complaintTypes = ['delayed', 'closed', 'accident', 'crowded'];
   _instance.complaints = complaintTypes.map((type) => new Complaint(type));
   console.log('initialized');
   initialized = true;
 };
+
+const _serviceScheduler = () => {
+  serviceParser.fetchServiceStatus()
+  .then((serviceData) => {
+    _instance.serviceData = serviceData;
+    setTimeout(_serviceScheduler, 1000 * 60 * 5); // Fetch every 5 minutes
+  })
+  .catch((error) => console.log(error));
+}
 
 const addComplaintReport = (type, stopId, routeId) => {
   let complaint = _instance.complaints.find((a) => a.type === type);
@@ -20,7 +32,6 @@ const addComplaintReport = (type, stopId, routeId) => {
     let count = complaint.addReport({ stopId, routeId });
     return count < 0 ? false : count;
   } else {
-    console.log('failed to find complaint', _instance.complaints);
     return false;
   }
 };
@@ -44,9 +55,17 @@ const getComplaintReport = (type, stopId, routeId) => {
   }
 };
 
+const getServiceData = () => {
+  if (!_instance.serviceData) {
+    return false;
+  }
+  return _instance.serviceData
+};
+
 module.exports = {
   initialize,
   addComplaintReport,
   subtractComplaintReport,
-  getComplaintReport
+  getComplaintReport,
+  getServiceData
 };

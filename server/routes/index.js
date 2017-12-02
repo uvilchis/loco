@@ -49,13 +49,16 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
 // Complaints - type refers to complaint type,
   // Params: type, stop_id, route_id
   // e.g. /api/complaint/stop?type=delay&stop_id=101N&route_id=1
-router.get('/api/complaint', controller.complaints.getComplaintReport);
+// router.get('/api/complaint', controller.complaints.getComplaintReport);
 
   // TBD: adding custom complaint
-router.post('/api/complaint/add', controller.complaints.addComplaint);
+// router.post('/api/complaint/add', controller.complaints.addComplaint);
 
 
 // Reports - type refers to complaint type, add and subtract return the new count
+  // Params: type, stop_id, route_id
+router.get('/api/report', controller.complaints.getComplaintReport);
+
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delay&stop_id=101N&route_id=1
 router.post('/api/report/add', controller.complaints.addComplaintReport);
@@ -63,6 +66,11 @@ router.post('/api/report/add', controller.complaints.addComplaintReport);
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
 router.post('/api/report/subtract', controller.complaints.subtractComplaintReport);
+
+
+
+// Service data
+router.get('/api/service', controller.realtime.getServiceData);
 
 // Test endpoints
 router.get('/api/test/proto', controller.test.testProto);
