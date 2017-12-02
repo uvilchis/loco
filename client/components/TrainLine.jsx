@@ -17,15 +17,6 @@ export default class TrainLine extends React.Component {
   render() {
     return (
       <div>
-        {this.state.nav ? (
-          <div className="nav-components">
-            {this.props.info.map((route) => {
-              return <Nav status={this.props.line.status}
-                route={this.props.info.route_id}
-              />
-            })}
-          </div>
-        ) : (
           <div className="trainline_row">
             <div className="trainline_routes">
               {this.props.line.name || this.props.line.route_id}
@@ -39,7 +30,6 @@ export default class TrainLine extends React.Component {
               Details
             </button>
           </div>
-        )}
       </div>
     )
   }
