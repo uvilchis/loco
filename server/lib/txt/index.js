@@ -36,17 +36,23 @@ module.exports.getStopTimes = (data) => {
         const vals = content;
         const parsed = [];
         for (let i = 0; i < vals.length; i++) {
-          let dataObj = {};
+          let dataObj = [];
           let val = vals[i].split(',');
           if (val[0].includes('GS')) { continue; }
           // 0 = trip_id, 1 = arrival_time, 4 = stop_id
           let tripArray = val[0].split('_');
           let routeId = tripArray[2].split('.')[0];
           let routeType = tripArray[0].slice(-3);
-          dataObj.route_id = routeId;
-          dataObj.route_type = routeType;
-          dataObj[keys[1]] = val[1];
-          dataObj[keys[3]] = val[3];
+          let arrivalTime = val[1];
+          let stopId = val[3];
+          dataObj.push(routeId);
+          dataObj.push(routeType);
+          dataObj.push(arrivalTime);
+          dataObj.push(stopId);
+          // dataObj.route_id = routeId;
+          // dataObj.route_type = routeType;
+          // dataObj[keys[1]] = val[1];
+          // dataObj[keys[3]] = val[3];
           parsed.push(dataObj);
         }
         resolve(parsed);
