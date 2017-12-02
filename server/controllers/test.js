@@ -40,16 +40,25 @@ const testStopTimes = (req, res) => {
   textParser.getStopTimes()
   .then((data) => {
     let result = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 20000; i++) {
       result.push(data[i]);
     }
-    res.send(result);
+    // filter by stop ID
+    let stopIdFilter = result.filter((element) => {
+      return element["stop_id"] === "127N"
+    })
+    // sort by increasing time
+    let timeSort = stopIdFilter.sort((a,b) => {
+      return (a["arrival_time"] < b["arrival_time"]) ? -1 : ((a["arrival_time"] > b["arrival_time"]) ? 1 : 0)
+    })
+    res.send(timeSort);
   })
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
   });
 };
+
 
 module.exports = {
   testProto,
