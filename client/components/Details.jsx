@@ -1,4 +1,7 @@
 import React from 'react';
+import Survey from './Survey.jsx';
+import StaticDeets from './StaticDeets.jsx';
+import axios from 'axios';
 
 export default class Details extends React.Component {
   constructor(props) {
@@ -8,10 +11,27 @@ export default class Details extends React.Component {
       downvotes: 0,
       comments: [],
       staticSched: [],
-      realTimeSched: []
+      realTimeSched: [],
+      display: 'deets'
     }
     this.addVote = this.addVote.bind(this)
     this.downVote = this.downVote.bind(this)
+  }
+
+  componentDidMount() {
+    // create a query that grabs both the times and the stops in one go
+    axios.get('/api/test/stoptimes')
+    .then((stopDeets) => {
+      this.setState({
+        staticSched: stopDeets.data
+      }, (newState) => {
+        console.log(this.state)
+      })
+      console.log(this.state.staticSched)
+    })
+    .catch((err) => {
+      console.error('ERROR IN GETTING STOP DATA', err);
+    })
   }
 
   addVote(e) {
@@ -25,13 +45,16 @@ export default class Details extends React.Component {
     e.preventDefault()
     this.setState({
       downVotes: this.state.downVotes + 1
-    });
-    // include function to  redirect to page to specify/make complaint
+    }, this.props.setAppState('deets'));
+    
   }
 
   render() {
     return (
       <div>
+        <div className="line-logo">
+          
+        </div>
         <div className="vote-row">
           <div className="vote-count">
             {this.state.upvotes}
@@ -49,6 +72,7 @@ export default class Details extends React.Component {
           </button>
         </div>
         <div className="user-comments">
+          Complaints:
           {this.state.comments.map((comment, idx) => {
             return <div>{comment}</div>
           })}
@@ -60,12 +84,15 @@ export default class Details extends React.Component {
             })}
           </div>
           <div className="adj-sched">
+            Schedule:
             {this.state.staticSched.map((element, idx) => {
-              return <div>{element}</div>
+              return <StaticDeets sched={element}
+                key={idx}
+              />
             })}
           </div>
         </div>
       </div>
-    )
+    ) 
   }
 }

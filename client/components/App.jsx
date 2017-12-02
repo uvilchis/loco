@@ -3,6 +3,8 @@ import axios from 'axios';
 import TrainLine from './TrainLine.jsx';
 import mockData from '../mockservice.json';
 import Details from './Details.jsx';
+import Survey from './Survey.jsx';
+import Complaint from './Complaint.jsx';
 
 
 export default class App extends React.Component {
@@ -12,7 +14,8 @@ export default class App extends React.Component {
       trains: [],
       stops: [],
       user: null,
-      displayed : 'main'
+      displayed : 'main',
+      route_id: ''
     };
     this.onClick = this.onClick.bind(this);
     this.setAppState = this.setAppState.bind(this);
@@ -33,11 +36,13 @@ export default class App extends React.Component {
   }
 
   setAppState(input) {
-    this.setState({displayed: input })
+    this.setState({
+      displayed: input })
   }
 
   render() {
-    return this.state.displayed === 'main' ? (
+    if (this.state.displayed === 'main') {
+      return (
         <div>
           <div className="navbar">
             <div className="logo_container">
@@ -53,14 +58,25 @@ export default class App extends React.Component {
                   key={idx}
                   loggedIn={this.state.user ? true : false}
                   setAppState={this.setAppState}
-                  />
-
+                />
               )}
             </div>
           </div>
         </div>
-      ) : (
-        <Details />
-      );
+      )
+    } else if (this.state.displayed === 'details') {
+      return (<Details 
+        displayed={this.state.displayed}
+        setAppState={this.setAppState}
+      />)
+    } else if (this.state.displayed === 'survey') {
+      return (<Survey 
+        setAppState={this.setAppState}
+      />)
+    } else if (this.state.displayed === 'complaint') {
+      return (<Complaint 
+        setAppState={this.setAppState} 
+      />)
+    }
   }
 }
