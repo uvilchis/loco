@@ -1,7 +1,7 @@
-const env = require('../env');
+const db = require('../db/mtaSched');
 
-const getStops = (req, res) => {
-  db.getStops()
+const getRoutes = (req, res) => {
+  db.getRoutes()
   .then((result) => {
     res.send(result);
   })
@@ -11,19 +11,19 @@ const getStops = (req, res) => {
   });
 };
 
-const getStop = (req, res) => {
-  let stopId = req.query.stop_id;
-  db.getStop(stopid)
+const getRoute = (req, res) => {
+  let routeId = req.query.route_id;
+  db.getRoute(routeId)
   .then((result) => {
     res.send(result);
   })
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
-  });
-};
+  })
+}
 
 module.exports = {
-  getStops,
-  getStop
+  getRoutes,
+  getRoute
 };

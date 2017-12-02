@@ -1,4 +1,3 @@
-const textParser = require('../lib/txt/index.js')
 const { key } = require('./key.js');
 
 const URLS = {
@@ -9,33 +8,35 @@ const URLS = {
 
 const storage = {};
 
-var initialize = () => {  
-  textParser.getStops()
-  .then((stopsData) => {
-    console.log('succeeded!')
-    storage.stops = stopsData;
-  })
-  .catch((err) => {
-    console.log('ERROR IN INIT IN ENV:', err);
-  })
+// To hold real-time data later
+var initialize = () => {
 
-  textParser.getStopTimes()
-  .then((stopTimesDeets) => {
-    console.log('succeeded!!')
-    storage.stopTimes = stopTimesDeets
-  })
-  .catch((err) => {
-    console.log('ERROR IN INIT IN ENV:', err);
-  })
+  // textParser.getStops()
+  // .then((stopsData) => {
+  //   console.log('succeeded!')
+  //   storage.stops = stopsData;
+  // })
+  // .catch((err) => {
+  //   console.log('ERROR IN INIT IN ENV:', err);
+  // })
 
-  textParser.getRoutes()
-  .then((routes) => {
-    console.log('succeeded!!!')
-    storage.routes = routes
-  })
-  .catch((err) => {
-    console.log('ERROR IN INIT IN ENV:', err);
-  })
+  // textParser.getStopTimes()
+  // .then((stopTimesDeets) => {
+  //   console.log('succeeded!!')
+  //   storage.stopTimes = stopTimesDeets
+  // })
+  // .catch((err) => {
+  //   console.log('ERROR IN INIT IN ENV:', err);
+  // })
+
+  // textParser.getRoutes()
+  // .then((routes) => {
+  //   console.log('succeeded!!!')
+  //   storage.routes = routes
+  // })
+  // .catch((err) => {
+  //   console.log('ERROR IN INIT IN ENV:', err);
+  // })
 }
 
 module.exports.URLS = URLS;

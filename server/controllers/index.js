@@ -1,13 +1,13 @@
 const users = require('./users.js');
-const stations = require('./stations.js');
-const trains = require('./trains.js');
+const stops = require('./stops.js');
+const routes = require('./routes.js');
 const times = require('./times.js');
 const test = require('./test.js');
 
 module.exports = {
   users,
-  stations,
-  trains,
+  stops,
+  routes,
   times,
   test
 };

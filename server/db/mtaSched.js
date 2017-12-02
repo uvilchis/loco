@@ -11,7 +11,7 @@ connection.connect((error) => {
   console.log(`connected with id ${connection.threadId}`);
 });
 
-const CREATE_TABLE = `
+const CREATE_STOPTIMES = `
   CREATE TABLE stop_times (
     id int NOT NULL AUTO_INCREMENT,
     route_id varchar(10) NOT NULL,
@@ -21,28 +21,59 @@ const CREATE_TABLE = `
     PRIMARY KEY (id)
   )`;
 
-const DROP_TABLE = 'DROP TABLE stop_times';
+const CREATE_STOPS = `
+  CREATE TABLE stops (
+    id int NOT NULL AUTO_INCREMENT,
+    stop_id varchar(10) NOT NULL,
+    stop_name varchar(50) NOT NULL,
+    stop_lat varchar(20) NOT NULL,
+    stop_lon varchar(20) NOT NULL,
+    PRIMARY KEY (id)
+  )`;
 
-const INSERT_INTO_TABLE = 'INSERT INTO stop_times (route_id, route_type, arrival_time, stop_id) VALUES ?';
+const CREATE_ROUTES = `
+  CREATE TABLE routes (
+    id int NOT NULL AUTO_INCREMENT,
+    route_id varchar(10) NOT NULL,
+    route_desc varchar(2000) NOT NULL,
+    PRIMARY KEY (id)
+  )`;
 
-const _dropTable = () => new Promise((resolve, reject) => {
+const DROP_TABLE = 'DROP TABLE IF EXISTS stops, stop_times, routes';
+
+const INSERT_INTO_STOPTIMES = 'INSERT INTO stop_times (route_id, route_type, arrival_time, stop_id) VALUES ?';
+const INSERT_INTO_STOPS = 'INSERT INTO stops (stop_id, stop_name, stop_lat, stop_lon) VALUES ?';
+const INSERT_INTO_ROUTES = 'INSERT INTO routes (route_id, route_desc) VALUES ?';
+
+const _dropTables = () => new Promise((resolve, reject) => {
   connection.query(DROP_TABLE, (error, result) => {
     if (error) { return reject(error); }
     resolve(result);
   });
 });
 
-const _createTable = () => new Promise((resolve, reject) => {
-  connection.query(CREATE_TABLE, (error, result) => {
+const _createTable = (query) => new Promise((resolve, reject) => {
+  connection.query(query, (error, result) => {
     if (error) { return reject(error); }
     resolve(result);
   });
 });
 
-const _insertTable = (data) => new Promise((resolve, reject) => {
+const _createTables = () => new Promise((resolve, reject) => {
+  _createTable(CREATE_STOPS)
+  .then((result) => _createTable(CREATE_ROUTES))
+  .then((result) => _createTable(CREATE_STOPTIMES))
+  .then((result) => resolve(result))
+  .catch((error) => {
+    console.log;
+    reject(error);
+  });
+});
+
+const _insertStopTimes = (data) => new Promise((resolve, reject) => {
   let query = (data) => {
     let newData = data.splice(0, 10000);
-    connection.query(INSERT_INTO_TABLE, [newData], (error, result) => {
+    connection.query(INSERT_INTO_STOPTIMES, [newData], (error, result) => {
       if (error) { return reject(error); }
       if (data.length) { return query(data); }
       resolve(result);
@@ -51,19 +82,41 @@ const _insertTable = (data) => new Promise((resolve, reject) => {
   query(data);
 });
 
+const _insertStops = (data) => new Promise((resolve, reject) => {
+  connection.query(INSERT_INTO_STOPS, [data], (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const _insertRoutes = (data) => new Promise ((resolve, reject) => {
+  connection.query(INSERT_INTO_ROUTES, [data], (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
 const updateMtaSchedule = () => new Promise((resolve, reject) => {
   let data;
-  textParser.getStopTimes()
+  textParser.getAll()
   .then((parsedData) => {
-    if (!parsedData.length) { throw 'Error parsing stoptimes'; }
+    if (!parsedData.stoptimes.length) { throw 'Error parsing stoptimes'; }
+    if (!parsedData.stops.length) { throw 'Error parsing stops'; }
+    if (!parsedData.routes.length) { throw 'Error parsing routes'; }
     data = parsedData;
-    return _dropTable();
+    return _dropTables();
   })
   .then((result) => {
-    return _createTable();
+    return _createTables();
   })
   .then((result) => {
-    return _insertTable(data);
+    return _insertStopTimes(data.stoptimes);
+  })
+  .then((result) => {
+    return _insertStops(data.stops);
+  })
+  .then((result) => {
+    return _insertRoutes(data.routes);
   })
   .then((result) => {
     console.log('successfully updated MTA schedule');
@@ -99,9 +152,45 @@ const getScheduleByStopAndRoute = (stopId, routeId, routeType = 'WKD') => new Pr
   });
 });
 
+const getStops = () => new Promise((resolve, reject) => {
+  let query = 'SELECT * FROM `stops`';
+  connection.query(query, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const getStop = (stopId) => new Promise ((resolve, reject) => {
+  let query = 'SELECT * from `stops` WHERE `stop_id` = ?';
+  connection.query(query, stopId, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const getRoutes = () => new Promise((resolve, reject) => {
+  let query = 'SELECT * FROM `routes`';
+  connection.query(query, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const getRoute = (routeId) => new Promise((resolve, reject) => {
+  let query = 'SELECT * FROM `routes` WHERE `route_id` = ?';
+  connection.query(query, routeId, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
 module.exports = {
   updateMtaSchedule,
   getScheduleByStop,
   getScheduleByRoute,
-  getScheduleByStopAndRoute
+  getScheduleByStopAndRoute,
+  getStops,
+  getStop,
+  getRoutes,
+  getRoute
 };
