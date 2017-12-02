@@ -14,4 +14,4 @@ mongoose.connect(DB_CREDENTIALS, {
 
 module.exports = {
   mongoose
-}
+};

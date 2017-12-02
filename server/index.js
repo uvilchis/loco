@@ -4,6 +4,7 @@ var axios = require('axios');
 var protobuf = require('protobufjs');
 var protoParser = require('./lib/proto');
 var mongoose = require('./db/config').mongoose;
+var mysql = require('./db/mtaSched');
 var { router } = require('./routes');
 var txtParser = require('./lib/txt');
 var env = require('./env/index.js');

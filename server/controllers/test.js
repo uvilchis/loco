@@ -1,5 +1,6 @@
 const protoParser = require('../lib/proto');
 const textParser = require('../lib/txt');
+const db = require('../db/mtaSched');
 const { fetchServiceStatus } = require('../lib/txt/service.js');
 
 const testProto = (req, res) => {
@@ -38,9 +39,9 @@ const testRoutes = (req, res) => {
 
 const testStopTimes = (req, res) => {
   textParser.getStopTimes()
-  .then((data) => {
+  .then((data) => { 
     let result = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 100; i++) {
       result.push(data[i]);
     }
     res.send(result);
@@ -51,9 +52,64 @@ const testStopTimes = (req, res) => {
   });
 };
 
+const testUpdateDb = (req, res) => {
+  db.updateMtaSchedule()
+  .then((result) => {
+    res.sendStatus(200);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  });
+};
+
+const testSchedByStop = (req, res) => {
+  let stopId = req.query.stop_id;
+  let routeType = req.query.route_type;
+  db.getScheduleByStop(stopId, routeType)
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  })
+};
+
+const testSchedByRoute = (req, res) => {
+  let routeId = req.query.route_id;
+  let routeType = req.query.route_type;
+  db.getScheduleByRoute(routeId, routeType)
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  });
+};
+
+const testSchedByStopRoute = (req, res) => {
+  let stopId = req.query.stop_id;
+  let routeId = req.query.route_id;
+  let routeType = req.query.route_type;
+  db.getScheduleByStopAndRoute(stopId, routeId, routeType)
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  })
+};
+
 module.exports = {
   testProto,
   testService,
   testRoutes,
-  testStopTimes
+  testStopTimes,
+  testUpdateDb,
+  testSchedByStop,
+  testSchedByRoute,
+  testSchedByStopRoute
 };
