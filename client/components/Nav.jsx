@@ -18,15 +18,15 @@ export default class Nav extends React.Component {
     return (
       <div className="nav-properties trainline_row">
         <div className="route-id">
-          {this.props.info}
+          {this.props.route}
         </div>
          <div className="route-status">
-          {this.props.status}
+          {this.props.status.status}
         </div>
         <div className="trainline_user">
         </div>
         <button onClick={this.showDetails}>
-        Details
+          Details
         </button>
       </div>
     )
