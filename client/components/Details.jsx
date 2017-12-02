@@ -12,6 +12,7 @@ export default class Details extends React.Component {
     }
     this.addVote = this.addVote.bind(this)
     this.downVote = this.downVote.bind(this)
+    this.goBack = this.goBack.bind(this)
   }
 
   addVote(e) {
@@ -29,9 +30,16 @@ export default class Details extends React.Component {
     // include function to  redirect to page to specify/make complaint
   }
 
+  goBack() {
+    this.props.setAppState('main')
+  }
+
   render() {
     return (
       <div>
+        <button onClick={this.goBack}>
+          Go Back
+        </button>
         <div className="vote-row">
           <div className="vote-count">
             {this.state.upvotes}

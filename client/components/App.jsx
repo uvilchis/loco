@@ -11,16 +11,32 @@ export default class App extends React.Component {
     this.state = {
       trains: [],
       stops: [],
+      routes : [],
+      organized : [],
       user: null,
       displayed : 'main'
     };
     this.onClick = this.onClick.bind(this);
     this.setAppState = this.setAppState.bind(this);
+    this.routeOrganizer = this.routeOrganizer.bind(this)
   }
 
   componentDidMount() {
-    // Replace this with an axios request in the future
-    this.setState({trains: mockData.lines});
+    axios('/api/test/service')
+    .then((data) => {
+      this.setState({trains: data.data.lines});
+      console.log(this.state.trains)
+    }).then(() => {
+      let organized = this.routeOrganizer();
+      this.setState({organized: organized})
+      console.log(this.state.organized)
+    })
+
+    axios('/api/test/routes')
+    .then((data) => {
+      this.setState({routes: data.data})
+      console.log(this.state.routes)
+    })
   }
 
   onClick() {
@@ -33,7 +49,24 @@ export default class App extends React.Component {
   }
 
   setAppState(input) {
-    this.setState({displayed: input })
+    // lets call setState on this.state.trains
+    // change the array being mapped over to the appropriate info from organized
+    this.setState({displayed: input})
+  }
+
+  routeOrganizer () {
+    let organized = {};
+    for (var j = 0; j < this.state.trains.length; j++) {
+      for (var i = 0; i < this.state.routes.length; i++) {
+        if (this.state.trains[j].name.match(`${this.state.routes[i].route_id}`)){
+          if (!organized[this.state.trains[j].name]) {
+            organized[this.state.trains[j].name] = [];
+            organized[this.state.trains[j].name].push(this.state.routes[i]);
+          }  else organized[this.state.trains[j].name].push(this.state.routes[i]);
+        }
+      }
+    }
+    return organized
   }
 
   render() {
@@ -53,14 +86,16 @@ export default class App extends React.Component {
                   key={idx}
                   loggedIn={this.state.user ? true : false}
                   setAppState={this.setAppState}
-                  />
-
+                  info={this.state.organized[line.name]}
+                />
               )}
             </div>
           </div>
         </div>
       ) : (
-        <Details />
+        <Details
+          setAppState={this.setAppState}
+        />
       );
   }
 }

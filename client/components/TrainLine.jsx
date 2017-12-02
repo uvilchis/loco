@@ -7,7 +7,12 @@ export default class TrainLine extends React.Component {
   }
 
   redirect () {
-    this.props.setAppState('display')
+    // maybe not
+    // this.props.setAppState('display')
+    // what if, instead of changing the displayed state
+    // you changed the state of what is being mapped over in app
+    // that way, you'd retain all the same styling
+    this.props.setAppState(this.props.info)
   }
 
   render() {

@@ -1,7 +1,16 @@
+const textParser = require ('../lib/txt')
+
 const getStations = (req, res) => {
   let result = {}; // This should return an array of all stations someday
-  console.log('hello');
-  res.send('hello');
+  textParser.getStops()
+  .then((data) => {
+    console.log(data)
+    res.send(data)
+  })
+  .catch((err) => {
+    console.log(error);
+    res.send(404)
+  })
 };
 
 const getStationSchedule = (req, res) => {
