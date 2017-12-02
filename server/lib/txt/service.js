@@ -14,9 +14,7 @@ const fetchServiceStatus = () => {
         parseString(data, (error, { service }) => {
           if (error) { return reject(error); }
           let lineFormat = (a) => {
-            for (let key in a) {
-              a[key] = a[key][0];
-            }
+            for (let key in a) { a[key] = a[key][0]; }
             a.text = a.text.replace(matcher, '').split(' ').filter((a) => a).join(' ');
             a.Time = a.Time.trim();
             return a;

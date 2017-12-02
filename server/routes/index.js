@@ -3,41 +3,74 @@ const controller = require('../controllers');
 const { checkUser } = require('../util');
 const env = require('../env/index.js')
 
-// router.use('/api/*', checkUser);
+// router.use('/api/user/*', checkUser);
 
 // User routes
 router.post('/login', controller.users.authUser); // Login
 router.post('/signup', controller.users.signUpUser); // Signup
 
+
+
 // Stops
-// All stops
+  // All stops
 router.get('/api/stops', controller.stops.getStops);
 
-// Stop by stop_id
-// e.g. /api/stop?stop_id=101N
+  // Stop by stop_id
+  // e.g. /api/stop?stop_id=101N
 router.get('/api/stop', controller.stops.getStop);
 
+
+
 // Routes
-// All routes
+  // All routes
 router.get('/api/routes', controller.routes.getRoutes);
 
-// Route by route_id
-// e.g. /api/route?route_id=1
+  // Route by route_id
+  // e.g. /api/route?route_id=1
 router.get('/api/route', controller.routes.getRoute);
 
-// Stop_times - These will break if you call them without parameters
 
-// Params: stop_id, route_type
-// e.g. /api/times/stop?stop_id=101n&route_type=wkd
+
+// Stop_times - These will break if you call them without parameters
+  // Params: stop_id, route_type
+  // e.g. /api/times/stop?stop_id=101n&route_type=wkd
 router.get('/api/times/stop', controller.times.schedByStop);
 
-// Params: route_id, route_type
-// e.g. /api/times/stop?route_id=1&route_type=wkd
+  // Params: route_id, route_type
+  // e.g. /api/times/stop?route_id=1&route_type=wkd
 router.get('/api/times/route', controller.times.schedByRoute);
 
-// Params: stop_id, route_id, route_ty[e]
-// e.g. /api/times/stop?stop_id=101n&route_id=1&route_type=wkd
+  // Params: stop_id, route_id, route_ty[e]
+  // e.g. /api/times/stop?stop_id=101n&route_id=1&route_type=wkd
 router.get('/api/times/stoproute', controller.times.schedByStopRoute);
+
+
+
+// Complaints - type refers to complaint type,
+  // Params: type, stop_id, route_id
+  // e.g. /api/complaint/stop?type=delay&stop_id=101N&route_id=1
+// router.get('/api/complaint', controller.complaints.getComplaintReport);
+
+  // TBD: adding custom complaint
+// router.post('/api/complaint/add', controller.complaints.addComplaint);
+
+
+// Reports - type refers to complaint type, add and subtract return the new count
+  // Params: type, stop_id, route_id
+router.get('/api/report', controller.complaints.getComplaintReport);
+
+  // Params: type, stop_id, route_id
+  // e.g. /api/report/add?type=delay&stop_id=101N&route_id=1
+router.post('/api/report/add', controller.complaints.addComplaintReport);
+
+  // Params: type, stop_id, route_id
+  // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
+router.post('/api/report/subtract', controller.complaints.subtractComplaintReport);
+
+
+
+// Service data
+router.get('/api/service', controller.realtime.getServiceData);
 
 // Test endpoints
 router.get('/api/test/proto', controller.test.testProto);
