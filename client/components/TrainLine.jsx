@@ -1,5 +1,5 @@
 import React from 'react';
-import Details from './Details';
+import Details from './Details.jsx';
 
 export default class TrainLine extends React.Component {
   constructor(props) {
@@ -11,11 +11,12 @@ export default class TrainLine extends React.Component {
   }
 
   redirect () {
-    this.props.setAppState('details')
+    this.setState({
+      route_id: this.props.line.route_id
+    }, this.props.setAppState('details'))   
   }
 
   render() {
-    if (this.state)
     return (
       <div className="trainline_row">
         <div className="trainline_routes">
