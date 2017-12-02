@@ -3,7 +3,6 @@ const textParser = require('../lib/txt');
 
 const connection = mysql.createConnection({
   user: 'root',
-  password: 'Plums1nthe1ceb0x',
   database: 'loco_mta'
 });
 

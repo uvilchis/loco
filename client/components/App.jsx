@@ -18,7 +18,7 @@ export default class App extends React.Component {
       organized : [],
       user: null,
       nav : false,
-      route_id: '', 
+      route_id: '',
       currentTrain: [],
       currentStatus: []
     };
@@ -56,7 +56,7 @@ export default class App extends React.Component {
 
   showCurrentRoute(input1, input2) {
     this.setState({
-      currentTrain: input1, 
+      currentTrain: input1,
       currentStatus: input2
     })
   }
@@ -77,40 +77,85 @@ export default class App extends React.Component {
   }
 
   render() {
-      return (
-        <div>
+    switch(true) {
+      case this.state.currentTrain.length === 0:
+        return (
+          <div>
+            <div className="navbar">
+              <div className="logo_container">
+                <h1 className="logo">Loco</h1>
+              </div>
+            </div>
 
-          <div className="navbar">
-            <div className="logo_container">
-              <h1 className="logo">Loco</h1>
+            <div>
+            <h3 className="trainline_header">Train Status</h3>
+              <div className="trainline_container">
+                {this.state.trains.map((line, idx) =>
+                  <TrainLine
+                    line={line || line.route_id}
+                    key={idx}
+                    loggedIn={this.state.user ? true : false}
+                    setAppState={this.setAppState}
+                    info={this.state.organized[line.name]}
+                    showCurrentRoute={this.showCurrentRoute}
+                  />
+                )}
+              </div>
             </div>
           </div>
+        )
+        break;
 
-          <div>
-            {this.state.currentTrain.length > 0 ? (
-              this.state.currentTrain.map((route, idx) => 
-                <Nav route={route.route_id}
-                     status={this.state.currentStatus}
-                />
-                )) : (
-                  <div>
-                    <h3 className="trainline_header">Train Status</h3>
-                      <div className="trainline_container">
-                        {this.state.trains.map((line, idx) =>
-                          <TrainLine
-                            line={line || line.route_id}
-                            key={idx}
-                            loggedIn={this.state.user ? true : false}
-                            setAppState={this.setAppState}
-                            info={this.state.organized[line.name]}
-                            showCurrentRoute={this.showCurrentRoute}
-                          /> 
-                        )}
-                      </div>
+        case this.state.currentTrain.length > 1:
+          return (
+            <div>
+              <div className="navbar">
+                <div className="logo_container">
+                  <h1 className="logo">Loco</h1>
+                </div>
+              </div>
+
+            <div>
+            <h3 className="trainline_header">Train Status</h3>
+              <div className="trainline_container">
+                {this.state.currentTrain.map((route, idx) =>
+                  <Nav
+                  key={idx}
+                  route={route.route_id}
+                  status={this.state.currentStatus}
+                  showCurrentRoute={this.showCurrentRoute}
+                  />
+                )}
+              </div>
+            </div>
+            </div>
+          )
+          break;
+
+          case this.state.currentTrain.length === 1:
+            return (
+              <div>
+                <div className="navbar">
+                  <div className="logo_container">
+                    <h1 className="logo">Loco</h1>
                   </div>
-            )}
-          </div>
-        </div>
-      )
+                </div>
+
+              <div>
+              <h3 className="trainline_header">Train Status</h3>
+                <div className="trainline_container">
+
+                    <Details
+                    route={this.state.currentTrain[0]}
+                    status={this.state.currentStatus}
+                    />
+
+                </div>
+              </div>
+              </div>
+            )
+            break;
+          default:
+            return null
     }
   }
