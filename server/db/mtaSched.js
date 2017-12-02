@@ -160,9 +160,25 @@ const getStops = () => new Promise((resolve, reject) => {
   });
 });
 
+const getStop = (stopId) => new Promise ((resolve, reject) => {
+  let query = 'SELECT * from `stops` WHERE `stop_id` = ?';
+  connection.query(query, stopId, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
 const getRoutes = () => new Promise((resolve, reject) => {
   let query = 'SELECT * FROM `routes`';
   connection.query(query, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const getRoute = (routeId) => new Promise((resolve, reject) => {
+  let query = 'SELECT * FROM `routes` WHERE `route_id` = ?';
+  connection.query(query, routeId, (error, result) => {
     if (error) { return reject(error); }
     resolve(result);
   });
@@ -174,5 +190,7 @@ module.exports = {
   getScheduleByRoute,
   getScheduleByStopAndRoute,
   getStops,
-  getRoutes
+  getStop,
+  getRoutes,
+  getRoute
 };

@@ -10,7 +10,20 @@ router.post('/login', controller.users.authUser); // Login
 router.post('/signup', controller.users.signUpUser); // Signup
 
 // Stops
-// router.get('/stops', controller.stops.getStops);
+// All stops
+router.get('/api/stops', controller.stops.getStops);
+
+// Stop by stop_id
+// e.g. /api/stop?stop_id=101N
+router.get('/api/stop', controller.stops.getStop);
+
+// Routes
+// All routes
+router.get('/api/routes', controller.routes.getRoutes);
+
+// Route by route_id
+// e.g. /api/route?route_id=1
+router.get('/api/route', controller.routes.getRoute);
 
 // Stop_times - These will break if you call them without parameters
 
@@ -29,7 +42,6 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
 // Test endpoints
 router.get('/api/test/proto', controller.test.testProto);
 router.get('/api/test/service', controller.test.testService);
-router.get('/api/init', env.initialize) // testing env
 router.get('/api/test/routes', controller.test.testRoutes);
 router.get('/api/test/stops', controller.test.testStops);
 router.get('/api/test/stoptimes', controller.test.testStopTimes);

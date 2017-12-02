@@ -12,7 +12,15 @@ const getStops = (req, res) => {
 };
 
 const getStop = (req, res) => {
-  res.send(200);
+  let stopId = req.query.stop_id;
+  db.getStop(stopid)
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  });
 };
 
 module.exports = {

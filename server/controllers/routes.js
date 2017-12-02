@@ -1,3 +1,5 @@
+const db = require('../db/mtaSched');
+
 const getRoutes = (req, res) => {
   db.getRoutes()
   .then((result) => {
@@ -10,7 +12,15 @@ const getRoutes = (req, res) => {
 };
 
 const getRoute = (req, res) => {
-  res.send(200);
+  let routeId = req.query.route_id;
+  db.getRoute(routeId)
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  })
 }
 
 module.exports = {
