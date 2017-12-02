@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon server/index.js",
-    "react-dev": "webpack -d --watch"
+    "react-dev": "webpack -d --watch",
+    "test-db": "mysql -u root < server/db/schema.sql"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "mongoose": "^4.13.5",
+    "mysql": "^2.15.0",
     "node": "^9.2.0",
     "path": "^0.12.7",
     "protobufjs": "^6.8.1",
