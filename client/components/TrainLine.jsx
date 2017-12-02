@@ -1,8 +1,12 @@
 import React from 'react';
+import Details from './Details';
 
 export default class TrainLine extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      route_id: ''
+    }
     this.redirect = this.redirect.bind(this);
   }
 
@@ -11,6 +15,7 @@ export default class TrainLine extends React.Component {
   }
 
   render() {
+    if (this.state)
     return (
       <div className="trainline_row">
         <div className="trainline_routes">

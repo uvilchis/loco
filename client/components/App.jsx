@@ -14,7 +14,8 @@ export default class App extends React.Component {
       trains: [],
       stops: [],
       user: null,
-      displayed : 'main'
+      displayed : 'main',
+      route_id: ''
     };
     this.onClick = this.onClick.bind(this);
     this.setAppState = this.setAppState.bind(this);
@@ -35,7 +36,8 @@ export default class App extends React.Component {
   }
 
   setAppState(input) {
-    this.setState({displayed: input })
+    this.setState({
+      displayed: input })
   }
 
   render() {
