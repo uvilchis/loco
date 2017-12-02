@@ -155,7 +155,15 @@ const getScheduleByStopAndRoute = (stopId, routeId, routeType = 'WKD') => new Pr
 const getStops = () => new Promise((resolve, reject) => {
   let query = 'SELECT * FROM `stops`';
   connection.query(query, (error, result) => {
-    if (error) { return reject(error): }
+    if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const getRoutes = () => new Promise((resolve, reject) => {
+  let query = 'SELECT * FROM `routes`';
+  connection.query(query, (error, result) => {
+    if (error) { return reject(error); }
     resolve(result);
   });
 });
@@ -164,5 +172,7 @@ module.exports = {
   updateMtaSchedule,
   getScheduleByStop,
   getScheduleByRoute,
-  getScheduleByStopAndRoute
+  getScheduleByStopAndRoute,
+  getStops,
+  getRoutes
 };

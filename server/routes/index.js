@@ -31,12 +31,12 @@ router.get('/api/test/proto', controller.test.testProto);
 router.get('/api/test/service', controller.test.testService);
 router.get('/api/init', env.initialize) // testing env
 router.get('/api/test/routes', controller.test.testRoutes);
+router.get('/api/test/stops', controller.test.testStops);
 router.get('/api/test/stoptimes', controller.test.testStopTimes);
 router.get('/api/test/updatedb', controller.test.testUpdateDb);
 router.get('/api/test/timesbystop', controller.test.testSchedByStop);
 router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
 router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
-router.get('/api/test/stops', controller.test.testGetStops);
 
 module.exports = {
   router

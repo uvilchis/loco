@@ -1,7 +1,5 @@
-const env = require('../env');
-
-const getStops = (req, res) => {
-  db.getStops()
+const getRoutes = (req, res) => {
+  db.getRoutes()
   .then((result) => {
     res.send(result);
   })
@@ -11,11 +9,11 @@ const getStops = (req, res) => {
   });
 };
 
-const getStop = (req, res) => {
+const getRoute = (req, res) => {
   res.send(200);
-};
+}
 
 module.exports = {
-  getStops,
-  getStop
+  getRoutes,
+  getRoute
 };

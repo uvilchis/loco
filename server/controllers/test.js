@@ -28,9 +28,20 @@ const testService = (req, res) => {
 };
 
 const testRoutes = (req, res) => {
-  textParser.getRoutes()
-  .then((data) => {
-    res.send(data);
+  db.getRoutes()
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404);
+  });
+};
+
+const testStops = (req, res) => {
+  db.getStops()
+  .then((result) => {
+    res.send(result);
   })
   .catch((error) => {
     console.log(error);
@@ -120,10 +131,10 @@ module.exports = {
   testProto,
   testService,
   testRoutes,
+  testStops,
   testStopTimes,
   testUpdateDb,
   testSchedByStop,
   testSchedByRoute,
-  testSchedByStopRoute,
-  testGetStops
+  testSchedByStopRoute
 };
