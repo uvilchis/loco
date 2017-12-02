@@ -1,13 +1,15 @@
-const users = require('./users.js');
-const stops = require('./stops.js');
-const routes = require('./routes.js');
-const times = require('./times.js');
-const test = require('./test.js');
+const users = require('./users');
+const stops = require('./stops');
+const routes = require('./routes');
+const times = require('./times');
+const complaints = require('./complaints');
+const test = require('./test');
 
 module.exports = {
   users,
   stops,
   routes,
   times,
+  complaints,
   test
 };

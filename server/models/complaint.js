@@ -16,9 +16,10 @@ class Complaint {
     let report = this.getReport(param);
     if (!report) { 
       report = new Report(param.stopId, param.routeId); 
-      this.reports.push(report);
     }
-    return report ? report.add() : -1;
+    let result = report.add();
+    this.reports.push(report);
+    return result;
   }
 
   /**
