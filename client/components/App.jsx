@@ -5,7 +5,7 @@ import mockData from '../mockservice.json';
 import Details from './Details.jsx';
 import Survey from './Survey.jsx';
 import Complaint from './Complaint.jsx';
-import Nav from './Nav.jsx';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,7 +22,6 @@ export default class App extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.setAppState = this.setAppState.bind(this);
     this.routeOrganizer = this.routeOrganizer.bind(this)
-    this.showNav = this.showNav.bind(this)
   }
 
   componentDidMount() {
@@ -58,13 +57,6 @@ export default class App extends React.Component {
     this.setState({trains: input})
   }
 
-  showNav(e) {
-    e.preventDefault();
-    this.setState({
-      nav: !this.state.nav
-    })
-  }
-
   routeOrganizer () {
     let organized = {};
     for (var j = 0; j < this.state.trains.length; j++) {
@@ -81,38 +73,28 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div className="navbar">
-          <div className="logo_container">
-            <h1 className="logo">Loco</h1>
+      return (
+        <div>
+          <div className="navbar">
+            <div className="logo_container">
+              <h1 className="logo">Loco</h1>
+            </div>
           </div>
-        </div>          
-        <div className="trainline">
-          <h3 className="trainline_header">Train Status</h3>
-          <div className="trainline_container">
-            {this.state.nav ? (
-              this.state.trains.map((line, idx) => {
-                return <Nav route={line.route_id}
-                  status={this.state.line.lines.status}
-                />
-              })    
-            ) : (
-              this.state.trains.map((line, idx) =>
+          <div className="trainline">
+            <h3 className="trainline_header">Train Status</h3>
+            <div className="trainline_container">
+              {this.state.trains.map((line, idx) =>
                 <TrainLine
                   line={line || line.route_id}
-                  key={idx}                  
+                  key={idx}
                   loggedIn={this.state.user ? true : false}
                   setAppState={this.setAppState}
                   info={this.state.organized[line.name]}
-                  showNav={this.showNav}
                 />
-              ) 
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
-}
-
