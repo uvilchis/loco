@@ -7,7 +7,7 @@ export default class TrainLine extends React.Component {
     this.state = {
       route_id: ''
     }
-    this.redirect = this.redirect.bind(this);
+    this.redirect = this.redirect.bind(this)
   }
 
   redirect () {
@@ -23,14 +23,14 @@ export default class TrainLine extends React.Component {
     return (
       <div className="trainline_row">
         <div className="trainline_routes">
-          {this.props.line.name}
+          {this.props.line.name || this.props.line.route_id}
         </div>
         <div className="trainline_status">
           {this.props.line.status}
         </div>
         <div className="trainline_user">
         </div>
-        <button onClick={this.redirect} >
+        <button onClick={this.redirect}>
           Details
         </button>
       </div>
