@@ -16,6 +16,7 @@ export default class Details extends React.Component {
     }
     this.addVote = this.addVote.bind(this)
     this.downVote = this.downVote.bind(this)
+    this.goBack = this.goBack.bind(this)
   }
 
   componentDidMount() {
@@ -46,16 +47,22 @@ export default class Details extends React.Component {
     this.setState({
       downVotes: this.state.downVotes + 1
     }, this.props.setAppState('deets'));
-    
+
+  }
+
+  goBack() {
+    this.props.setAppState('main')
   }
 
   render() {
     return (
       <div>
         <div className="line-logo">
-          
+
         </div>
-        <div className="vote-row">
+        <button onClick={this.goBack}>
+          Go Back
+        </button>        <div className="vote-row">
           <div className="vote-count">
             {this.state.upvotes}
           </div>
@@ -93,6 +100,6 @@ export default class Details extends React.Component {
           </div>
         </div>
       </div>
-    ) 
+    )
   }
 }
