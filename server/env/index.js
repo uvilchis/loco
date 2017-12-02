@@ -1,4 +1,3 @@
-const textParser = require('../lib/txt/index.js')
 const { key } = require('./key.js');
 
 const URLS = {
@@ -9,7 +8,9 @@ const URLS = {
 
 const storage = {};
 
-var initialize = () => {  
+// To hold real-time data later
+var initialize = () => {
+
   // textParser.getStops()
   // .then((stopsData) => {
   //   console.log('succeeded!')
