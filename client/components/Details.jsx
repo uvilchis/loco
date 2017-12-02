@@ -47,17 +47,17 @@ export default class Details extends React.Component {
     this.setState({
       downVotes: this.state.downVotes + 1
     }, this.props.setAppState('deets'));
-
   }
 
   goBack() {
-    this.props.setAppState('main')
+    this.props.showDetails
   }
 
   render() {
     return (
       <div>
         <div className="line-logo">
+        {this.props.route}
         </div>
         <button onClick={this.goBack}>
           Go Back
