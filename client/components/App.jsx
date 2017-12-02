@@ -5,6 +5,7 @@ import mockData from '../mockservice.json';
 import Details from './Details.jsx';
 import Survey from './Survey.jsx';
 import Complaint from './Complaint.jsx';
+import Nav from './Nav.jsx';
 
 
 export default class App extends React.Component {
@@ -16,12 +17,14 @@ export default class App extends React.Component {
       routes : [],
       organized : [],
       user: null,
-      displayed : 'main',
-      route_id: ''
+      nav : false,
+      route_id: '', 
+      currentTrain: [],
+      currentStatus: []
     };
     this.onClick = this.onClick.bind(this);
-    this.setAppState = this.setAppState.bind(this);
-    this.routeOrganizer = this.routeOrganizer.bind(this)
+    this.routeOrganizer = this.routeOrganizer.bind(this);
+    this.showCurrentRoute = this.showCurrentRoute.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +38,7 @@ export default class App extends React.Component {
       console.log(this.state.organized)
     })
 
-    axios('/api/test/routes')
+    axios('/api/routes')
     .then((data) => {
       this.setState({routes: data.data})
       console.log(this.state.routes)
@@ -51,10 +54,11 @@ export default class App extends React.Component {
     .catch((error) => console.log('failed', error));
   }
 
-  setAppState(input) {
-    // lets call setState on this.state.trains
-    // change the array being mapped over to the appropriate info from organized
-    this.setState({trains: input})
+  showCurrentRoute(input1, input2) {
+    this.setState({
+      currentTrain: input1, 
+      currentStatus: input2
+    })
   }
 
   routeOrganizer () {
@@ -73,43 +77,40 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (this.state.displayed === 'main') {
       return (
         <div>
+
           <div className="navbar">
             <div className="logo_container">
               <h1 className="logo">Loco</h1>
             </div>
           </div>
-          <div className="trainline">
-            <h3 className="trainline_header">Train Status</h3>
-            <div className="trainline_container">
-              {this.state.trains.map((line, idx) =>
-                <TrainLine
-                  line={line || line.route_id}
-                  key={idx}
-                  loggedIn={this.state.user ? true : false}
-                  setAppState={this.setAppState}
-                  info={this.state.organized[line.name]}
+
+          <div>
+            {this.state.currentTrain.length > 0 ? (
+              this.state.currentTrain.map((route, idx) => 
+                <Nav route={route.route_id}
+                     status={this.state.currentStatus}
                 />
-              )}
-            </div>
+                )) : (
+                  <div>
+                    <h3 className="trainline_header">Train Status</h3>
+                      <div className="trainline_container">
+                        {this.state.trains.map((line, idx) =>
+                          <TrainLine
+                            line={line || line.route_id}
+                            key={idx}
+                            loggedIn={this.state.user ? true : false}
+                            setAppState={this.setAppState}
+                            info={this.state.organized[line.name]}
+                            showCurrentRoute={this.showCurrentRoute}
+                          /> 
+                        )}
+                      </div>
+                  </div>
+            )}
           </div>
         </div>
       )
-    } else if (this.state.displayed === 'details') {
-      return (<Details
-        displayed={this.state.displayed}
-        setAppState={this.setAppState}
-      />)
-    } else if (this.state.displayed === 'survey') {
-      return (<Survey
-        setAppState={this.setAppState}
-      />)
-    } else if (this.state.displayed === 'complaint') {
-      return (<Complaint
-        setAppState={this.setAppState}
-      />)
     }
   }
-}
