@@ -5,16 +5,17 @@ export default class TrainLine extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nav: false
+      currentTrain: []
     }
     this.showNav = this.showNav.bind(this)
   }
 
   showNav(e) {
-    this.props.showNav(e);
+    this.props.showCurrentRoute(this.props.info, this.props.line)
   }
 
   render() {
+    console.log('TRAINLINE PROPS: ', this.props)
     return (
       <div>
           <div className="trainline_row">
