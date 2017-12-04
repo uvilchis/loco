@@ -1,5 +1,11 @@
 import React from 'react';
 import Details from './Details.jsx';
+import {
+  Router, 
+  Route,
+  Link
+} from 'react-router';
+
 
 export default class Nav extends React.Component {
   constructor(props) {
@@ -30,9 +36,10 @@ export default class Nav extends React.Component {
         </div>
         <div className="trainline_user">
         </div>
-        <button onClick={this.showDetails}>
-        Details
-        </button>
+        <Router>
+          <li><Link to="/details">{this.props.route}</Link></li>
+          <Route path="/details" component={Details}/>
+        </Router>
       </div>
     )
   }

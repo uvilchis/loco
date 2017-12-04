@@ -2,11 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import TrainLine from './TrainLine.jsx';
 import mockData from '../mockservice.json';
-import Details from './Details.jsx';
-import Survey from './Survey.jsx';
-import Complaint from './Complaint.jsx';
-import Nav from './Nav.jsx';
-
 
 export default class App extends React.Component {
   constructor(props) {
@@ -54,13 +49,6 @@ export default class App extends React.Component {
     .catch((error) => console.log('failed', error));
   }
 
-  showCurrentRoute(input1, input2) {
-    this.setState({
-      currentTrain: input1,
-      currentStatus: input2
-    })
-  }
-
   routeOrganizer () {
     let organized = {};
     for (var j = 0; j < this.state.trains.length; j++) {
@@ -77,85 +65,28 @@ export default class App extends React.Component {
   }
 
   render() {
-    switch(true) {
-      case this.state.currentTrain.length === 0:
-        return (
-          <div>
-            <div className="navbar">
-              <div className="logo_container">
-                <h1 className="logo">Loco</h1>
-              </div>
-            </div>
-
-            <div>
-            <h3 className="trainline_header">Train Status</h3>
-              <div className="trainline_container">
-                {this.state.trains.map((line, idx) =>
-                  <TrainLine
-                    line={line || line.route_id}
-                    key={idx}
-                    loggedIn={this.state.user ? true : false}
-                    setAppState={this.setAppState}
-                    info={this.state.organized[line.name]}
-                    showCurrentRoute={this.showCurrentRoute}
-                  />
-                )}
-              </div>
-            </div>
+    return (
+      <div>
+        <div className="navbar">
+          <div className="logo_container">
+            <h1 className="logo">Loco</h1>
           </div>
-        )
-        break;
-
-        case this.state.currentTrain.length > 1:
-          return (
-            <div>
-              <div className="navbar">
-                <div className="logo_container">
-                  <h1 className="logo">Loco</h1>
-                </div>
-              </div>
-
-            <div>
-            <h3 className="trainline_header">Train Status</h3>
-              <div className="trainline_container">
-                {this.state.currentTrain.map((route, idx) =>
-                  <Nav
-                  key={idx}
-                  route={route.route_id}
-                  status={this.state.currentStatus}
-                  showCurrentRoute={this.showCurrentRoute}
-                  />
-                )}
-              </div>
-            </div>
-            </div>
-          )
-          break;
-
-          case this.state.currentTrain.length === 1:
-            return (
-              <div>
-                <div className="navbar">
-                  <div className="logo_container">
-                    <h1 className="logo">Loco</h1>
-                  </div>
-                </div>
-
-              <div>
-              <h3 className="trainline_header">Train Status</h3>
-                <div className="trainline_container">
-
-                    <Details
-                    route={this.state.currentTrain[0]}
-                    status={this.state.currentStatus}
-                    />
-
-                </div>
-              </div>
-              </div>
-            )
-            break;
-          default:
-            return null
-    }
+        </div>
+        <h3 className="trainline_header">Train Status</h3>
+          <div className="trainline_container">
+            {this.state.trains.map((line, idx) =>
+              <TrainLine
+                line={line || line.route_id}
+                key={idx}
+                loggedIn={this.state.user ? true : false}
+                setAppState={this.setAppState}
+                info={this.state.organized[line.name]}
+                showCurrentRoute={this.showCurrentRoute}
+              />
+            )}
+          </div>
+      </div>
+      
+    )
   }
+}
