@@ -49,6 +49,13 @@ export default class App extends React.Component {
     .catch((error) => console.log('failed', error));
   }
 
+  showCurrentRoute(input1, input2) {
+    this.setState({
+      currentTrain: input1,
+      currentStatus: input2
+    })
+  }
+
   routeOrganizer () {
     let organized = {};
     for (var j = 0; j < this.state.trains.length; j++) {
@@ -86,7 +93,6 @@ export default class App extends React.Component {
             )}
           </div>
       </div>
-      
     )
   }
 }

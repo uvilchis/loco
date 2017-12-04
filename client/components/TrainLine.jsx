@@ -1,10 +1,5 @@
 import React from 'react';
 import Nav from './Nav.jsx';
-import {
-  Router, 
-  Route, 
-  Link
-} from 'react-router';
 
 export default class TrainLine extends React.Component {
   constructor(props) {
@@ -32,18 +27,10 @@ export default class TrainLine extends React.Component {
             <div className="trainline_user">
             </div>
             <button onClick={this.showNav}>
-              <Link />
+              Details
             </button>
           </div>
       </div>
     )
   }
 }
-
-// const WrappedLink = () => {
-//   return (
-//     <button>
-//       <Link style={{display: 'block', height: '100%'}} .... />
-//     </button>
-//   )
-// }
