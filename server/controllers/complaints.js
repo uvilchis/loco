@@ -13,11 +13,7 @@ const addComplaintReport = (req, res) => {
   if (test !== false) {
     res.send({ count: test });
   } else {
-<<<<<<< HEAD
-    res.sendStatus(400);    
-=======
     res.sendStatus(400);
->>>>>>> Functional Loco
   }
 };
 
@@ -50,8 +46,4 @@ module.exports = {
   addComplaintReport,
   subtractComplaintReport,
   getComplaintReport
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> Functional Loco

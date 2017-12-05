@@ -3,11 +3,7 @@ import React from 'react';
 export default class StaticDeets extends React.Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
-  }  
-=======
   }
->>>>>>> Functional Loco
 
   render() {
     return (
@@ -21,8 +17,4 @@ export default class StaticDeets extends React.Component {
       </div>
     )
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Functional Loco
