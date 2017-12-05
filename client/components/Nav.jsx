@@ -1,5 +1,6 @@
 import React from 'react';
 import Details from './Details.jsx';
+import NavComponent from './NavComponent.jsx';
 
 export default class Nav extends React.Component {
   constructor(props) {

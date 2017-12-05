@@ -1,4 +1,10 @@
 import React from 'react';
+import Nav from './Nav.jsx';
+import {
+  Router, 
+  Route,
+  Link
+} from 'react-router-dom';
 
 export default class TrainLine extends React.Component {
   constructor(props) {
@@ -15,6 +21,7 @@ export default class TrainLine extends React.Component {
   }
 
   showNav(e) {
+    
     this.props.showCurrentRoute(this.props.info, this.props.line)
   }
 
@@ -37,8 +44,8 @@ export default class TrainLine extends React.Component {
                 </button>
               </div>
           </div>
-        )
-      break;
+        );
+        break;
 
       case this.state.serviceStatus !== "GOOD SERVICE":
         return (
@@ -58,12 +65,10 @@ export default class TrainLine extends React.Component {
               </div>
           </div>
         )
-      break;
+        break;
 
       default:
-      return null
-
+        return null
     }
-
   }
 }
