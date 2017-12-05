@@ -103,7 +103,7 @@ export default class App extends React.Component {
               )}
             </div>        
           <div>
-            <Route path='/nav' component={Nav} staticContext={this.state.trains}/>
+            <Route path='/nav' component={Nav} />
             <Route path='/details' component={Details} />
             <Route path='/survey' component={Survey} />
             <Route path='/complaint' component={Complaint} />

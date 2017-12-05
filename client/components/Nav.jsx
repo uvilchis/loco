@@ -1,24 +1,24 @@
 import React from 'react';
 import Details from './Details.jsx';
+import NavComponent from './NavComponent.jsx';
 
 export default class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTrains: [],
+      currentTrains: this.props.info,
       currentStatus: ''
     }
-    this.showDetails = this.showDetails.bind(this)
-    this.goBack = this.goBack.bind(this)
+    // this.showDetails = this.showDetails.bind(this)
+    // this.goBack = this.goBack.bind(this)
   }
   // we want a route status, but that needs to be related to the number of incoming complaints
   componentDidMount() {
     e.preventDefault();
     // get routes for given line and it's current status
-    axios.get(`/api/test/getroutesandstatus?${this.props.info.name}`)
+    axios.get(`/api/test/service?${this.props.info.name}`)
     .then((trains) => {
       this.setState({
-        currentTrains: trains.data.routes,
         currentStatus: trains.data.status
       })
     })
@@ -39,17 +39,11 @@ export default class Nav extends React.Component {
     console.log(this.props, 'props')
     return (
       <div className="nav-properties trainline_row">
-        <div className="route-id">
-          {this.props.route}
-        </div>
-         <div className="route-status">
-          {/* {this.props.status.status} */}
-        </div>
-        <div className="trainline_user">
-        </div>
-        <button onClick={this.showDetails}>
-          Details
-        </button>
+        {this.state.currentTrains.map((train) => 
+          <NavComponent status={this.state.currentStatus}
+            nav={train}
+          />
+        )}
       </div>
     )
   }
