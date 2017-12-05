@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import Details from './Details.jsx';
 import NavComponent from './NavComponent.jsx';
 
@@ -13,8 +14,34 @@ export default class Nav extends React.Component {
     this.goBack = this.goBack.bind(this)
   }
 
-  componentDidMount () {
-    this.setState({serviceStatus : this.props.status.status});
+  // componentDidMount () {
+    // this.setState({serviceStatus : this.props.status.status});
+    //   currentTrains: [],
+    //   currentStatus: ''
+    // }
+    // this.props.info
+    // this.showDetails = this.showDetails.bind(this)
+    // this.goBack = this.goBack.bind(this)
+  // }
+
+  // we want a route status, but that needs to be related to the number of incoming complaints
+  componentDidMount() {
+    // get routes for given line and it's current status
+    console.log(this.props);
+    if (this.props.location) {
+      return this.setState({ currentTrains: this.props.location.state.info });
+    }
+    let routeId = this.props.match.params.routeId;
+    axios.get(`/api/service/${routeId}`)
+    .then((data) => {
+      console.log(data);
+      // this.setState({
+      //   currentStatus: trains.data.status
+      // })
+    })
+    .catch((err) => {
+      console.error('ERROR MOUNTING NAV DATA:', err)
+    })
   }
 
   // we want a route status, but that needs to be related to the number of incoming complaints
@@ -67,5 +94,14 @@ export default class Nav extends React.Component {
       default:
       return null
     }
+    // return (
+    //   <div className="nav-properties trainline_row">
+    //     {this.state.currentTrains.map((route, i) => 
+    //       <NavComponent key={i} status={this.state.currentStatus}
+    //         route={route}
+    //       />
+    //     )}
+    //   </div>
+    // )
   }
 }

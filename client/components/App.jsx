@@ -3,7 +3,6 @@ import axios from 'axios';
 import TrainLine from './TrainLine.jsx';
 import mockData from '../mockservice.json';
 import {
-  BrowserRouter as Router,
   Route,
   Link
 } from 'react-router-dom';
@@ -33,7 +32,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    axios('/api/test/service')
+    axios.get('/api/test/service')
     .then((data) => {
       this.setState({trains: data.data.lines});
       console.log(this.state.trains)
@@ -41,14 +40,14 @@ export default class App extends React.Component {
       let organized = this.routeOrganizer();
       this.setState({organized: organized})
       console.log(this.state.organized)
-    })
+    });
 
-  axios('/api/routes')
-    .then((data) => {
-      this.setState({routes: data.data})
-      console.log(this.state.routes)
-    })
-  }
+    axios.get('/api/routes')
+      .then((data) => {
+        this.setState({routes: data.data})
+        console.log(this.state.routes)
+      })
+    }
 
   onClick() {
     axios.get('/routes')
@@ -63,10 +62,10 @@ export default class App extends React.Component {
     this.setState({
       currentTrain: input1,
       currentStatus: input2
-    })
+    });
   }
 
-  routeOrganizer () {
+  routeOrganizer() {
     let organized = {};
     for (var j = 0; j < this.state.trains.length; j++) {
       for (var i = 0; i < this.state.routes.length; i++) {
@@ -83,34 +82,26 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Router>
+      <div>
+        <h3 className="trainline_header">Train Status</h3>
+          <div className="trainline_container">
+            {this.state.trains.map((line, idx) =>
+              <TrainLine
+                line={line || line.route_id}
+                key={idx}
+                loggedIn={this.state.user ? true : false}
+                setAppState={this.setAppState}
+                info={this.state.organized[line.name]}
+                showCurrentRoute={this.showCurrentRoute}
+              />
+            )}
+          </div>
         <div>
-          <div className="navbar">
-            <div className="logo_container">
-              <h1 className="logo">Loco</h1>
-            </div>
-          </div>
-          <h3 className="trainline_header">Train Status</h3>
-            <div className="trainline_container">
-              {this.state.trains.map((line, idx) =>
-                <TrainLine
-                  line={line || line.route_id}
-                  key={idx}
-                  loggedIn={this.state.user ? true : false}
-                  setAppState={this.setAppState}
-                  info={this.state.organized[line.name]}
-                  showCurrentRoute={this.showCurrentRoute}
-                />
-              )}
-            </div>        
-          <div>
-            <Route path='/nav' render={NavPage} />
-            <Route path='/details' component={Details} />
-            <Route path='/survey' component={Survey} />
-            <Route path='/complaint' component={Complaint} />
-          </div>
+          <Route path='/details' component={Details} />
+          <Route path='/survey' component={Survey} />
+          <Route path='/complaint' component={Complaint} />
         </div>
-      </Router>
+      </div>
     )
   }
 }

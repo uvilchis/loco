@@ -2,25 +2,26 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
 const UserSchema = new mongoose.Schema({
+  authId: {
+    type: String,
+    unique: true
+  },
+
   username: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    unique: true
   },
 
   password: {
     type: String,
-    required: true
   },
 
-  trains: {
+  routes: {
     type: Array,
     default: []
   },
 
-  stations: {
+  stops: {
     type: Array,
     default: []
   },

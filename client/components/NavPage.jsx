@@ -9,4 +9,4 @@ const NavPage = (props) => {
   )
 }
 
-module.exports = NavPage
+export default NavPage;

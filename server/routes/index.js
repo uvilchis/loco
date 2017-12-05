@@ -3,11 +3,29 @@ const controller = require('../controllers');
 const { checkUser } = require('../util');
 const env = require('../env/index.js')
 
+var passport = null; // Skeevy, fix later
+
+const setPassport = (passportInstance) => {
+  passport = passportInstance;
+  router.get('/api/user/google', passport.authenticate('google', {
+    successRedirect: '/api/user/google/cb',
+    failureRedirect: '/api/user/google/cb',
+    accessType: 'offline',
+    approvalPrompt: 'force',
+    scope: ['profile'] 
+  }));
+  router.get('/api/user/google/cb', passport.authenticate('google'), controller.users.googleAuth);
+};
+
+
 // router.use('/api/user/*', checkUser);
 
 // User routes
-router.post('/login', controller.users.authUser); // Login
-router.post('/signup', controller.users.signUpUser); // Signup
+router.post('/api/user/signup', controller.users.signUp);
+router.post('/api/user/login', controller.users.logIn);
+router.post('/api/user/logout', controller.users.logOut);
+// router.get('/api/user/google', passport !== null ? passport.authenticate('google') : (req, res) => res.sendStatus(400));
+// router.get('/api/user/google', passport !== null ? passport.authenticate('google') : (req, res, next) => next(), controller.users.googleAuth);
 
 
 
@@ -60,7 +78,7 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
 router.get('/api/report', controller.complaints.getComplaintReport);
 
   // Params: type, stop_id, route_id
-  // e.g. /api/report/add?type=delay&stop_id=101N&route_id=1
+  // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
 router.post('/api/report/add', controller.complaints.addComplaintReport);
 
   // Params: type, stop_id, route_id
@@ -70,7 +88,15 @@ router.post('/api/report/subtract', controller.complaints.subtractComplaintRepor
 
 
 // Service data
+  // Params: none, gets all service data
+  // e.g. /api/service
 router.get('/api/service', controller.realtime.getServiceData);
+
+  // Params: route_id
+  // e.g. /api/service/7
+router.get('/api/service/:route_id', controller.realtime.getServiceRouteData);
+
+
 
 // Test endpoints
 router.get('/api/test/proto', controller.test.testProto);
@@ -83,6 +109,10 @@ router.get('/api/test/timesbystop', controller.test.testSchedByStop);
 router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
 router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
 
+// Session tester
+router.get('/api/test/session', controller.users.testSession);
+
 module.exports = {
-  router
+  router,
+  setPassport
 };

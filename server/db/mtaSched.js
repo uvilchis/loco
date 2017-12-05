@@ -4,7 +4,7 @@ const textParser = require('../lib/txt');
 const connection = mysql.createConnection({
   user: 'root',
   database: 'loco_mta',
-  password : 'plantlife
+  // password: 'Plums1nthe1ceb0x'
 });
 
 connection.connect((error) => {
@@ -107,18 +107,10 @@ const updateMtaSchedule = () => new Promise((resolve, reject) => {
     data = parsedData;
     return _dropTables();
   })
-  .then((result) => {
-    return _createTables();
-  })
-  .then((result) => {
-    return _insertStopTimes(data.stoptimes);
-  })
-  .then((result) => {
-    return _insertStops(data.stops);
-  })
-  .then((result) => {
-    return _insertRoutes(data.routes);
-  })
+  .then((result) => _createTables())
+  .then((result) => _insertStopTimes(data.stoptimes))
+  .then((result) => _insertStops(data.stops))
+  .then((result) => _insertRoutes(data.routes))
   .then((result) => {
     console.log('successfully updated MTA schedule');
     resolve(result);

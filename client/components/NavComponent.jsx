@@ -3,15 +3,16 @@ import React from 'react';
 const NavComponent = (props) => (
   <div className="nav-properties">
     <div className="route-id">
-      {this.props.nav.route_id}
+      {props.route.route_id}
     </div>
     <div className="route-status">
-      {this.props.status}
+      {props.status}
     </div>
-    <button onClick={this.showDetails}>
+    {/* <button onClick={props.showDetails}> */}
+    <button>
       Details
     </button>
   </div>
 )
 
-module.exports = NavComponent
+export default NavComponent

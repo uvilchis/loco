@@ -1,10 +1,6 @@
 import React from 'react';
 import Nav from './Nav.jsx';
-import {
-  Router, 
-  Route,
-  Link
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default class TrainLine extends React.Component {
   constructor(props) {
@@ -21,7 +17,6 @@ export default class TrainLine extends React.Component {
   }
 
   showNav(e) {
-    
     this.props.showCurrentRoute(this.props.info, this.props.line)
   }
 
@@ -63,7 +58,7 @@ export default class TrainLine extends React.Component {
                   Details
                 </button>
               </div>
-          </div>
+            </div>
         )
         break;
 
@@ -72,3 +67,28 @@ export default class TrainLine extends React.Component {
     }
   }
 }
+
+{/* return (
+      <div>
+          <div className="trainline_row">
+            <div className="trainline_routes">
+              {this.props.line.name || this.props.line.route_id}
+            </div>
+            <div className="trainline_status">
+              {this.props.line.status}
+            </div>
+            <div className="trainline_user">
+            </div>
+            <button onClick={this.showNav}>
+              <Link to={{
+                pathname: `nav/${this.props.line.name}`,
+                state: { 
+                  info: this.props.info,
+                  line: this.props.line
+                 }
+                }}>
+                Details 
+              </Link>
+            </button>
+          </div>
+        ) */}
