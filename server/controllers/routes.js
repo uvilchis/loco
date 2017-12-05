@@ -23,12 +23,6 @@ const getRoute = (req, res) => {
   })
 }
 
-<<<<<<< HEAD
-module.exports = {
-  getRoutes,
-  getRoute
-};
-=======
 const getStopsByRoute = (req, res) => {
   let routeId = req.query.route_id
   db.getStopsByRoute(routeId)
@@ -46,4 +40,3 @@ module.exports = {
   getRoute,
   getStopsByRoute
 };
->>>>>>> Functional Loco

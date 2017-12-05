@@ -68,8 +68,4 @@ module.exports = {
   subtractComplaintReport,
   getComplaintReport,
   getServiceData
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> Functional Loco
