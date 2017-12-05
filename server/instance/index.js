@@ -56,10 +56,13 @@ const getComplaintReport = (type, stopId, routeId) => {
 };
 
 const getServiceData = () => {
-  if (!_instance.serviceData) {
-    return false;
-  }
+  if (!_instance.serviceData) { return false; }
   return _instance.serviceData
+};
+
+const getServiceRouteData = (routeId) => {
+  if (!_instance.serviceData) { return false; }
+  return _instance.serviceData.lines.find((a) => a.name.includes(routeId));
 };
 
 module.exports = {
@@ -67,5 +70,6 @@ module.exports = {
   addComplaintReport,
   subtractComplaintReport,
   getComplaintReport,
-  getServiceData
+  getServiceData,
+  getServiceRouteData
 };
