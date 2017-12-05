@@ -3,7 +3,12 @@ const textParser = require('../lib/txt');
 
 const connection = mysql.createConnection({
   user: 'root',
+<<<<<<< HEAD
   database: 'loco_mta'
+=======
+  database: 'loco_mta',
+  password : 'plantlife'
+>>>>>>> Functional Loco
 });
 
 connection.connect((error) => {
@@ -132,6 +137,10 @@ const getScheduleByStop = (stopId, routeType = 'WKD') => new Promise((resolve, r
   let query = 'SELECT * FROM `stop_times` WHERE `stop_id` = ? AND `route_type` = ?';
   connection.query(query, [stopId, routeType], (error, result) => {
     if (error) { return reject(error); }
+<<<<<<< HEAD
+=======
+    textParser.timeSort(result)
+>>>>>>> Functional Loco
     resolve(result);
   });
 });
@@ -140,6 +149,10 @@ const getScheduleByRoute = (routeId, routeType = 'WKD') => new Promise((resolve,
   let query = 'SELECT * FROM `stop_times` WHERE `route_id` = ? AND `route_type` = ?';
   connection.query(query, [routeId, routeType], (error, result) => {
     if (error) { return reject(error); }
+<<<<<<< HEAD
+=======
+    textParser.timeSort(result)
+>>>>>>> Functional Loco
     resolve(result);
   });
 });
@@ -148,11 +161,19 @@ const getScheduleByStopAndRoute = (stopId, routeId, routeType = 'WKD') => new Pr
   let query = 'SELECT * FROM `stop_times` WHERE `stop_id` = ? AND `route_id` = ? AND `route_type` = ?'
   connection.query(query, [stopId, routeId, routeType], (error, result) => {
     if (error) { return reject(error); }
+<<<<<<< HEAD
+=======
+    textParser.timeSort(result)
+>>>>>>> Functional Loco
     resolve(result);
   });
 });
 
+<<<<<<< HEAD
 const getStops = () => new Promise((resolve, reject) => {
+=======
+const getStops = () => new Promise ((resolve, reject) => {
+>>>>>>> Functional Loco
   let query = 'SELECT * FROM `stops`';
   connection.query(query, (error, result) => {
     if (error) { return reject(error); }
@@ -184,6 +205,26 @@ const getRoute = (routeId) => new Promise((resolve, reject) => {
   });
 });
 
+<<<<<<< HEAD
+=======
+const getStopsByRoute = (routeId) => new Promise ((resolve, reject) => {
+  let query =
+  `SELECT DISTINCT
+  st.stop_id,
+  s.stop_name
+  FROM stop_times st
+  LEFT JOIN stops s
+  ON st.stop_id = s.stop_id
+  WHERE route_id = ?`;
+  //let truequery = 'SELECT `stops.stop_name` FROM `stops` INNER JOIN `stop_times` on `stops.stop_id` = ? '
+  connection.query(query, routeId, (error, result) => {
+    if (error) { return reject(error); }
+    let work = textParser.directionSort(result)
+    resolve(work)
+  });
+});
+
+>>>>>>> Functional Loco
 module.exports = {
   updateMtaSchedule,
   getScheduleByStop,
@@ -192,5 +233,10 @@ module.exports = {
   getStops,
   getStop,
   getRoutes,
+<<<<<<< HEAD
   getRoute
+=======
+  getRoute,
+  getStopsByRoute
+>>>>>>> Functional Loco
 };

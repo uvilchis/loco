@@ -81,6 +81,7 @@ const getAll = () => new Promise((resolve, reject) => {
     dataObj.stops = stops;
     return getRoutes();
   })
+<<<<<<< HEAD
   .then((routes) => {
     dataObj.routes = routes;
     return getStopTimes();
@@ -89,15 +90,49 @@ const getAll = () => new Promise((resolve, reject) => {
     dataObj.stoptimes = stoptimes;
     resolve(dataObj);
   })
+=======
+<<<<<<< Updated upstream
+}
+=======
+>>>>>>> Functional Loco
   .catch((error) => {
     console.log(error);
     reject(error);
   });
 });
 
+<<<<<<< HEAD
+=======
+const timeSort = (data) => {
+  data.sort((a,b) => {
+    return (a["arrival_time"] < b["arrival_time"]) ? -1 : ((a["arrival_time"] > b["arrival_time"]) ? 1 : 0)
+  })
+}
+
+const directionSort = (data) => {
+  let directionSorted = {
+    N : [],
+    S : []
+  }
+  data.filter((element) => {
+    element.stop_id.match(/N$/) ? directionSorted.N.push(element) : directionSorted.S.push(element)
+  })
+  console.log(directionSorted)
+  return directionSorted;
+}
+
+>>>>>>> Functional Loco
 module.exports = {
   getStops,
   getRoutes,
   getStopTimes,
+<<<<<<< HEAD
   getAll
 };
+=======
+  getAll,
+  timeSort,
+  directionSort
+};
+>>>>>>> Stashed changes
+>>>>>>> Functional Loco

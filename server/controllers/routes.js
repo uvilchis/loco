@@ -23,7 +23,27 @@ const getRoute = (req, res) => {
   })
 }
 
+<<<<<<< HEAD
 module.exports = {
   getRoutes,
   getRoute
 };
+=======
+const getStopsByRoute = (req, res) => {
+  let routeId = req.query.route_id
+  db.getStopsByRoute(routeId)
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404)
+  })
+}
+
+module.exports = {
+  getRoutes,
+  getRoute,
+  getStopsByRoute
+};
+>>>>>>> Functional Loco

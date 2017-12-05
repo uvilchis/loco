@@ -64,6 +64,7 @@ const testStopTimes = (req, res) => {
     let timeSort = stopIdFilter.sort((a,b) => {
       return (a["arrival_time"] < b["arrival_time"]) ? -1 : ((a["arrival_time"] > b["arrival_time"]) ? 1 : 0)
     })
+    console.log(timeSort)
     res.send(timeSort);
   })
   .catch((error) => {

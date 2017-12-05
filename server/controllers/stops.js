@@ -1,4 +1,5 @@
 const env = require('../env');
+const db = require('../db/mtaSched');
 
 const getStops = (req, res) => {
   db.getStops()
