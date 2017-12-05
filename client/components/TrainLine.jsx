@@ -5,15 +5,11 @@ import { Link } from 'react-router-dom';
 export default class TrainLine extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentTrain: [],
-      serviceStatus : '',
-    }
     this.showNav = this.showNav.bind(this)
   }
 
   componentDidMount() {
-    this.setState({ serviceStatus: this.props.line.status })
+    // this.setState({ serviceStatus: this.props.line.status })
   }
 
   showNav(e) {
@@ -21,21 +17,21 @@ export default class TrainLine extends React.Component {
   }
 
   render() {
-    let status = this.state.serviceStatus === 'GOOD SERVICE';
+    let status = this.props.status === 'GOOD SERVICE';
     return (
       <div>
         <div className="trainline_row">
           <div className="trainline_routes">
-            {this.props.line.name || this.props.line.route_id}
+            {this.props.name}
           </div>
           <div className="trainline_status">
-            {this.props.line.status}
+            {this.props.status}
           </div>
           <div className={status ? 'trainline_user_good' : 'trainline_user_problems'}>
           </div>
           <button onClick={this.showNav}>
             <Link to={{
-              pathname: `nav/${this.props.line.name}`,
+              pathname: `/${this.props.redir}/${this.props.name}`,
               // state: { 
               //   info: this.props.info,
               //   line: this.props.line

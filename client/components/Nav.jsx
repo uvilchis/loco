@@ -1,18 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import Details from './Details.jsx';
-import NavComponent from './NavComponent.jsx';
+import TrainLine from './TrainLine.jsx';
 
 export default class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: null,
+      routes: '',
       status: '',
       serviceStatus : ''
-    }
-    this.showDetails = this.showDetails.bind(this)
-    this.goBack = this.goBack.bind(this)
+    };
   }
 
   // we want a route status, but that needs to be related to the number of incoming complaints
@@ -24,51 +22,47 @@ export default class Nav extends React.Component {
     // }
     let routeId = this.props.match.params.routeId;
     axios.get(`/api/service/${routeId}`)
-    .then((data) => {
+    .then(({ data }) => {
       console.log(data);
-      // this.setState({
-      //   currentStatus: trains.data.status
-      // })
+      this.setState({
+        routes: data.name,
+        status: data.status
+      });
     })
     .catch((err) => {
-      console.error('ERROR MOUNTING NAV DATA:', err)
-    })
-  }
-
-  // we want a route status, but that needs to be related to the number of incoming complaints
-  showDetails() {
-    this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
-  }
-
-  goBack() {
-    console.log('go back')
+      console.error('ERROR MOUNTING NAV DATA:', err);
+    });
   }
 
   render() {
     console.log(this.props);
     let service = this.state.serviceStatus === 'GOOD SERVICE';
     return (
-      <div className="nav-properties trainline_row">
-        <div className="route-id">
-          {this.state.route}
-        </div>
-         <div className="route-status">
-          {this.state.status.status}
-        </div>
-        <div className={service ? 'trainline_user_good' : 'trainline_user_problems'}>
-        </div>
-        <button onClick={this.showDetails}>
-          Details
-        </button>
+      <div className="nav-properties">
+        {this.state.routes.split('').map((a, idx) => 
+          <TrainLine
+            key={idx}
+            redir={'detail'}
+            name={a}
+            status={this.state.status}
+          />
+        )}
       </div>
     )
+
     // return (
     //   <div className="nav-properties trainline_row">
-    //     {this.state.currentTrains.map((route, i) => 
-    //       <NavComponent key={i} status={this.state.currentStatus}
-    //         route={route}
-    //       />
-    //     )}
+    //     <div className="route-id">
+    //       {this.state.route}
+    //     </div>
+    //      <div className="route-status">
+    //       {this.state.status.status}
+    //     </div>
+    //     <div className={service ? 'trainline_user_good' : 'trainline_user_problems'}>
+    //     </div>
+    //     <button onClick={this.showDetails}>
+    //       Details
+    //     </button>
     //   </div>
     // )
   }
