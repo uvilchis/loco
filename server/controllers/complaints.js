@@ -13,7 +13,7 @@ const addComplaintReport = (req, res) => {
   if (test !== false) {
     res.send({ count: test });
   } else {
-    res.sendStatus(400);    
+    res.sendStatus(400);
   }
 };
 

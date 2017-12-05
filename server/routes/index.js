@@ -29,7 +29,7 @@ router.get('/api/routes', controller.routes.getRoutes);
   // e.g. /api/route?route_id=1
 router.get('/api/route', controller.routes.getRoute);
 
-
+router.get('/api/route/stops', controller.routes.getStopsByRoute)
 
 // Stop_times - These will break if you call them without parameters
   // Params: stop_id, route_type

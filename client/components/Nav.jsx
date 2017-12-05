@@ -6,45 +6,66 @@ export default class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTrains: this.props.info,
-      currentStatus: ''
+      details : false,
+      serviceStatus : ''
     }
-    // this.showDetails = this.showDetails.bind(this)
-    // this.goBack = this.goBack.bind(this)
+    this.showDetails = this.showDetails.bind(this)
+    this.goBack = this.goBack.bind(this)
   }
+
+  componentDidMount () {
+    this.setState({serviceStatus : this.props.status.status});
+  }
+
   // we want a route status, but that needs to be related to the number of incoming complaints
-  componentDidMount() {
-    e.preventDefault();
-    // get routes for given line and it's current status
-    axios.get(`/api/test/service?${this.props.info.name}`)
-    .then((trains) => {
-      this.setState({
-        currentStatus: trains.data.status
-      })
-    })
-    .catch((err) => {
-      console.error('ERROR MOUNTING NAV DATA:', err)
-    })
+  showDetails() {
+  this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
   }
 
-  // showDetails() {
-  // this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
-  // }
-
-  // goBack() {
-  //   console.log('go back')
-  // }
+  goBack() {
+    console.log('go back')
+  }
 
   render() {
-    console.log(this.props, 'props')
-    return (
-      <div className="nav-properties trainline_row">
-        {this.state.currentTrains.map((train) => 
-          <NavComponent status={this.state.currentStatus}
-            nav={train}
-          />
-        )}
-      </div>
-    )
+    switch (true) {
+      case this.state.serviceStatus === "GOOD SERVICE":
+        return (
+          <div className="nav-properties trainline_row">
+            <div className="route-id">
+              {this.props.route}
+            </div>
+             <div className="route-status">
+              {this.props.status.status}
+            </div>
+            <div className="trainline_user_good">
+            </div>
+            <button onClick={this.showDetails}>
+            Details
+            </button>
+          </div>
+        )
+        break;
+
+      case this.state.serviceStatus !== "GOOD SERVICE":
+        return (
+          <div className="nav-properties trainline_row">
+            <div className="route-id">
+              {this.props.route}
+            </div>
+             <div className="route-status">
+              {this.props.status.status}
+            </div>
+            <div className="trainline_user_problems">
+            </div>
+            <button onClick={this.showDetails}>
+            Details
+            </button>
+          </div>
+        )
+      break;
+
+      default:
+      return null
+    }
   }
 }

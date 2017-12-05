@@ -3,29 +3,29 @@ class Complaint {
     this.type = type;
     this.reports = [];
   }
-  
+
   /**
    * Increment report count by 1 and returns the new count.
    * If the report does not exist, it will create a new one, add it to the complaint's reports, and
    * return an initial count of 1
-   * 
+   *
    * @param {*} param required object containing stopId and routeId
    * e.g. { stopId: '101N', routeId: '1' }
    */
   addReport(param) {
     let report = this.getReport(param);
-    if (!report) { 
-      report = new Report(param.stopId, param.routeId); 
+    if (!report) {
+      report = new Report(param.stopId, param.routeId);
+      this.reports.push(report);
     }
     let result = report.add();
-    this.reports.push(report);
     return result;
   }
 
   /**
    * Decrement report count by 1 to a minimum of zero, returning the new count, or -1 if not found
    * TBD: If the report hits 0, remove the report to stop tracking
-   * 
+   *
    * @param {*} param required object containing stopId and routeId
    * e.g. { stopId: '101N', routeId: '1' }
    */
@@ -42,11 +42,11 @@ class Complaint {
 
   /**
    * Fetches a report(s) and returns an array, returning an empty array if the report(s) could not be found
-   * 
-   * @param {*} reports object or array of objects containing stopId and routeId. If an array is given, this 
+   *
+   * @param {*} reports object or array of objects containing stopId and routeId. If an array is given, this
    * will fetch all results matching those fields
-   * 
-   * e.g. 
+   *
+   * e.g.
    * let complaint = new Complaint();
    * let param1 = { stopId: '101N', routeId: '1' };
    * let param2 = { stopId: '101S', routeId: '1' };
@@ -63,7 +63,9 @@ class Complaint {
       return result;
     } else {
       if (!params.stopId || !params.routeId) { throw 'Invalid parameters'; }
-      return this.reports.find((a) => a.stopId === params.stopId && a.routeId === params.routeId);
+      let stopId = params.stopId.toUpperCase();
+      let routeId = params.routeId.toUpperCase();
+      return this.reports.find((a) => a.stopId === stopId && a.routeId === routeId);
     }
   }
 
