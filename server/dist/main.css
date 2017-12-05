@@ -50,11 +50,14 @@ table {
 body {
   height: 100vh;
   width: 100vw;
-  margin-top: 68px;
   font-family: 'Helvetica';
 }
 
 /* Main Page */
+#app {
+  padding-top: 70px;
+}
+
 .navbar {
   position: fixed;
   width: 100vw;
