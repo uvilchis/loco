@@ -1,5 +1,10 @@
 import React from 'react';
 import Nav from './Nav.jsx';
+import {
+  Router, 
+  Route,
+  Link
+} from 'react-router-dom';
 
 export default class TrainLine extends React.Component {
   constructor(props) {
@@ -27,7 +32,9 @@ export default class TrainLine extends React.Component {
             <div className="trainline_user">
             </div>
             <button onClick={this.showNav}>
-              Details
+              <Link to={`nav/${this.props.line.name}`}>
+                Details 
+              </Link>             
             </button>
           </div>
       </div>

@@ -20,13 +20,14 @@ export default class Nav extends React.Component {
   }
 
   render() {
+    console.log(this.props, 'props')
     return (
       <div className="nav-properties trainline_row">
         <div className="route-id">
           {this.props.route}
         </div>
          <div className="route-status">
-          {this.props.status.status}
+          {/* {this.props.status.status} */}
         </div>
         <div className="trainline_user">
         </div>

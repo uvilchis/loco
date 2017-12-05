@@ -2,6 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import TrainLine from './TrainLine.jsx';
 import mockData from '../mockservice.json';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
+import Nav from './Nav.jsx';
+import Details from './Details.jsx';
+import Survey from './Survey.jsx';
+import Complaint from './Complaint.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -73,6 +82,7 @@ export default class App extends React.Component {
 
   render() {
     return (
+      <Router>
       <div>
         <div className="navbar">
           <div className="logo_container">
@@ -92,7 +102,16 @@ export default class App extends React.Component {
               />
             )}
           </div>
+          
+  <div>
+    <Route path='/nav' component={Nav} staticContext={this.state.trains}/>
+    <Route path='/details' component={Details} />
+    <Route path='/survey' component={Survey} />
+    <Route path='/complaint' component={Complaint} />
+  </div>
+
       </div>
+      </Router>
     )
   }
 }

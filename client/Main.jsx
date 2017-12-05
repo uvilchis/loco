@@ -23,12 +23,4 @@ class Main extends React.Component {
   }
 }
 
-ReactDOM.render(<Router>
-  <div>
-    <Route path='/' component={Main} />
-    <Route path='/nav' component={Nav} />
-    <Route path='/details' component={Details} />
-    <Route path='/survey' component={Survey} />
-    <Route path='/complaint' component={Complaint} />
-  </div>
-</Router>, document.getElementById('app'));
+ReactDOM.render(<Main />, document.getElementById('app'));
