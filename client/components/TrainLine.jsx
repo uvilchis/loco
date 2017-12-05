@@ -16,6 +16,7 @@ export default class TrainLine extends React.Component {
   }
 
   showNav(e) {
+    
     this.props.showCurrentRoute(this.props.info, this.props.line)
   }
 

@@ -83,34 +83,32 @@ export default class App extends React.Component {
   render() {
     return (
       <Router>
-      <div>
-        <div className="navbar">
-          <div className="logo_container">
-            <h1 className="logo">Loco</h1>
+        <div>
+          <div className="navbar">
+            <div className="logo_container">
+              <h1 className="logo">Loco</h1>
+            </div>
+          </div>
+          <h3 className="trainline_header">Train Status</h3>
+            <div className="trainline_container">
+              {this.state.trains.map((line, idx) =>
+                <TrainLine
+                  line={line || line.route_id}
+                  key={idx}
+                  loggedIn={this.state.user ? true : false}
+                  setAppState={this.setAppState}
+                  info={this.state.organized[line.name]}
+                  showCurrentRoute={this.showCurrentRoute}
+                />
+              )}
+            </div>        
+          <div>
+            <Route path='/nav' component={Nav} staticContext={this.state.trains}/>
+            <Route path='/details' component={Details} />
+            <Route path='/survey' component={Survey} />
+            <Route path='/complaint' component={Complaint} />
           </div>
         </div>
-        <h3 className="trainline_header">Train Status</h3>
-          <div className="trainline_container">
-            {this.state.trains.map((line, idx) =>
-              <TrainLine
-                line={line || line.route_id}
-                key={idx}
-                loggedIn={this.state.user ? true : false}
-                setAppState={this.setAppState}
-                info={this.state.organized[line.name]}
-                showCurrentRoute={this.showCurrentRoute}
-              />
-            )}
-          </div>
-          
-  <div>
-    <Route path='/nav' component={Nav} staticContext={this.state.trains}/>
-    <Route path='/details' component={Details} />
-    <Route path='/survey' component={Survey} />
-    <Route path='/complaint' component={Complaint} />
-  </div>
-
-      </div>
       </Router>
     )
   }

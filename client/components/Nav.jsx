@@ -5,19 +5,35 @@ export default class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      details : false
+      currentTrains: [],
+      currentStatus: ''
     }
     this.showDetails = this.showDetails.bind(this)
     this.goBack = this.goBack.bind(this)
   }
   // we want a route status, but that needs to be related to the number of incoming complaints
-  showDetails() {
-  this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
+  componentDidMount() {
+    e.preventDefault();
+    // get routes for given line and it's current status
+    axios.get(`/api/test/getroutesandstatus?${this.props.info.name}`)
+    .then((trains) => {
+      this.setState({
+        currentTrains: trains.data.routes,
+        currentStatus: trains.data.status
+      })
+    })
+    .catch((err) => {
+      console.error('ERROR MOUNTING NAV DATA:', err)
+    })
   }
 
-  goBack() {
-    console.log('go back')
-  }
+  // showDetails() {
+  // this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
+  // }
+
+  // goBack() {
+  //   console.log('go back')
+  // }
 
   render() {
     console.log(this.props, 'props')
