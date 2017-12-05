@@ -25,6 +25,7 @@ class Main extends React.Component {
           <Switch>
             <Route exact path='/' component={App} />
             <Route path='/nav/:routeId' component={Nav} />
+            <Route path='/detail/:routeId' component={Details} />
           </Switch>
         </div>
       </BrowserRouter>

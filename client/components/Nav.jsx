@@ -7,30 +7,21 @@ export default class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      details : false,
+      route: null,
+      status: '',
       serviceStatus : ''
     }
     this.showDetails = this.showDetails.bind(this)
     this.goBack = this.goBack.bind(this)
   }
 
-  // componentDidMount () {
-    // this.setState({serviceStatus : this.props.status.status});
-    //   currentTrains: [],
-    //   currentStatus: ''
-    // }
-    // this.props.info
-    // this.showDetails = this.showDetails.bind(this)
-    // this.goBack = this.goBack.bind(this)
-  // }
-
   // we want a route status, but that needs to be related to the number of incoming complaints
   componentDidMount() {
     // get routes for given line and it's current status
-    console.log(this.props);
-    if (this.props.location) {
-      return this.setState({ currentTrains: this.props.location.state.info });
-    }
+    // console.log(this.props);
+    // if (this.props.location) {
+    //   return this.setState({ currentTrains: this.props.location.state.info });
+    // }
     let routeId = this.props.match.params.routeId;
     axios.get(`/api/service/${routeId}`)
     .then((data) => {
@@ -46,7 +37,7 @@ export default class Nav extends React.Component {
 
   // we want a route status, but that needs to be related to the number of incoming complaints
   showDetails() {
-  this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
+    this.props.showCurrentRoute(this.props.route, this.props.currentStatus)
   }
 
   goBack() {
@@ -54,46 +45,23 @@ export default class Nav extends React.Component {
   }
 
   render() {
-    switch (true) {
-      case this.state.serviceStatus === "GOOD SERVICE":
-        return (
-          <div className="nav-properties trainline_row">
-            <div className="route-id">
-              {this.props.route}
-            </div>
-             <div className="route-status">
-              {this.props.status.status}
-            </div>
-            <div className="trainline_user_good">
-            </div>
-            <button onClick={this.showDetails}>
-            Details
-            </button>
-          </div>
-        )
-        break;
-
-      case this.state.serviceStatus !== "GOOD SERVICE":
-        return (
-          <div className="nav-properties trainline_row">
-            <div className="route-id">
-              {this.props.route}
-            </div>
-             <div className="route-status">
-              {this.props.status.status}
-            </div>
-            <div className="trainline_user_problems">
-            </div>
-            <button onClick={this.showDetails}>
-            Details
-            </button>
-          </div>
-        )
-      break;
-
-      default:
-      return null
-    }
+    console.log(this.props);
+    let service = this.state.serviceStatus === 'GOOD SERVICE';
+    return (
+      <div className="nav-properties trainline_row">
+        <div className="route-id">
+          {this.state.route}
+        </div>
+         <div className="route-status">
+          {this.state.status.status}
+        </div>
+        <div className={service ? 'trainline_user_good' : 'trainline_user_problems'}>
+        </div>
+        <button onClick={this.showDetails}>
+          Details
+        </button>
+      </div>
+    )
     // return (
     //   <div className="nav-properties trainline_row">
     //     {this.state.currentTrains.map((route, i) => 
