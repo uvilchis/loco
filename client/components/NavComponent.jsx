@@ -6,7 +6,7 @@ const NavComponent = (props) => (
       {this.props.nav.route_id}
     </div>
     <div className="route-status">
-      {this.props.nav.status}
+      {this.props.status}
     </div>
     <button onClick={this.showDetails}>
       Details

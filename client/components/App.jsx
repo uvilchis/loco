@@ -11,6 +11,7 @@ import Nav from './Nav.jsx';
 import Details from './Details.jsx';
 import Survey from './Survey.jsx';
 import Complaint from './Complaint.jsx';
+import NavPage from './NavPage.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class App extends React.Component {
       console.log(this.state.organized)
     })
 
-    axios('/api/routes')
+  axios('/api/routes')
     .then((data) => {
       this.setState({routes: data.data})
       console.log(this.state.routes)
@@ -103,7 +104,7 @@ export default class App extends React.Component {
               )}
             </div>        
           <div>
-            <Route path='/nav' component={Nav} />
+            <Route path='/nav' render={NavPage} />
             <Route path='/details' component={Details} />
             <Route path='/survey' component={Survey} />
             <Route path='/complaint' component={Complaint} />
