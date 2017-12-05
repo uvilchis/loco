@@ -3,22 +3,67 @@ import React from 'react';
 export default class TrainLine extends React.Component {
   constructor(props) {
     super(props);
-    this.redirect = this.redirect.bind(this);
+    this.state = {
+      currentTrain: [],
+      serviceStatus : '',
+    }
+    this.showNav = this.showNav.bind(this)
+  }
+
+  componentDidMount() {
+    this.setState({serviceStatus: this.props.line.status})
+  }
+
+  showNav(e) {
+    this.props.showCurrentRoute(this.props.info, this.props.line)
   }
 
   render() {
-    return (
-      <div className="trainline-row">
-        <div className="line">
-          {this.props.line.route_id}
-        </div>
-        <div className="status">
-          {this.props.line.status}
-        </div>
-        <button onClick={this.redirect}>
-          Details
-        </button>
-      </div>
-    )
+    switch (true) {
+      case this.state.serviceStatus === "GOOD SERVICE":
+        return (
+          <div>
+              <div className="trainline_row">
+                <div className="trainline_routes">
+                  {this.props.line.name || this.props.line.route_id}
+                </div>
+                <div className="trainline_status">
+                  {this.props.line.status}
+                </div>
+                <div className="trainline_user_good">
+                </div>
+                <button onClick={this.showNav}>
+                  Details
+                </button>
+              </div>
+          </div>
+        )
+      break;
+
+      case this.state.serviceStatus !== "GOOD SERVICE":
+        return (
+          <div>
+              <div className="trainline_row">
+                <div className="trainline_routes">
+                  {this.props.line.name || this.props.line.route_id}
+                </div>
+                <div className="trainline_status">
+                  {this.props.line.status}
+                </div>
+                <div className="trainline_user_problems">
+                </div>
+                <button onClick={this.showNav}>
+                  Details
+                </button>
+              </div>
+          </div>
+        )
+      break;
+
+      default:
+      return null
+
+    }
+
   }
 }

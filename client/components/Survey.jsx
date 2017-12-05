@@ -18,7 +18,7 @@ export default class Survey extends React.Component {
   handleClick(e) {
     e.preventDefault();
     this.setState({
-      [e.target.name]: this.state.name + 1;
+      [e.target.name]: this.state.name + 1
     })
   }
 

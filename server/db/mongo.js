@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const UserSchema = require('../models/user');
 
-const DB_CREDENTIALS = require('../env/key.js').db_creds;
+const DB_CREDENTIALS = require('../env/key.js').mongo_creds;
 
 const db = mongoose.connection;
 db.on('error', (error) => console.log(error));
@@ -14,4 +14,4 @@ mongoose.connect(DB_CREDENTIALS, {
 
 module.exports = {
   mongoose
-}
+};

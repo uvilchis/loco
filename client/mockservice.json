@@ -1,0 +1,83 @@
+{
+  "responsecode": "0",
+  "timestamp": "11/30/2017 5:09:00 PM",
+  "lines": [
+    {
+      "name": "123",
+      "status": "DELAYS",
+      "text": "Delays Posted:11/30/2017 5:04PM [3] train service has resumed following an earlier incident involving a sick passenger at Harlem-148 St.",
+      "Date": "11/30/2017",
+      "Time": "5:04PM"
+    },
+    {
+      "name": "456",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "7",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "ACE",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "BDFM",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "G",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "JZ",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "L",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "NQR",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "S",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    },
+    {
+      "name": "SIR",
+      "status": "GOOD SERVICE",
+      "text": "",
+      "Date": "",
+      "Time": ""
+    }
+  ]
+}

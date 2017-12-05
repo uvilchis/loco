@@ -11,15 +11,20 @@ const fetchServiceStatus = () => {
       res.on('data', (chunk) => data += chunk);
       res.on('error', (error) => reject(error));
       res.on('end', () => {
-        parseString(data, (error, result) => {
-          if (error) {
-            return reject(error);
-          }
-          console.log(result.service.subway[0].line);
-          result.service.subway[0].line.forEach((a) => {
-            a.text[0] = a.text[0].replace(matcher, '').split(' ').filter((a) => a).join(' ');
-          });
-          resolve(result);
+        parseString(data, (error, { service }) => {
+          if (error) { return reject(error); }
+          let lineFormat = (a) => {
+            for (let key in a) { a[key] = a[key][0]; }
+            a.text = a.text.replace(matcher, '').split(' ').filter((a) => a).join(' ');
+            a.Time = a.Time.trim();
+            return a;
+          };
+          let data = {
+            responsecode: service.responsecode[0],
+            timestamp: service.timestamp[0],
+            lines: service.subway[0].line.map(lineFormat)
+          };
+          resolve(data);
         })
       });
     };
