@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const textParser = require('../lib/txt');
+const util = require('../lib/util');
 
 const connection = mysql.createConnection({
   user: 'root',
@@ -40,7 +41,17 @@ const CREATE_ROUTES = `
     PRIMARY KEY (id)
   )`;
 
-const DROP_TABLE = 'DROP TABLE IF EXISTS stops, stop_times, routes';
+const CREATE_STOPROUTES = `
+  CREATE TABLE stop_routes (
+    id int NOT NULL AUTO_INCREMENT,
+    route_id varchar(10) NOT NULL,
+    stop_id varchar(10) NOT NULL,
+    PRIMARY KEY(id)
+  )
+  SELECT DISTINCT route_id, stop_id 
+  FROM stop_times`;
+
+const DROP_TABLE = 'DROP TABLE IF EXISTS stops, stop_times, routes, stop_routes';
 
 const INSERT_INTO_STOPTIMES = 'INSERT INTO stop_times (route_id, route_type, arrival_time, stop_id) VALUES ?';
 const INSERT_INTO_STOPS = 'INSERT INTO stops (stop_id, stop_name, stop_lat, stop_lon) VALUES ?';
@@ -90,9 +101,16 @@ const _insertStops = (data) => new Promise((resolve, reject) => {
   });
 });
 
-const _insertRoutes = (data) => new Promise ((resolve, reject) => {
+const _insertRoutes = (data) => new Promise((resolve, reject) => {
   connection.query(INSERT_INTO_ROUTES, [data], (error, result) => {
     if (error) { return reject(error); }
+    resolve(result);
+  });
+});
+
+const _insertStopRoutes = () => new Promise((resolve, reject) => {
+  connection.query(CREATE_STOPROUTES, (error, result) => {
+    if (error){ return reject(error); }
     resolve(result);
   });
 });
@@ -111,6 +129,7 @@ const updateMtaSchedule = () => new Promise((resolve, reject) => {
   .then((result) => _insertStopTimes(data.stoptimes))
   .then((result) => _insertStops(data.stops))
   .then((result) => _insertRoutes(data.routes))
+  .then((result) => _insertStopRoutes())
   .then((result) => {
     console.log('successfully updated MTA schedule');
     resolve(result);
@@ -143,8 +162,7 @@ const getScheduleByStopAndRoute = (stopId, routeId, routeType = 'WKD') => new Pr
   let query = 'SELECT * FROM `stop_times` WHERE `stop_id` = ? AND `route_id` = ? AND `route_type` = ?'
   connection.query(query, [stopId, routeId, routeType], (error, result) => {
     if (error) { return reject(error); }
-    textParser.timeSort(result);
-    resolve(result);
+    resolve(util.timeSort(result));
   });
 });
 
@@ -181,19 +199,10 @@ const getRoute = (routeId) => new Promise((resolve, reject) => {
 });
 
 const getStopsByRoute = (routeId) => new Promise ((resolve, reject) => {
-  let query =
-  `SELECT DISTINCT
-  st.stop_id,
-  s.stop_name
-  FROM stop_times st
-  LEFT JOIN stops s
-  ON st.stop_id = s.stop_id
-  WHERE route_id = ?`;
-  //let truequery = 'SELECT `stops.stop_name` FROM `stops` INNER JOIN `stop_times` on `stops.stop_id` = ? '
+  let query = 'SELECT * FROM `stop_routes` sr INNER JOIN stops s ON sr.stop_id = s.stop_id WHERE route_id = ?'
   connection.query(query, routeId, (error, result) => {
     if (error) { return reject(error); }
-    let work = textParser.directionSort(result)
-    resolve(work)
+    resolve(util.directionSort(result));
   });
 });
 
