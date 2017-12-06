@@ -8,13 +8,10 @@ var passport = null; // Skeevy, fix later
 const setPassport = (passportInstance) => {
   passport = passportInstance;
   router.get('/api/user/google', passport.authenticate('google', {
-    successRedirect: '/api/user/google/cb',
-    failureRedirect: '/api/user/google/cb',
-    accessType: 'offline',
     approvalPrompt: 'force',
     scope: ['profile'] 
   }));
-  router.get('/api/user/google/cb', passport.authenticate('google'), controller.users.googleAuth);
+  router.get('/api/user/google/return', passport.authenticate('google'), controller.users.googleAuth);
 };
 
 
@@ -104,7 +101,7 @@ router.get('/api/test/service', controller.test.testService);
 router.get('/api/test/routes', controller.test.testRoutes);
 router.get('/api/test/stops', controller.test.testStops);
 router.get('/api/test/stoptimes', controller.test.testStopTimes);
-router.get('/api/test/updatedb', controller.test.testUpdateDb);
+router.get('/api/test/updatedb', controller.test.testUpdateDb); // This should probably be gated
 router.get('/api/test/timesbystop', controller.test.testSchedByStop);
 router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
 router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);

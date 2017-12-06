@@ -14,7 +14,7 @@ const getStops = (req, res) => {
 
 const getStop = (req, res) => {
   let stopId = req.query.stop_id;
-  db.getStop(stopid)
+  db.getStop(stopId)
   .then((result) => {
     res.send(result);
   })

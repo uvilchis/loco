@@ -37,8 +37,8 @@ const signUp = (req, res) => {
 };
 
 const googleAuth = (req, res) => {
-  console.log();
-  res.send(200); // need to decide whether or not we need this
+  console.log(req.user.authId);
+  res.send(req.user.authId); // need to decide whether or not we need this
 };
 
 // Add a way to validate user with google ID?

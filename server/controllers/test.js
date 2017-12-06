@@ -94,7 +94,7 @@ const testSchedByStop = (req, res) => {
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
-  })
+  });
 };
 
 const testSchedByRoute = (req, res) => {
@@ -121,12 +121,12 @@ const testSchedByStopRoute = (req, res) => {
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
-  })
+  });
 };
 
 const testGetStops = (req, res) => {
   res.send(env.storage.stops);
-}
+};
 
 module.exports = {
   testProto,

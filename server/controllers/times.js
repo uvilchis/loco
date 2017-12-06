@@ -10,7 +10,7 @@ const schedByStop = (req, res) => {
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
-  })
+  });
 };
 
 const schedByRoute = (req, res) => {
@@ -37,7 +37,7 @@ const schedByStopRoute = (req, res) => {
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
-  })
+  });
 };
 
 module.exports = {

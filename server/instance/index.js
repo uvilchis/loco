@@ -40,7 +40,7 @@ const subtractComplaintReport = (type, stopId, routeId) => {
   let complaint = _instance.complaints.find((a) => a.type === type);
   if (complaint) {
     let count = complaint.subtractReport({ stopId, routeId });
-    return count < 0 ? false: count; // Handle unfound report
+    return count < 0 ? false : count; // Handle unfound report
   } else {
     return false;
   }
