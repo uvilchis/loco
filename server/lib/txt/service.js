@@ -25,7 +25,7 @@ const fetchServiceStatus = () => {
             lines: service.subway[0].line.map(lineFormat)
           };
           resolve(data);
-        })
+        });
       });
     };
     http.get(URLS.SERVICE, parse);

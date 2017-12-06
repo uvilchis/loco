@@ -20,8 +20,8 @@ const getRoute = (req, res) => {
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
-  })
-}
+  });
+};
 
 const getStopsByRoute = (req, res) => {
   let routeId = req.query.route_id
@@ -31,9 +31,9 @@ const getStopsByRoute = (req, res) => {
   })
   .catch((error) => {
     console.log(error);
-    res.sendStatus(404)
-  })
-}
+    res.sendStatus(404);
+  });
+};
 
 module.exports = {
   getRoutes,

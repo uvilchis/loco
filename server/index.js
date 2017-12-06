@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const session = require('express-session');
@@ -13,6 +14,7 @@ const { router, setPassport } = require('./routes');
 const { googleClientID, googleClientSecret } = require('./env/key');
 const txtParser = require('./lib/txt');
 const instance = require('./instance');
+const User = mongoose.model('User');
 
 var app = express();
 
@@ -40,24 +42,34 @@ app.use(session({
 passport.use(new GoogleStrategy({
   clientID: googleClientID,
   clientSecret: googleClientSecret,
-  callbackURL: 'http://localhost:3000/api/user/google/cb',
-  scope: [
-    'profile'
-  ]
- },
- function(accessToken, refreshToken, profile, done) {
-   console.log(profile);
-   done(null, profile);
- })
+  callbackURL: 'http://localhost:3000/login/google/return',
+  scope: ['profile']
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log('access', accessToken);
+    console.log('refresh', refreshToken);
+    User.findOne({ authId: profile.id }, (error, user) => {
+      if (user) { 
+        return user;
+      } else {
+        let newUser = new User({
+          username: profile.displayName,
+          authId: profile.id
+        });
+        return newUser.save();
+      }
+    })
+    .then((user) => done(null, user))
+    .catch((error) => done(error, null));
+  })
 );
 
-passport.serializeUser((user, done) => {
-  console.log(user);
-  done(null, user);
-});
+passport.serializeUser((user, done) => done(null, user._id));
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+passport.deserializeUser((_id, done) => {
+  User.findById({ _id }).exec()
+  .then((user) => done(null, user))
+  .catch((error) => done(error, null));
 });
 
 app.use(passport.initialize());

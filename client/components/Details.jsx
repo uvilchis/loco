@@ -1,6 +1,4 @@
 import React from 'react';
-import Survey from './Survey.jsx';
-import StaticDeets from './StaticDeets.jsx';
 import axios from 'axios';
 
 export default class Details extends React.Component {
@@ -31,9 +29,9 @@ export default class Details extends React.Component {
       axios.get('/api/route/stops', {
         params: { route_id: this.state.routeId }
       })
-      .then((data) => {
-        console.log(data.data);
-        this.setState({stations: data.data}, () => console.log(this.state.stations));
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({stations: data}, () => console.log(this.state.stations));
       })
       .catch((err) => {
         console.log(err);
@@ -70,7 +68,8 @@ export default class Details extends React.Component {
         }
       })
       .then(({ data }) => {
-        console.log(new Date().toLocaleTimeString('en-GB'));
+        let currentTime = new Date().toLocaleTimeString('en-GB');
+        console.log(currentTime);
         console.log(data);
         let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
         this.setState({staticSched : relevantSched})
@@ -83,11 +82,11 @@ export default class Details extends React.Component {
     return (
       <div>
         <div className="line-logo">
-          {this.state.routeId}
+          Route: {this.state.routeId}
         </div>
         <div className="vote-row">
           <div className="vote-count">
-            {this.state.upvotes}
+            TBD: {this.state.upvotes}
           </div>
           <button onClick={this.addVote}>
             (thumbs up)

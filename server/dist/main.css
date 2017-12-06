@@ -94,12 +94,13 @@ body {
 .trainline_row {
   display: grid;
   align-items: center;
+  justify-items: center;
   height: 48px;
   grid-template-columns: 1fr 2fr 1fr 1fr;
   margin: 16px;
 }
 
-.trainline_user_good {
+.trainline_user {
   border-radius: 32px;
   height: 32px;
   width: 32px;
@@ -107,11 +108,11 @@ body {
   background: #0dc000;
 }
 
-.trainline_user_problems {
-  border-radius: 32px;
-  height: 32px;
-  width: 32px;
-  justify-self: center;
+.good {
+  background: #0dc000;
+}
+
+.problems {
   background: #FFFF00;
 }
 
