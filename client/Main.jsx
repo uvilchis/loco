@@ -16,10 +16,18 @@ class Main extends React.Component {
     this.state = {
       userId: null
     };
-    this.handleGoogle = this.handleGoogle.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
-  handleGoogle(userId, cb) {
+  componentDidMount() {
+    axios.get('/api/user/start/')
+    .then(({ data }) => {
+      this.setState({ userId: data });
+    })
+    .catch((error) => console.log(error));
+  }
+
+  handleLogin(userId, cb) {
     this.setState({ userId }, cb);
   }
 
@@ -35,7 +43,7 @@ class Main extends React.Component {
           </div>
           <Switch>
             <Route exact path="/" component={App} />
-            <Route path="/login" render={(props) => <Login userId={this.state.userId} handleGoogle={this.handleGoogle} {...props}/>} />
+            <Route path="/login" render={(props) => <Login userId={this.state.userId} handleLogin={this.handleLogin} {...props}/>} />
             <Route path="/nav/:routeId" component={Nav} />
             <Route path="/detail/:routeId" component={Details} />
           </Switch>

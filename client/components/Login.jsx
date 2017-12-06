@@ -21,12 +21,10 @@ export default class Login extends React.Component {
       this.setState({ logging: true }, () => {
         axios.get(`/api/user/google/return${this.props.location.search}`)
         .then(({ data }) => {
-          this.props.handleGoogle(data);
+          this.props.handleLogin(data);
           this.props.history.push('/');
         })
-        .catch((error) => {
-          console.log(error);
-        })
+        .catch((error) => console.log(error));
       });
     }
   }
@@ -43,14 +41,25 @@ export default class Login extends React.Component {
       username: this.state.username,
       password: this.state.password
     };
-    axios.post('/api/users/signup', signupObj)
+    axios.post('/api/user/signup', signupObj)
     .then(({ data }) => {
-
+      this.props.handleLogin(data);
+      this.props.history.push('/');
     })
+    .catch((error) => console.log(error));
   }
 
   handleLogin() {
-
+    let loginObj = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    axios.post('/api/user/login', loginObj)
+    .then(({ data }) => {
+      this.props.handleLogin(data);
+      this.props.history.push('/');
+    })
+    .catch((error) => console.log(error));
   }
 
   render() {
@@ -70,8 +79,8 @@ export default class Login extends React.Component {
             value={this.state.password}
             onChange={this.handleChange}
           />
-          <button onClick>Log in</button>
-          <button>Sign up</button>
+          <button onClick={this.handleLogin}>Log in</button>
+          <button onClick={this.handleSignup}>Sign up</button>
           <a href="/api/user/google">Google</a>
         </div>
       )

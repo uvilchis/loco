@@ -21,8 +21,7 @@ const setPassport = (passportInstance) => {
 router.post('/api/user/signup', controller.users.signUp);
 router.post('/api/user/login', controller.users.logIn);
 router.post('/api/user/logout', controller.users.logOut);
-// router.get('/api/user/google', passport !== null ? passport.authenticate('google') : (req, res) => res.sendStatus(400));
-// router.get('/api/user/google', passport !== null ? passport.authenticate('google') : (req, res, next) => next(), controller.users.googleAuth);
+router.get('/api/user/start', controller.users.checkUserAuth);
 
 
 

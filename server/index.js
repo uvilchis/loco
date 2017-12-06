@@ -46,10 +46,11 @@ passport.use(new GoogleStrategy({
   scope: ['profile']
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
+    console.log('access', accessToken);
+    console.log('refresh', refreshToken);
     User.findOne({ authId: profile.id }, (error, user) => {
       if (user) { 
-        done(null, user); 
+        return user;
       } else {
         let newUser = new User({
           username: profile.displayName,
@@ -58,20 +59,15 @@ passport.use(new GoogleStrategy({
         return newUser.save();
       }
     })
-    .then((result) => { User.findOne({ authId: profile.id }).exec();
-    })
     .then((user) => done(null, user))
-    .catch((error) => {
-      console.log('line 69', error)
-      done(error, null);
-    });
+    .catch((error) => done(error, null));
   })
 );
 
-passport.serializeUser((user, done) => done(null, user.authId));
+passport.serializeUser((user, done) => done(null, user._id));
 
-passport.deserializeUser((authId, done) => {
-  User.find({ authId }).exec()
+passport.deserializeUser((_id, done) => {
+  User.findById({ _id }).exec()
   .then((user) => done(null, user))
   .catch((error) => done(error, null));
 });
