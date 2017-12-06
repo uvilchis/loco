@@ -95,29 +95,9 @@ const getAll = () => new Promise((resolve, reject) => {
   });
 });
 
-const timeSort = (data) => {
-  data.sort((a,b) => {
-    return (a["arrival_time"] < b["arrival_time"]) ? -1 : ((a["arrival_time"] > b["arrival_time"]) ? 1 : 0)
-  })
-}
-
-const directionSort = (data) => {
-  let directionSorted = {
-    N : [],
-    S : []
-  }
-  data.filter((element) => {
-    element.stop_id.match(/N$/) ? directionSorted.N.push(element) : directionSorted.S.push(element)
-  })
-  console.log(directionSorted)
-  return directionSorted;
-}
-
 module.exports = {
   getStops,
   getRoutes,
   getStopTimes,
-  getAll,
-  timeSort,
-  directionSort
+  getAll
 };

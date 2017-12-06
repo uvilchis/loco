@@ -62,26 +62,24 @@ export default class Details extends React.Component {
     // TODO: probably not the best to have the time parse happening in here, ideally we should be filtering what is returned from the database accoriding to the current time
     // TODO: (cont.) something like SELECT 20 entries where time is greater than current time
     this.setState({value : event.target.value}, () => {
-      axios('/api/times/stoproute', {
+      axios.get('/api/times/stoproute', {
         params : {
           stop_id : this.state.value,
-          route_id : this.props.route,
+          route_id : this.state.routeId,
           route_type : 'wkd'
         }
       })
-      .then(data => {
-        let currentTime = new Date().toLocaleTimeString('en-GB')
-        console.log(currentTime)
-        let relevantSched = data.data.filter(element => {
-          return element.arrival_time >= currentTime
-        }).slice(0, 10)
+      .then(({ data }) => {
+        console.log(new Date().toLocaleTimeString('en-GB'));
+        console.log(data);
+        let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
         this.setState({staticSched : relevantSched})
       })
-    })
+      .catch((error) => console.log(error));
+    });
   }
 
   render() {
-    console.log('rendering');
     return (
       <div>
         <div className="line-logo">
@@ -122,13 +120,13 @@ export default class Details extends React.Component {
           </div>
           <div className="adj-sched">
             {this.state.staticSched.map((element, idx) => {
-              return <div>{element}</div>
+              return <div key={idx}>{element.arrival_time}</div>
             })}
           </div>
           <div className="user-comments">
             Complaints:
             {this.state.comments.map((comment, idx) => {
-              return <div>{comment}</div>
+              return <div key={idx}>{comment}</div>
             })}
           </div>
         </div>
