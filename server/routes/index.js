@@ -9,7 +9,7 @@ const setPassport = (passportInstance) => {
   passport = passportInstance;
   router.get('/api/user/google', passport.authenticate('google', {
     approvalPrompt: 'force',
-    scope: ['profile'] 
+    scope: ['profile']
   }));
   router.get('/api/user/google/return', passport.authenticate('google'), controller.users.googleAuth);
 };
@@ -65,15 +65,17 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
   // e.g. /api/complaint/stop?type=delay&stop_id=101N&route_id=1
 // router.get('/api/complaint', controller.complaints.getComplaintReport);
 
-  // TBD: adding custom complaint
+// TODO: adding custom complaint
 // router.post('/api/complaint/add', controller.complaints.addComplaint);
 
 
 // Reports - type refers to complaint type, add and subtract return the new count
   // Params: type, stop_id, route_id
+// TODO: this is the route we'll be using to display the current number of complaints
 router.get('/api/report', controller.complaints.getComplaintReport);
 
   // Params: type, stop_id, route_id
+  // TODO : here's what we'll be using to add complaints
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
 router.post('/api/report/add', controller.complaints.addComplaintReport);
 

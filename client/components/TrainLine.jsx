@@ -15,12 +15,12 @@ const TrainLine = (props) => (
       </div>
       <Link className="trainline_button" to={{
         pathname: `/${props.redir}/${props.name}`,
-        // state: { 
+        // state: {
         //   info: this.props.info,
         //   line: this.props.line
         // }
         }}>
-        Details 
+        Details
       </Link>
     </div>
   </div>

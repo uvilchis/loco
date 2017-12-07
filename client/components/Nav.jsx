@@ -8,7 +8,12 @@ export default class Nav extends React.Component {
     super(props);
     this.state = {
       routes: '',
+<<<<<<< HEAD
       status: ''
+=======
+      status: '',
+      text : ''
+>>>>>>>  almost functional
     };
   }
 
@@ -19,7 +24,8 @@ export default class Nav extends React.Component {
       console.log(data);
       this.setState({
         routes: data.name,
-        status: data.status
+        status: data.status,
+        text: data.text
       });
     })
     .catch((err) => console.error('ERROR MOUNTING NAV DATA:', err));
@@ -30,7 +36,11 @@ export default class Nav extends React.Component {
     let service = this.state.status === 'GOOD SERVICE';
     return (
       <div className="nav-properties">
+<<<<<<< HEAD
         {this.state.routes.split('').map((routeName, idx) => 
+=======
+        {this.state.routes.split('').map((a, idx) =>
+>>>>>>>  almost functional
           <TrainLine
             key={idx}
             redir={'detail'}
@@ -38,6 +48,7 @@ export default class Nav extends React.Component {
             status={this.state.status}
           />
         )}
+        <h4>{this.state.text}</h4>
       </div>
     );
   }

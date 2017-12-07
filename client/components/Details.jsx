@@ -12,18 +12,25 @@ export default class Details extends React.Component {
       staticSched: [],
       realTimeSched: [],
       stations : {},
-      value : ''
+      value : '',
+      delayed : 0,
+      closed : 0,
+      accident: 0,
+      crowded : 0
     };
     this.addVote = this.addVote.bind(this);
     this.downVote = this.downVote.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleComplaintSubmit = this.handleComplaintSubmit.bind(this);
   }
 
   componentDidMount() {
-    // we're fetching several things at each details page
     // 1) The number of complaints : we have that endpoint
-    // 2) The static schedule for a particular station
-    // 3) when we incorporate a comments page, we'll need to display those too (priority TBD)
+    // 2) when we incorporate a comments page, we'll need to display those too (priority TBD)
+    // TODO: Come up with a way to retrieve the total number of complaints across all categories for a particular route/line
+    // TODO: Come up with a way for app to detect whether its a weekday, saturday or sunday
+    // TODO: Come up with a way to change schedules according to whether its satuday, sunday or a weekday
+    // TODO: The routes send back 404s if no complaints exists; we'd need to change that logic, so if no complaint exists, we send back something we can work with (boolean?)
     let routeId = this.props.match.params.routeId;
     this.setState({ routeId }, () => {
       axios.get('/api/route/stops', {
@@ -54,11 +61,6 @@ export default class Details extends React.Component {
   }
 
   handleChange(event) {
-    // show the train schedule for this line at this station
-    // a note: we'll want the schedules displayed to vary based on weekday, saturday or sunday
-    // so our app will have to know what day it is
-    // TODO: probably not the best to have the time parse happening in here, ideally we should be filtering what is returned from the database accoriding to the current time
-    // TODO: (cont.) something like SELECT 20 entries where time is greater than current time
     this.setState({value : event.target.value}, () => {
       axios.get('/api/times/stoproute', {
         params : {
@@ -68,14 +70,82 @@ export default class Details extends React.Component {
         }
       })
       .then(({ data }) => {
+<<<<<<< HEAD
         let currentTime = new Date().toLocaleTimeString('en-GB');
         console.log(currentTime);
         console.log(data);
+=======
+        let currentTime = new Date().toLocaleTimeString('en-GB')
+>>>>>>>  almost functional
         let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
         this.setState({staticSched : relevantSched})
+
+        // TODO : FIX THIS JANKY MESS
+
+        axios.get('/api/report', {
+          params : {
+            type : 'delayed',
+            stop_id : this.state.value,
+            route_id : this.state.routeId
+          }
+        })
+        .then(data => { this.setState({delayed : data.data.count}) })
+        .catch(err => this.setState({delayed: 0}, () => console.log(err)));
+
+        axios.get('/api/report', {
+          params : {
+            type : 'closed',
+            stop_id : this.state.value,
+            route_id : this.state.routeId
+          }
+        }).then(data => { this.setState({closed : data.data.count}) })
+          .catch(err => this.setState({closed : 0}, () => console.log(err)));
+
+        axios.get('/api/report', {
+          params : {
+            type : 'accident',
+            stop_id : this.state.value,
+            route_id : this.state.routeId
+          }
+        }).then(data => { this.setState({accident : data.data.count}) })
+          .catch(err => this.setState({accident: 0}, () => console.log(err)));
+
+        axios.get('/api/report', {
+          params : {
+            type : 'crowded',
+            stop_id : this.state.value,
+            route_id : this.state.routeId
+          }
+        }).then(data => { this.setState({crowded : data.data.count}) })
+          .catch(err => this.setState({crowded: 0}, () => console.log(err)));
       })
       .catch((error) => console.log(error));
     });
+  }
+
+  handleComplaintSubmit(input) {
+    axios.post('/api/report/add', {
+      type : input,
+      stop_id : this.state.value,
+      route_id : this.state.routeId
+    })
+    .then(data => {
+      switch (true) {
+        case input === 'delayed':
+          this.setState({delayed : data.data.count})
+          break;
+        case input === 'closed':
+          this.setState({closed : data.data.count})
+          break;
+        case input === 'accident':
+          this.setState({accident: data.data.count})
+          break;
+        case input === 'crowded':
+          this.setState({crowded: data.data.count})
+          break;
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   render() {
@@ -103,9 +173,9 @@ export default class Details extends React.Component {
         <div className="schedule">
           <div className="adj-sched">
             Uptown Schedule:
-            {this.state.stations.N ? 
+            {this.state.stations.N ?
               <select onChange={this.handleChange}>
-                {this.state.stations.N.map((element, idx) => 
+                {this.state.stations.N.map((element, idx) =>
                   <option key={idx} value={element.stop_id}>{element.stop_name}</option>)}
               </select> : null}
           </div>
@@ -113,7 +183,7 @@ export default class Details extends React.Component {
             Downtown Schedule:
             {this.state.stations.S ?
               <select onChange={this.handleChange}>
-                {this.state.stations.S.map((element, idx) => 
+                {this.state.stations.S.map((element, idx) =>
                   <option key={idx} value={element.stop_id}>{element.stop_name}</option>)}
               </select> : null}
           </div>
@@ -123,10 +193,22 @@ export default class Details extends React.Component {
             })}
           </div>
           <div className="user-comments">
-            Complaints:
+            Reported Complaints:
             {this.state.comments.map((comment, idx) => {
               return <div key={idx}>{comment}</div>
             })}
+          </div>
+          <div onClick={() => {this.handleComplaintSubmit('delayed')}}>
+            Delayed : {this.state.delayed}
+          </div>
+          <div onClick={() => {this.handleComplaintSubmit('closed')}}>
+            Closed : {this.state.closed}
+          </div>
+          <div onClick={() => {this.handleComplaintSubmit('accident')}}>
+            Accident : {this.state.accident}
+          </div>
+          <div onClick={() => {this.handleComplaintSubmit('crowded')}}>
+            Crowded : {this.state.crowded}
           </div>
         </div>
       </div>

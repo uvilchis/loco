@@ -13,6 +13,7 @@ const initialize = () => {
   _serviceScheduler();
   let complaintTypes = ['delayed', 'closed', 'accident', 'crowded'];
   _instance.complaints = complaintTypes.map((type) => new Complaint(type));
+  console.log(_instance)
   console.log('initialized');
   initialized = true;
 };

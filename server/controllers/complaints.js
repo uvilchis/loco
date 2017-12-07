@@ -6,9 +6,9 @@ const addComplaint = (req, res) => {
 };
 
 const addComplaintReport = (req, res) => {
-  let type = req.query.type.toLowerCase();
-  let stopId = req.query.stop_id;
-  let routeId = req.query.route_id;
+  let type = req.body.type.toLowerCase();
+  let stopId = req.body.stop_id;
+  let routeId = req.body.route_id;
   let test = instance.addComplaintReport(type, stopId, routeId);
   if (test !== false) {
     res.send({ count: test });
