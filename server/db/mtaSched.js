@@ -5,7 +5,7 @@ const util = require('../lib/util');
 const connection = mysql.createConnection({
   user: 'root',
   database: 'loco_mta',
-  // password: 'Plums1nthe1ceb0x'
+   password: 'plantlife'
 });
 
 connection.connect((error) => {
@@ -48,7 +48,7 @@ const CREATE_STOPROUTES = `
     stop_id varchar(10) NOT NULL,
     PRIMARY KEY(id)
   )
-  SELECT DISTINCT route_id, stop_id 
+  SELECT DISTINCT route_id, stop_id
   FROM stop_times`;
 
 const DROP_TABLE = 'DROP TABLE IF EXISTS stops, stop_times, routes, stop_routes';

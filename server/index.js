@@ -49,7 +49,7 @@ passport.use(new GoogleStrategy({
     console.log('access', accessToken);
     console.log('refresh', refreshToken);
     User.findOne({ authId: profile.id }, (error, user) => {
-      if (user) { 
+      if (user) {
         return user;
       } else {
         let newUser = new User({
