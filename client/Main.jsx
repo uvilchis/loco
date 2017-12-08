@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import App from './components/App.jsx';
-import { Route } from 'react-router';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
+import { Route, Redirect } from 'react-router';
+import { BrowserRouter, Switch, Link } from 'react-router-dom';
+import Login from './components/Login.jsx';
+
 import Nav from './components/Nav.jsx';
 import Details from './components/Details.jsx';
 import Survey from './components/Survey.jsx';

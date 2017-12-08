@@ -9,7 +9,7 @@ const setPassport = (passportInstance) => {
   passport = passportInstance;
   router.get('/api/user/google', passport.authenticate('google', {
     approvalPrompt: 'force',
-    scope: ['profile'] 
+    scope: ['profile']
   }));
   router.get('/api/user/google/return', passport.authenticate('google'), controller.users.googleAuth);
 };
@@ -65,13 +65,21 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
   // e.g. /api/complaint/stop?type=delay&stop_id=101N&route_id=1
 // router.get('/api/complaint', controller.complaints.getComplaintReport);
 
-  // TBD: adding custom complaint
+// TODO: adding custom complaint
 // router.post('/api/complaint/add', controller.complaints.addComplaint);
 
 
 // Reports - type refers to complaint type, add and subtract return the new count
+  // for returning a particular complaint at a particular stop
   // Params: type, stop_id, route_id
 router.get('/api/report', controller.complaints.getComplaintReport);
+
+// to be called when you've reached a train line's detail page, and have sellected a route
+// Params : route_id
+router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
+
+// to be called at the main page so users can see routes experiencing problems at a glance (no params)
+router.get('/api/report/gettotalcomplaintcounts', controller.complaints.getTotalComplaintCounts);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
@@ -104,6 +112,7 @@ router.get('/api/test/updatedb', controller.test.testUpdateDb); // This should p
 router.get('/api/test/timesbystop', controller.test.testSchedByStop);
 router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
 router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
+
 
 // Session tester
 router.get('/api/test/session', controller.users.testSession);
