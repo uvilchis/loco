@@ -8,12 +8,8 @@ export default class Nav extends React.Component {
     super(props);
     this.state = {
       routes: '',
-<<<<<<< HEAD
-      status: ''
-=======
       status: '',
       text : ''
->>>>>>>  almost functional
     };
   }
 
@@ -36,11 +32,7 @@ export default class Nav extends React.Component {
     let service = this.state.status === 'GOOD SERVICE';
     return (
       <div className="nav-properties">
-<<<<<<< HEAD
-        {this.state.routes.split('').map((routeName, idx) => 
-=======
-        {this.state.routes.split('').map((a, idx) =>
->>>>>>>  almost functional
+        {this.state.routes.split('').map((routeName, idx) =>
           <TrainLine
             key={idx}
             redir={'detail'}

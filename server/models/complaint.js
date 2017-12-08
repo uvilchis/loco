@@ -2,6 +2,7 @@ class Complaint {
   constructor(type) {
     this.type = type;
     this.reports = [];
+    this.counts = {};
   }
 
   /**
@@ -18,6 +19,7 @@ class Complaint {
       report = new Report(param.stopId, param.routeId);
       this.reports.push(report);
     }
+    !this.counts[param.routeId] ? this.counts[param.routeId] = 1 : this.counts[param.routeId]++
     let result = report.add();
     return result;
   }
@@ -67,6 +69,17 @@ class Complaint {
       let routeId = params.routeId.toUpperCase();
       return this.reports.find((a) => a.stopId === stopId && a.routeId === routeId);
     }
+  }
+
+  getTypeReportByRoute (params) {
+      if (!params.routeId) { throw 'Invalid parameters'; }
+      let routeId = params.routeId.toUpperCase();
+      let allReports = this.reports.filter((a) => a.routeId === routeId);
+      return allReports.reduce((total, element) => {return total += element.count}, 0)
+  }
+
+  getCounts () {
+   return this.counts;
   }
 
 };

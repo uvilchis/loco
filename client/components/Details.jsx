@@ -16,7 +16,8 @@ export default class Details extends React.Component {
       delayed : 0,
       closed : 0,
       accident: 0,
-      crowded : 0
+      crowded : 0,
+      routeIssues : {}
     };
     this.addVote = this.addVote.bind(this);
     this.downVote = this.downVote.bind(this);
@@ -27,12 +28,11 @@ export default class Details extends React.Component {
   componentDidMount() {
     // 1) The number of complaints : we have that endpoint
     // 2) when we incorporate a comments page, we'll need to display those too (priority TBD)
-    // TODO: Come up with a way to retrieve the total number of complaints across all categories for a particular route/line
     // TODO: Come up with a way for app to detect whether its a weekday, saturday or sunday
     // TODO: Come up with a way to change schedules according to whether its satuday, sunday or a weekday
-    // TODO: The routes send back 404s if no complaints exists; we'd need to change that logic, so if no complaint exists, we send back something we can work with (boolean?)
     let routeId = this.props.match.params.routeId;
     this.setState({ routeId }, () => {
+      // sets the routeId in the parent state
       axios.get('/api/route/stops', {
         params: { route_id: this.state.routeId }
       })
@@ -43,6 +43,17 @@ export default class Details extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+      // sends the request that sends back if the route is experiencing problems
+      axios.get('/api/report/typecomplaintsbyroute', {
+        params : { route_id : this.state.routeId }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({routeIssues : data}, () => console.log(this.state.routeIssues));
+      })
+      .catch(err => {
+        console.log(err)
+      });
+
     });
   }
 
@@ -70,54 +81,9 @@ export default class Details extends React.Component {
         }
       })
       .then(({ data }) => {
-<<<<<<< HEAD
-        let currentTime = new Date().toLocaleTimeString('en-GB');
-        console.log(currentTime);
-        console.log(data);
-=======
         let currentTime = new Date().toLocaleTimeString('en-GB')
->>>>>>>  almost functional
         let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
         this.setState({staticSched : relevantSched})
-
-        // TODO : FIX THIS JANKY MESS
-
-        axios.get('/api/report', {
-          params : {
-            type : 'delayed',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        })
-        .then(data => { this.setState({delayed : data.data.count}) })
-        .catch(err => this.setState({delayed: 0}, () => console.log(err)));
-
-        axios.get('/api/report', {
-          params : {
-            type : 'closed',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        }).then(data => { this.setState({closed : data.data.count}) })
-          .catch(err => this.setState({closed : 0}, () => console.log(err)));
-
-        axios.get('/api/report', {
-          params : {
-            type : 'accident',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        }).then(data => { this.setState({accident : data.data.count}) })
-          .catch(err => this.setState({accident: 0}, () => console.log(err)));
-
-        axios.get('/api/report', {
-          params : {
-            type : 'crowded',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        }).then(data => { this.setState({crowded : data.data.count}) })
-          .catch(err => this.setState({crowded: 0}, () => console.log(err)));
       })
       .catch((error) => console.log(error));
     });
@@ -199,16 +165,16 @@ export default class Details extends React.Component {
             })}
           </div>
           <div onClick={() => {this.handleComplaintSubmit('delayed')}}>
-            Delayed : {this.state.delayed}
+            Delayed : {this.state.routeIssues.delayed}
           </div>
           <div onClick={() => {this.handleComplaintSubmit('closed')}}>
-            Closed : {this.state.closed}
+            Closed : {this.state.routeIssues.closed || 0}
           </div>
           <div onClick={() => {this.handleComplaintSubmit('accident')}}>
-            Accident : {this.state.accident}
+            Accident : {this.state.routeIssues.accident}
           </div>
           <div onClick={() => {this.handleComplaintSubmit('crowded')}}>
-            Crowded : {this.state.crowded}
+            Crowded : {this.state.routeIssues.crowded}
           </div>
         </div>
       </div>

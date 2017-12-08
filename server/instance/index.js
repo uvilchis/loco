@@ -13,7 +13,6 @@ const initialize = () => {
   _serviceScheduler();
   let complaintTypes = ['delayed', 'closed', 'accident', 'crowded'];
   _instance.complaints = complaintTypes.map((type) => new Complaint(type));
-  console.log(_instance)
   console.log('initialized');
   initialized = true;
 };
@@ -56,6 +55,57 @@ const getComplaintReport = (type, stopId, routeId) => {
   }
 };
 
+//  gets all reports of a particular type by route (i.e. delayed, closed, accident, crowded)
+// will become getTypeComplaintsByRoute
+const getTypeComplaintsByRoute = (routeId) => {
+  let complaints = {}
+  let delayed = _instance.complaints.find((a) => a.type === 'delayed')
+  let closed = _instance.complaints.find((a) => a.type === 'closed')
+  let accident = _instance.complaints.find((a) => a.type === 'accident')
+  let crowded = _instance.complaints.find((a) => a.type === 'crowded')
+
+  complaints.delayed = delayed.getTypeReportByRoute({routeId})
+  complaints.closed = closed.getTypeReportByRoute({routeId})
+  complaints.accident = accident.getTypeReportByRoute({routeId})
+  complaints.crowded = crowded.getTypeReportByRoute({routeId})
+
+  console.log('test', complaints)
+  return complaints;
+}
+
+// 1) returns the total number of each complaint experienced by a route
+// 2) also returns the TOTAL NUMBER OF ALL COMPLAINTS being experienced by route
+const getTotalComplaintCounts = () => {
+  let complaints = {};
+  let delayed = _instance.complaints.find((a) => a.type === 'delayed')
+  let closed = _instance.complaints.find((a) => a.type === 'closed')
+  let accident = _instance.complaints.find((a) => a.type === 'accident')
+  let crowded = _instance.complaints.find((a) => a.type === 'crowded')
+
+  complaints.delayed = delayed.getCounts()
+  complaints.closed = closed.getCounts()
+  complaints.accident = accident.getCounts()
+  complaints.crowded = crowded.getCounts()
+  complaints.total = {}
+  // JANKY MVP SOLUTION
+
+  for (var type in complaints) {
+    let complaintType = complaints[type]
+    for (var route in complaintType){
+      !complaints.total.hasOwnProperty(route) ?
+      complaints.total[route] = complaintType[route] :
+      complaints.total[route] += complaintType[route]
+    }
+  }
+
+  for (var doubled in complaints.total) {
+    complaints.total[doubled] = complaints.total[doubled]/2
+  }
+
+  return complaints;
+
+}
+
 const getServiceData = () => {
   if (!_instance.serviceData) { return false; }
   return _instance.serviceData
@@ -72,5 +122,7 @@ module.exports = {
   subtractComplaintReport,
   getComplaintReport,
   getServiceData,
-  getServiceRouteData
+  getServiceRouteData,
+  getTypeComplaintsByRoute,
+  getTotalComplaintCounts
 };

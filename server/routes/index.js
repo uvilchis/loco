@@ -70,12 +70,18 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
 
 
 // Reports - type refers to complaint type, add and subtract return the new count
+  // for returning a particular complaint at a particular stop
   // Params: type, stop_id, route_id
-// TODO: this is the route we'll be using to display the current number of complaints
 router.get('/api/report', controller.complaints.getComplaintReport);
 
+// to be called when you've reached a train line's detail page, and have sellected a route
+// Params : route_id
+router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
+
+// to be called at the main page so users can see routes experiencing problems at a glance (no params)
+router.get('/api/report/gettotalcomplaintcounts', controller.complaints.getTotalComplaintCounts);
+
   // Params: type, stop_id, route_id
-  // TODO : here's what we'll be using to add complaints
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
 router.post('/api/report/add', controller.complaints.addComplaintReport);
 
@@ -106,6 +112,7 @@ router.get('/api/test/updatedb', controller.test.testUpdateDb); // This should p
 router.get('/api/test/timesbystop', controller.test.testSchedByStop);
 router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
 router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
+
 
 // Session tester
 router.get('/api/test/session', controller.users.testSession);
