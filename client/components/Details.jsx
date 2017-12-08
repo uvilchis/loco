@@ -16,7 +16,8 @@ export default class Details extends React.Component {
       delayed : 0,
       closed : 0,
       accident: 0,
-      crowded : 0
+      crowded : 0,
+      routeIssues : {}
     };
     this.addVote = this.addVote.bind(this);
     this.downVote = this.downVote.bind(this);
@@ -27,12 +28,11 @@ export default class Details extends React.Component {
   componentDidMount() {
     // 1) The number of complaints : we have that endpoint
     // 2) when we incorporate a comments page, we'll need to display those too (priority TBD)
-    // TODO: Come up with a way to retrieve the total number of complaints across all categories for a particular route/line
     // TODO: Come up with a way for app to detect whether its a weekday, saturday or sunday
     // TODO: Come up with a way to change schedules according to whether its satuday, sunday or a weekday
-    // TODO: The routes send back 404s if no complaints exists; we'd need to change that logic, so if no complaint exists, we send back something we can work with (boolean?)
     let routeId = this.props.match.params.routeId;
     this.setState({ routeId }, () => {
+      // sets the routeId in the parent state
       axios.get('/api/route/stops', {
         params: { route_id: this.state.routeId }
       })
@@ -43,6 +43,17 @@ export default class Details extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+      // sends the request that sends back if the route is experiencing problems
+      axios.get('/api/report/typecomplaintsbyroute', {
+        params : { route_id : this.state.routeId }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({routeIssues : data}, () => console.log(this.state.routeIssues));
+      })
+      .catch(err => {
+        console.log(err)
+      });
+
     });
   }
 
@@ -150,23 +161,21 @@ export default class Details extends React.Component {
           Route: {this.state.routeId}
         </div>
         <div className="vote-row">
-          <div className="vote-count">
-            TBD: {this.state.upvotes}
-          </div>
-          <button onClick={this.addVote}>
-            (thumbs up)
-          </button>
+        <div style={{display: "inline-block", marginRight: "7px"}} onClick={() => {this.handleComplaintSubmit('delayed')}}>
+          Delayed : {this.state.routeIssues.delayed}
         </div>
-        <div className="vote-row">
-          <div className="vote-count">
-            {this.state.downVotes}
-          </div>
-          <button onClick={this.downVote}>
-            (thumbs down)
-          </button>
+        <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('closed')}}>
+          Closed : {this.state.routeIssues.closed}
+        </div>
+        <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('accident')}}>
+          Accident : {this.state.routeIssues.accident}
+        </div>
+        <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('crowded')}}>
+          Crowded : {this.state.routeIssues.crowded}
+        </div>
         </div>
         <div className="schedule">
-          <div className="adj-sched">
+          <div className="adj-sched" style={{display: "inline-block", marginRight: "7px"}}>
             Uptown Schedule:
             {this.state.stations.N ?
               <select onChange={this.handleChange}>
@@ -174,7 +183,7 @@ export default class Details extends React.Component {
                   <option key={idx} value={element.stop_id}>{element.stop_name}</option>)}
               </select> : null}
           </div>
-          <div className="adj-sched">
+          <div className="adj-sched" style={{display: "inline-block", marginRight: "7px"}}>
             Downtown Schedule:
             {this.state.stations.S ?
               <select onChange={this.handleChange}>
@@ -188,22 +197,9 @@ export default class Details extends React.Component {
             })}
           </div>
           <div className="user-comments">
-            Reported Complaints:
             {this.state.comments.map((comment, idx) => {
               return <div key={idx}>{comment}</div>
             })}
-          </div>
-          <div onClick={() => {this.handleComplaintSubmit('delayed')}}>
-            Delayed : {this.state.delayed}
-          </div>
-          <div onClick={() => {this.handleComplaintSubmit('closed')}}>
-            Closed : {this.state.closed}
-          </div>
-          <div onClick={() => {this.handleComplaintSubmit('accident')}}>
-            Accident : {this.state.accident}
-          </div>
-          <div onClick={() => {this.handleComplaintSubmit('crowded')}}>
-            Crowded : {this.state.crowded}
           </div>
         </div>
       </div>

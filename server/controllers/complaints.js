@@ -41,9 +41,30 @@ const getComplaintReport = (req, res) => {
   }
 };
 
+const getTypeComplaintsByRoute = (req, res) => {
+  let routeId = req.query.route_id;
+  let test = instance.getTypeComplaintsByRoute(routeId);
+  if (test) {
+    res.send(test);
+  } else {
+    res.sendStatus(404)
+  }
+}
+
+const getTotalComplaintCounts = (req, res) => {
+  let test = instance.getTotalComplaintCounts()
+  if (test) {
+    res.send(test)
+  } else {
+    res.sendStatus(404)
+  }
+}
+
 module.exports = {
   addComplaint,
   addComplaintReport,
   subtractComplaintReport,
-  getComplaintReport
+  getComplaintReport,
+  getTypeComplaintsByRoute,
+  getTotalComplaintCounts
 };
