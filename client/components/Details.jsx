@@ -193,7 +193,7 @@ export default class Details extends React.Component {
         </div>
         <div className="vote-row">
         <div style={{display: "inline-block", marginRight: "7px"}} onClick={() => {this.handleComplaintSubmit('delayed')}}>
-          Accident : {this.state.routeIssues.delayed}
+          Delayed : {this.state.routeIssues.delayed}
         </div>
         <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('closed')}}>
           Closed : {this.state.routeIssues.closed}
