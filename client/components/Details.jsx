@@ -6,21 +6,18 @@ export default class Details extends React.Component {
     super(props);
     this.state = {
       routeId: '',
-      upvotes: 0,
-      downvotes: 0,
       comments: [],
-      staticSched: [],
-      realTimeSched: [],
+      staticSched : false,
+      uptownSched: [],
+      downtownSched :[],
       stations : {},
       value : '',
+      routeIssues : {},
       delayed : 0,
       closed : 0,
       accident: 0,
-      crowded : 0,
-      routeIssues : {}
+      crowded : 0
     };
-    this.addVote = this.addVote.bind(this);
-    this.downVote = this.downVote.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleComplaintSubmit = this.handleComplaintSubmit.bind(this);
   }
@@ -43,7 +40,112 @@ export default class Details extends React.Component {
       .catch((err) => {
         console.log(err);
       });
-      // sends the request that sends back if the route is experiencing problems
+      // sends the request that returns counts across problem categories experienced by the route
+      axios.get('/api/report/typecomplaintsbyroute', {
+        params : { route_id : this.state.routeId }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({routeIssues : data}, () => console.log(this.state.routeIssues));
+      })
+      .catch(err => {
+        console.log(err)
+      });
+    });
+  }
+
+  handleChange(event) {
+    this.setState({value : event.target.value}, () => {
+      let north = this.state.value
+      let south = this.state.value.replace(/N$/, 'S')
+      console.log(south)
+
+      axios.get('/api/times/stoproute', {
+        params : {
+          stop_id : `${north}`,
+          route_id : this.state.routeId,
+          route_type : 'wkd'
+        }
+      })
+      .then(({ data }) => {
+        let currentTime = new Date().toLocaleTimeString('en-GB')
+        let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
+        console.log(data)
+        this.setState({uptownSched: relevantSched})
+        this.setState({staticSched: true})
+      })
+      .catch((error) => console.log(error));
+
+      axios.get('/api/times/stoproute', {
+        params : {
+          stop_id : `${south}`,
+          route_id : this.state.routeId,
+          route_type : 'wkd'
+        }
+      })
+      .then(({ data }) => {
+        let currentTime = new Date().toLocaleTimeString('en-GB')
+        let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
+        console.log(data)
+        this.setState({downtownSched: relevantSched})
+      })
+      .catch((error) => console.log(error));
+
+      axios.get('/api/report', {
+        params : {
+          type : 'delayed',
+          stop_id : this.state.value,
+          route_id : this.state.routeId
+        }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({delayed : data.count}, () => console.log(this.state.delayed));
+      })
+      .catch(err => {
+        this.setState({delayed: 0})
+      });
+
+      axios.get('/api/report', {
+        params : {
+          type : 'closed',
+          stop_id : this.state.value,
+          route_id : this.state.routeId
+        }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({closed : data.count}, () => console.log(this.state.closed));
+      })
+      .catch(err => {
+        this.setState({closed: 0})
+      });
+
+      axios.get('/api/report', {
+        params : {
+          type : 'accident',
+          stop_id : this.state.value,
+          route_id : this.state.routeId
+        }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({accident : data.count}, () => console.log(this.state.accident));
+      })
+      .catch(err => {
+        this.setState({accident: 0})
+      });
+
+      axios.get('/api/report', {
+        params : {
+          type : 'crowded',
+          stop_id : this.state.value,
+          route_id : this.state.routeId
+        }
+      }).then(({ data }) => {
+        console.log(data)
+        this.setState({crowded : data.count}, () => console.log(this.state.crowded));
+      })
+      .catch(err => {
+        this.setState({crowded: 0})
+      });
+
       axios.get('/api/report/typecomplaintsbyroute', {
         params : { route_id : this.state.routeId }
       }).then(({ data }) => {
@@ -54,78 +156,7 @@ export default class Details extends React.Component {
         console.log(err)
       });
 
-    });
-  }
 
-  addVote(e) {
-    // e.preventDefault()
-    // this.setState({
-    //   upvotes: this.state.upvotes + 1
-    // })
-  }
-
-  downVote(e) {
-    // e.preventDefault()
-    // this.setState({
-    //   downVotes: this.state.downVotes + 1
-    // }, this.props.setAppState('deets'));
-  }
-
-  handleChange(event) {
-    this.setState({value : event.target.value}, () => {
-      axios.get('/api/times/stoproute', {
-        params : {
-          stop_id : this.state.value,
-          route_id : this.state.routeId,
-          route_type : 'wkd'
-        }
-      })
-      .then(({ data }) => {
-        let currentTime = new Date().toLocaleTimeString('en-GB')
-        let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
-        console.log(data)
-        this.setState({staticSched : relevantSched})
-
-        // TODO : FIX THIS JANKY MESS
-
-        axios.get('/api/report', {
-          params : {
-            type : 'delayed',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        })
-        .then(data => this.setState({delayed : data.data.count}))
-        .catch(err => this.setState({delayed: 0}, () => console.log(err)));
-
-        axios.get('/api/report', {
-          params : {
-            type : 'closed',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        }).then(data => { this.setState({closed : data.data.count}) })
-          .catch(err => this.setState({closed : 0}, () => console.log(err)));
-
-        axios.get('/api/report', {
-          params : {
-            type : 'accident',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        }).then(data => { this.setState({accident : data.data.count}) })
-          .catch(err => this.setState({accident: 0}, () => console.log(err)));
-
-        axios.get('/api/report', {
-          params : {
-            type : 'crowded',
-            stop_id : this.state.value,
-            route_id : this.state.routeId
-          }
-        }).then(data => { this.setState({crowded : data.data.count}) })
-          .catch(err => this.setState({crowded: 0}, () => console.log(err)));
-      })
-      .catch((error) => console.log(error));
     });
   }
 
@@ -138,16 +169,16 @@ export default class Details extends React.Component {
     .then(data => {
       switch (true) {
         case input === 'delayed':
-          this.setState({delayed : data.data.count})
+          this.setState({delayed : data.data.count}, () => console.log(data.data.count))
           break;
         case input === 'closed':
-          this.setState({closed : data.data.count})
+          this.setState({closed : data.data.count}, ()=> console.log(data.data.count))
           break;
         case input === 'accident':
-          this.setState({accident: data.data.count})
+          this.setState({accident: data.data.count}, ()=> console.log(data.data.count))
           break;
         case input === 'crowded':
-          this.setState({crowded: data.data.count})
+          this.setState({crowded: data.data.count}, ()=> console.log(data.data.count))
           break;
       }
     })
@@ -162,7 +193,7 @@ export default class Details extends React.Component {
         </div>
         <div className="vote-row">
         <div style={{display: "inline-block", marginRight: "7px"}} onClick={() => {this.handleComplaintSubmit('delayed')}}>
-          Delayed : {this.state.routeIssues.delayed}
+          Accident : {this.state.routeIssues.delayed}
         </div>
         <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('closed')}}>
           Closed : {this.state.routeIssues.closed}
@@ -174,25 +205,28 @@ export default class Details extends React.Component {
           Crowded : {this.state.routeIssues.crowded}
         </div>
         </div>
-        <div className="schedule">
+        <div className="station_select">
+        Select a station
+        {
+          this.state.stations.N ?
+          <select onChange={this.handleChange}>
+            {
+              this.state.stations.N.map((element, idx) =>
+              <option key={idx} value={element.stop_id}>{element.stop_name}</option>)
+            }
+          </select> :
+          null
+        }
+        </div>
           <div className="adj-sched" style={{display: "inline-block", marginRight: "7px"}}>
-            Uptown Schedule:
-            {this.state.stations.N ?
-              <select onChange={this.handleChange}>
-                {this.state.stations.N.map((element, idx) =>
-                  <option key={idx} value={element.stop_id}>{element.stop_name}</option>)}
-              </select> : null}
+            {this.state.staticSched ? <h1>Uptown</h1> : null}
+            {this.state.uptownSched.map((element, idx) => {
+              return <div key={idx}>{element.arrival_time}</div>
+            })}
           </div>
           <div className="adj-sched" style={{display: "inline-block", marginRight: "7px"}}>
-            Downtown Schedule:
-            {this.state.stations.S ?
-              <select onChange={this.handleChange}>
-                {this.state.stations.S.map((element, idx) =>
-                  <option key={idx} value={element.stop_id}>{element.stop_name}</option>)}
-              </select> : null}
-          </div>
-          <div className="adj-sched">
-            {this.state.staticSched.map((element, idx) => {
+            {this.state.staticSched ? <h1>Downtown</h1> : null}
+            {this.state.downtownSched.map((element, idx) => {
               return <div key={idx}>{element.arrival_time}</div>
             })}
           </div>
@@ -201,8 +235,32 @@ export default class Details extends React.Component {
               return <div key={idx}>{comment}</div>
             })}
           </div>
+
+          {this.state.staticSched ? <h1>Complaints at This Station</h1> : null}
+
+          {
+            this.state.staticSched ?
+            <div className="complaints">
+              <div>
+                <div style={{display: "inline-block", marginRight: "7px"}}>Delayed : {this.state.delayed}</div>
+                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('delayed')}> + </button>
+              </div>
+              <div>
+                <div style={{display: "inline-block", marginRight: "7px"}}>Closed : {this.state.closed}</div>
+                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('closed')}> + </button>
+              </div>
+              <div>
+                <div style={{display: "inline-block", marginRight: "7px"}}>Accident : {this.state.accident}</div>
+                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('accident')}> + </button>
+              </div>
+              <div>
+                <div style={{display: "inline-block", marginRight: "7px"}}>Crowded : {this.state.crowded}</div>
+                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('crowded')}> + </button>
+              </div>
+            </div> :
+            null
+          }
         </div>
-      </div>
     );
   }
 }
