@@ -6,7 +6,6 @@ export default class Details extends React.Component {
     super(props);
     this.state = {
       routeId: '',
-      comments: [],
       staticSched : false,
       uptownSched: [],
       downtownSched :[],
@@ -27,7 +26,8 @@ export default class Details extends React.Component {
     // 2) when we incorporate a comments page, we'll need to display those too (priority TBD)
     // TODO: Come up with a way for app to detect whether its a weekday, saturday or sunday
     // TODO: Come up with a way to change schedules according to whether its satuday, sunday or a weekday
-    let routeId = this.props.match.params.routeId;
+    let routeId = this.props.match.params.routeId === 'SIR' ? 'SI' : this.props.match.params.routeId
+
     this.setState({ routeId }, () => {
       // sets the routeId in the parent state
       axios.get('/api/route/stops', {
@@ -230,14 +230,7 @@ export default class Details extends React.Component {
               return <div key={idx}>{element.arrival_time}</div>
             })}
           </div>
-          <div className="user-comments">
-            {this.state.comments.map((comment, idx) => {
-              return <div key={idx}>{comment}</div>
-            })}
-          </div>
-
           {this.state.staticSched ? <h1>Complaints at This Station</h1> : null}
-
           {
             this.state.staticSched ?
             <div className="complaints">

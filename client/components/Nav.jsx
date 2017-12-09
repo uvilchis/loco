@@ -17,7 +17,7 @@ export default class Nav extends React.Component {
     let routeId = this.props.match.params.routeId;
     axios.get(`/api/service/${routeId}`)
     .then(({ data }) => {
-      console.log(data);
+      // console.log(data.lines);
       this.setState({
         routes: data.name,
         status: data.status,
@@ -32,14 +32,22 @@ export default class Nav extends React.Component {
     let service = this.state.status === 'GOOD SERVICE';
     return (
       <div className="nav-properties">
-        {this.state.routes.split('').map((routeName, idx) =>
+        {
+          this.state.routes === 'SIR' ?
           <TrainLine
-            key={idx}
             redir={'detail'}
-            name={routeName}
+            name={'SIR'}
             status={this.state.status}
-          />
-        )}
+          /> :
+          this.state.routes.split('').map((routeName, idx) =>
+            <TrainLine
+              key={idx}
+              redir={'detail'}
+              name={routeName}
+              status={this.state.status}
+            />
+          )
+        }
         <h4>{this.state.text}</h4>
       </div>
     );
