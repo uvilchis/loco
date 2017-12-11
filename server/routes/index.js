@@ -74,8 +74,10 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
   // Params: type, stop_id, route_id
 router.get('/api/report', controller.complaints.getComplaintReport);
 
-// to be called when you've reached a train line's detail page, and have sellected a route
-// Params : route_id
+// to be called when you've reached a train line's detail page, and have selected a route
+// Params : sub, route_id
+router.get('/api/report/stoproute', controller.complaints.getReportsByStopAndRoute);
+
 router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
 
 // to be called at the main page so users can see routes experiencing problems at a glance (no params)

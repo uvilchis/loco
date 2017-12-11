@@ -7,7 +7,7 @@ const instance = axios.create({
 
 
 const getServiceData = (req, res) => {
-  let sub = req.params.sub; 
+  let sub = req.query.sub; 
   instance.get('/loco/service', {
     params : { sub }
   })
@@ -19,7 +19,7 @@ const getServiceData = (req, res) => {
 };
 
 const getServiceRouteData = (req, res) => {
-  let sub = req.params.sub;
+  let sub = req.query.sub;
   let routeId = req.params.route_id;
   instance.get(`/loco/service/route`, {
     params : {

@@ -4,7 +4,17 @@ const client = redis.createClient();
 client.on('ready', () => console.log('redis loaded'));
 client.on('error', (error) => console.log('redis error:', error));
 
+/* Constants */
 const REPORTS = 'reports';
+
+/* Helper functions */
+
+const _checkMems = (memStr, params = []) => params.reduce((acc, b) => {
+  if (!acc) { return acc; }
+  return acc = memStr.includes(b);
+}, true);
+
+const _mapPromise = (tasks) => Promise.all(tasks.map((task) => new Promise(task)));
 
 /**
  * Cleaner helper method, runs after the current members are gathered. This is to try and
@@ -19,12 +29,13 @@ const _cleaner = () => {
     members.forEach((mem) => {
       client.zremrangebyscore(mem, '-inf', Date.now() - (1000 * 60 * 30), (error, result) => {
         if (error) { throw 'failed to clean'; }
-        console.log('cleaned');
       });
     });
+    console.log('cleaned');
   });
 };
 
+// Initialize cleaner
 _cleaner();
 
 // Gross
@@ -42,6 +53,9 @@ const addComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve,
   });
 });
 
+/**
+ * Get complaint report for a certain type, stopId, and routeId
+ */
 const getComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
   let name = `${sub}-${type}-${stopId}-${routeId}`;
   client.sismember(REPORTS, name, (error, result) => {
@@ -54,15 +68,23 @@ const getComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve,
   });
 });
 
-const getCountsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
+/**
+ * Get all available complaint reports at a certain stopId and routeId
+ */
+const getReportsByStopAndRoute = (sub, stopId, routeId) => new Promise((resolve, reject) => {
   client.smembers(REPORTS, (error, members) => {
-    members = members.filter((mem) => mem.includes(sub) && mem.includes(routeId));
-    let count = 0;
-
+    members = members.filter((member) => _checkMems(member, [sub, stopId, routeId]))
+      .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count) => cb({ name: name.split('-')[1], count })));
+    _mapPromise(members).then((result) => resolve(result));
   });
+});
+
+const getTypeComplaintsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
+  resolve({ test: true });
 });
 
 module.exports = {
   addComplaintReport,
-  getComplaintReport
+  getComplaintReport,
+  getReportsByStopAndRoute
 };

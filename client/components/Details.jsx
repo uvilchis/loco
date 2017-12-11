@@ -10,12 +10,14 @@ export default class Details extends React.Component {
       uptownSched: [],
       downtownSched :[],
       stations : {},
-      value : '',
-      routeIssues : {},
-      delayed : 0,
-      closed : 0,
-      accident: 0,
-      crowded : 0
+      stopId : '',
+      // Default complaints
+      complaints: [
+        { name: 'delayed', count: 0 }, 
+        { name: 'closed', count: 0 },
+        { name: 'accident', count: 0 }, 
+        { name: 'crowded', count: 0 }
+      ]
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleComplaintSubmit = this.handleComplaintSubmit.bind(this);
@@ -27,162 +29,74 @@ export default class Details extends React.Component {
     // TODO: Come up with a way for app to detect whether its a weekday, saturday or sunday
     // TODO: Come up with a way to change schedules according to whether its satuday, sunday or a weekday
     let routeId = this.props.match.params.routeId === 'SIR' ? 'SI' : this.props.match.params.routeId
-
-    this.setState({ routeId }, () => {
-      // sets the routeId in the parent state
-      axios.get('/api/route/stops', {
-        params: { route_id: this.state.routeId }
-      })
-      .then(({ data }) => {
-        console.log(data);
-        this.setState({stations: data}, () => console.log(this.state.stations));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      // sends the request that returns counts across problem categories experienced by the route
-      axios.get('/api/report/typecomplaintsbyroute', {
-        params : { route_id : this.state.routeId }
-      }).then(({ data }) => {
-        console.log(data)
-        this.setState({routeIssues : data}, () => console.log(this.state.routeIssues));
-      })
-      .catch(err => {
-        console.log(err)
-      });
-    });
-  }
-
-  handleChange(event) {
-    this.setState({value : event.target.value}, () => {
-      let north = this.state.value
-      let south = this.state.value.replace(/N$/, 'S')
-      console.log(south)
-
-      axios.get('/api/times/stoproute', {
-        params : {
-          stop_id : `${north}`,
-          route_id : this.state.routeId,
-          route_type : 'wkd'
-        }
-      })
-      .then(({ data }) => {
-        let currentTime = new Date().toLocaleTimeString('en-GB')
-        let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
-        console.log(data)
-        this.setState({uptownSched: relevantSched})
-        this.setState({staticSched: true})
-      })
-      .catch((error) => console.log(error));
-
-      axios.get('/api/times/stoproute', {
-        params : {
-          stop_id : `${south}`,
-          route_id : this.state.routeId,
-          route_type : 'wkd'
-        }
-      })
-      .then(({ data }) => {
-        let currentTime = new Date().toLocaleTimeString('en-GB')
-        let relevantSched = data.filter((el) => el.arrival_time >= currentTime).slice(0, 10);
-        console.log(data)
-        this.setState({downtownSched: relevantSched})
-      })
-      .catch((error) => console.log(error));
-
-      axios.get('/api/report', {
-        params : {
-          type : 'delayed',
-          stop_id : this.state.value,
-          route_id : this.state.routeId
-        }
-      }).then(({ data }) => {
-        console.log(data)
-        this.setState({delayed : data.count}, () => console.log(this.state.delayed));
-      })
-      .catch(err => {
-        this.setState({delayed: 0})
-      });
-
-      axios.get('/api/report', {
-        params : {
-          type : 'closed',
-          stop_id : this.state.value,
-          route_id : this.state.routeId
-        }
-      }).then(({ data }) => {
-        console.log(data)
-        this.setState({closed : data.count}, () => console.log(this.state.closed));
-      })
-      .catch(err => {
-        this.setState({closed: 0})
-      });
-
-      axios.get('/api/report', {
-        params : {
-          type : 'accident',
-          stop_id : this.state.value,
-          route_id : this.state.routeId
-        }
-      }).then(({ data }) => {
-        console.log(data)
-        this.setState({accident : data.count}, () => console.log(this.state.accident));
-      })
-      .catch(err => {
-        this.setState({accident: 0})
-      });
-
-      axios.get('/api/report', {
-        params : {
-          type : 'crowded',
-          stop_id : this.state.value,
-          route_id : this.state.routeId
-        }
-      }).then(({ data }) => {
-        console.log(data)
-        this.setState({crowded : data.count}, () => console.log(this.state.crowded));
-      })
-      .catch(err => {
-        this.setState({crowded: 0})
-      });
-
-      axios.get('/api/report/typecomplaintsbyroute', {
-        params : { route_id : this.state.routeId }
-      }).then(({ data }) => {
-        console.log(data)
-        this.setState({routeIssues : data}, () => console.log(this.state.routeIssues));
-      })
-      .catch(err => {
-        console.log(err)
-      });
-
-
-    });
-  }
-
-  handleComplaintSubmit(input) {
-    axios.post('/api/report/add', {
-      type : input,
-      stop_id : this.state.value,
-      route_id : this.state.routeId
-    })
-    .then(data => {
-      switch (true) {
-        case input === 'delayed':
-          this.setState({delayed : data.data.count}, () => console.log(data.data.count))
-          break;
-        case input === 'closed':
-          this.setState({closed : data.data.count}, ()=> console.log(data.data.count))
-          break;
-        case input === 'accident':
-          this.setState({accident: data.data.count}, ()=> console.log(data.data.count))
-          break;
-        case input === 'crowded':
-          this.setState({crowded: data.data.count}, ()=> console.log(data.data.count))
-          break;
+    axios.get('/api/route/stops', {
+      params: { 
+        sub: 'mta', 
+        route_id: routeId 
       }
     })
-    .catch(err => console.log(err))
+    .then(({ data }) => {
+      this.setState({ routeId, stations: data })
+    })
+    .catch((error) => console.log(error));
+  }
+
+  // Need to implement some way of checking for types of routes, e.g. WKD vs SAT vs SUN
+  handleChange(event) {
+    this.setState({ stopId: event.target.value}, () => {
+      let newState= {};
+      let time = new Date().toLocaleTimeString('en-GB');
+
+      axios.get('/api/times/stoproute/', {
+        params: {
+          sub: 'mta',
+          stop_id: this.state.stopId,
+          route_id: this.state.routeId
+        }
+      })
+      .then(({ data }) => {
+        newState.uptownSched = data.filter((el) => el.arrival_time >= time).slice(0, 10);
+        return axios.get('/api/times/stoproute/', {
+          params: {
+            sub: 'mta',
+            stop_id: this.state.stopId.replace(/N$/, 'S'),
+            route_id: this.state.routeId
+          }
+        });
+      })
+      .then(({ data }) => {
+        newState.downtownSched = data.filter((el) => el.arrival_time >= time).slice(0, 10);
+        return axios.get('/api/report/stoproute', {
+          params: {
+            sub: 'mta',
+            stop_id: this.state.stopId,
+            route_id: this.state.routeId
+          }
+        });
+      })
+      .then(({ data }) => {
+        newState.complaints = Object.assign(this.state.complaints, data);
+        newState.staticSched = true;
+        this.setState(newState);
+      })
+      .catch((error) => console.log(error));
+    });
+  }
+
+  handleComplaintSubmit(event) {
+    let value = event.target.value;
+    axios.post('/api/report/add', {
+      sub: 'mta',
+      type: value,
+      stop_id: this.state.stopId,
+      route_id: this.state.routeId
+    })
+    .then(({ data }) => {
+      let complaints = this.state.complaints.slice();
+      complaints.find((el) => el.name === value).count = data.count;
+      this.setState({ complaints });
+    })
+    .catch((error) => console.log(error));
   }
 
   render() {
@@ -191,67 +105,41 @@ export default class Details extends React.Component {
         <div className="line-logo">
           Route: {this.state.routeId}
         </div>
-        <div className="vote-row">
-        <div style={{display: "inline-block", marginRight: "7px"}} onClick={() => {this.handleComplaintSubmit('delayed')}}>
-          Delayed : {this.state.routeIssues.delayed}
-        </div>
-        <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('closed')}}>
-          Closed : {this.state.routeIssues.closed}
-        </div>
-        <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('accident')}}>
-          Accident : {this.state.routeIssues.accident}
-        </div>
-        <div style={{display: "inline-block", marginRight: "7px"}}  onClick={() => {this.handleComplaintSubmit('crowded')}}>
-          Crowded : {this.state.routeIssues.crowded}
-        </div>
-        </div>
         <div className="station_select">
-        Select a station
-        {
-          this.state.stations.N ?
+        Station:
+        {this.state.stations.N ?
           <select onChange={this.handleChange}>
-            {
-              this.state.stations.N.map((element, idx) =>
+            <option>Select a station</option>
+            {this.state.stations.N.map((element, idx) =>
               <option key={idx} value={element.stop_id}>{element.stop_name}</option>)
             }
-          </select> :
-          null
+          </select> : null
         }
         </div>
           <div className="adj-sched" style={{display: "inline-block", marginRight: "7px"}}>
             {this.state.staticSched ? <h1>Uptown</h1> : null}
-            {this.state.uptownSched.map((element, idx) => {
-              return <div key={idx}>{element.arrival_time}</div>
-            })}
+            {this.state.uptownSched.map((element, idx) => 
+              <div key={idx}>{element.arrival_time}</div>)
+            }
           </div>
           <div className="adj-sched" style={{display: "inline-block", marginRight: "7px"}}>
             {this.state.staticSched ? <h1>Downtown</h1> : null}
-            {this.state.downtownSched.map((element, idx) => {
-              return <div key={idx}>{element.arrival_time}</div>
-            })}
+            {this.state.downtownSched.map((element, idx) =>
+              <div key={idx}>{element.arrival_time}</div>)
+            }
           </div>
           {this.state.staticSched ? <h1>Complaints at This Station</h1> : null}
-          {
-            this.state.staticSched ?
+          {this.state.staticSched ?
             <div className="complaints">
-              <div>
-                <div style={{display: "inline-block", marginRight: "7px"}}>Delayed : {this.state.delayed}</div>
-                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('delayed')}> + </button>
-              </div>
-              <div>
-                <div style={{display: "inline-block", marginRight: "7px"}}>Closed : {this.state.closed}</div>
-                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('closed')}> + </button>
-              </div>
-              <div>
-                <div style={{display: "inline-block", marginRight: "7px"}}>Accident : {this.state.accident}</div>
-                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('accident')}> + </button>
-              </div>
-              <div>
-                <div style={{display: "inline-block", marginRight: "7px"}}>Crowded : {this.state.crowded}</div>
-                <button style={{display: "inline-block"}} onClick={() => this.handleComplaintSubmit('crowded')}> + </button>
-              </div>
-            </div> :
-            null
+              {this.state.complaints.map((complaint, idx) => 
+                <div key={idx}>
+                  <div style={{ display: "inline-block", marginRight: "7px"}}>
+                    {`${complaint.name} : ${complaint.count}`}
+                  </div>
+                  <button value={complaint.name} style={{ display: "inline-block" }} onClick={this.handleComplaintSubmit}> + </button>
+                </div>)
+              }
+            </div> : null
           }
         </div>
     );
