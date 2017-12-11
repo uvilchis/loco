@@ -30,7 +30,7 @@ const addComplaintReport = (type, stopId, routeId) => {
   let complaint = _instance.complaints.find((a) => a.type === type);
   if (complaint) {
     let count = complaint.addReport({ stopId, routeId });
-    return count < 0 ? false : count;
+    return count;
   } else {
     return false;
   }
