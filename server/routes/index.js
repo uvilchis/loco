@@ -5,23 +5,31 @@ const env = require('../env/index.js')
 
 var passport = null; // Skeevy, fix later
 
+/* User Routes */
 const setPassport = (passportInstance) => {
   passport = passportInstance;
+
+  // Session
+  router.get('/api/user/start', controller.users.checkUserAuth);
+
+  // Google Auth
   router.get('/api/user/google', passport.authenticate('google', {
     approvalPrompt: 'force',
     scope: ['profile']
   }));
   router.get('/api/user/google/return', passport.authenticate('google'), controller.users.googleAuth);
+
+  // Local Auth
+  
+  // Signup
+  router.post('/api/user/signup', controller.users.signUp);
+
+  // Local login
+  router.post('/api/user/login', passport.authenticate('local'), controller.users.logIn);
+  router.get('/api/user/logout', controller.users.logOut);
 };
 
-
-// router.use('/api/user/*', checkUser);
-
 // User routes
-router.post('/api/user/signup', controller.users.signUp);
-router.post('/api/user/login', controller.users.logIn);
-router.post('/api/user/logout', controller.users.logOut);
-router.get('/api/user/start', controller.users.checkUserAuth);
 
 
 

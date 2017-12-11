@@ -68,7 +68,7 @@ passport.use(new LocalStrategy(
     User.findOne({ username }, (error, user) => {
       if (error) { return done(error); }
       if (user) { return user.comparePassword(password); } 
-      return done('user not found');
+      return done('user not found', null);
     })
     .then((user) => done(null, user))
     .catch((error) => done(error, null));
