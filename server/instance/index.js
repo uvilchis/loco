@@ -58,6 +58,10 @@ const getComplaintReport = (type, stopId, routeId) => {
 //  gets all reports of a particular type by route (i.e. delayed, closed, accident, crowded)
 // will become getTypeComplaintsByRoute
 const getTypeComplaintsByRoute = (routeId) => {
+  // return _instance.complaints.reduce((acc, complaint) => {
+  //   acc[complaint.type] = complaint.getCountsByRoute({ sub, routeId });
+  //   return acc;
+  // }, {});
   let complaints = {}
   let delayed = _instance.complaints.find((a) => a.type === 'delayed')
   let closed = _instance.complaints.find((a) => a.type === 'closed')
