@@ -61,15 +61,14 @@ passport.use(new GoogleStrategy({
   })
 );
 
+// This needs to account for whether or not the use is pressing sign-up
+// Will have to add the user at signup then run passport authentication
 passport.use(new LocalStrategy(
   function(username, password, done) {
     User.findOne({ username }, (error, user) => {
       if (error) { return done(error); }
-      if (user) {
-        return user.comparePassword(password);
-      } else {
-        return new User({ username, password }).save();
-      }
+      if (user) { return user.comparePassword(password); } 
+      return done('user not found');
     })
     .then((user) => done(null, user))
     .catch((error) => done(error, null));
