@@ -19,10 +19,10 @@ export default class App extends React.Component {
   componentDidMount() {
     console.log(this.props);
     let dataObj = {};
-    axios.get('/api/service')
+    axios.get('/api/service?sub=mta')
     .then((data) => {
       dataObj.trains = data.data.lines;
-      return axios.get('/api/routes');
+      return axios.get('/api/routes?sub=mta');
     })
     .then((data) => {
       dataObj.routes = data.data;

@@ -2,45 +2,36 @@
 const axios = require('axios')
 
 const instance = axios.create({
-  baseURL : 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com:3001'
-})
+  baseURL : 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
+});
 
 
 const getServiceData = (req, res) => {
+  let sub = req.query.sub; 
   instance.get('/loco/service', {
-    params : { sub: 'mta'}
+    params : { sub }
   })
-  .then(response => {
-    res.send(response.data)
-  })
-  .catch(err => res.sendStatus(404))
-  // if (data) {
-  //   res.send(data);
-  // } else {
-  //   res.sendStatus(404);
-  // }
+  .then((response) =>  res.send(response.data))
+  .catch((error) => {
+    console.log(error);
+    res.sendStatus(404)
+  });
 };
 
 const getServiceRouteData = (req, res) => {
+  let sub = req.query.sub;
   let routeId = req.params.route_id;
-  //let data = instance.getServiceRouteData(routeId);
   instance.get(`/loco/service/route`, {
     params : {
       sub: 'mta',
-      route_id : `${routeId}`
+      route_id : routeId
     }
   })
-  .then(response => {
-    res.send(response.data)
-  })
-  .catch(err => {
-    console.log('error', err.data)
-  })
-  // if (data) {
-  //   res.send(data);
-  // } else {
-  //   res.sendStatus(404);
-  // }
+  .then((response) => res.send(response.data))
+  .catch((error) => {
+    console.log('error', error.data);
+    res.sendStatus(404);
+  });
 };
 
 module.exports = {

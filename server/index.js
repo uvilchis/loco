@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoDb = require('./db/mongo').db;
@@ -46,23 +47,33 @@ passport.use(new GoogleStrategy({
   scope: ['profile']
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log('access', accessToken);
-    console.log('refresh', refreshToken);
     User.findOne({ authId: profile.id }, (error, user) => {
-      if (user) {
-        return user;
-      } else {
-        let newUser = new User({
-          username: profile.displayName,
-          authId: profile.id
-        });
-        return newUser.save();
-      }
+      if (error) { return done(error)}
+      if (user) { return user; }
+      let newUser = new User({
+        username: profile.displayName,
+        authId: profile.id
+      });
+      return newUser.save();
     })
     .then((user) => done(null, user))
     .catch((error) => done(error, null));
   })
 );
+
+// This needs to account for whether or not the use is pressing sign-up
+// Will have to add the user at signup then run passport authentication
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username }, (error, user) => {
+      if (error) { return done(error); }
+      if (user) { return user.comparePassword(password); } 
+      return done('user not found');
+    })
+    .then((user) => done(null, user))
+    .catch((error) => done(error, null));
+  }
+));
 
 passport.serializeUser((user, done) => done(null, user._id));
 

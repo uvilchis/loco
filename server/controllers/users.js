@@ -3,10 +3,10 @@ const passport = require('passport');
 const { googleClientId, googleClientSecret } = require('../env/key');
 const User = mongoose.model('User');
 
-const isLoggedIn = (req) => req.session ? !!req.session.user : false;
+const isLoggedIn = (req) => req.user ? !!req.user : false;
 
 const checkUser = (req, res) => {
-  isLoggedIn(req) ? createSession(req, res, req.session.user) : res.sendStatus(404);
+  isLoggedIn(req) ? createSession(req, res, req.user) : res.sendStatus(404);
 };
 
 const createSession = (req, res, newUser) => req.session.regenerate(() => {
@@ -44,8 +44,8 @@ const logIn = (req, res) => {
   let user;
   User.findOne({ username: req.body.username }).exec()
   .then((userDoc) => userDoc.comparePassword(req.body.password))
-  .then((matched) => {
-    return matched[0] ? createSession(req, res, matched[1]._id) : res.sendStatus(403);
+  .then((user) => {
+    return matched[0] ? createSession(req, res, user) : res.sendStatus(403);
   })
   .catch((error) => {
     console.log(error);
