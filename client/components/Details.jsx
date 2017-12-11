@@ -18,7 +18,7 @@ export default class Details extends React.Component {
       stations : {},
       stopId : '',
       // Default complaints
-      complaints: this.defaultComplaints.slice()
+      complaints: this.defaultComplaints.map((el) => Object.assign({}, el))
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleComplaintSubmit = this.handleComplaintSubmit.bind(this);
