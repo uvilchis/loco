@@ -4,6 +4,12 @@ import axios from 'axios';
 export default class Details extends React.Component {
   constructor(props) {
     super(props);
+    this.defaultComplaints = [
+      { name: 'delayed', count: 0 }, 
+      { name: 'closed', count: 0 },
+      { name: 'accident', count: 0 }, 
+      { name: 'crowded', count: 0 }
+    ];
     this.state = {
       routeId: '',
       staticSched : false,
@@ -12,12 +18,7 @@ export default class Details extends React.Component {
       stations : {},
       stopId : '',
       // Default complaints
-      complaints: [
-        { name: 'delayed', count: 0 }, 
-        { name: 'closed', count: 0 },
-        { name: 'accident', count: 0 }, 
-        { name: 'crowded', count: 0 }
-      ]
+      complaints: this.defaultComplaints.slice()
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleComplaintSubmit = this.handleComplaintSubmit.bind(this);
@@ -75,7 +76,14 @@ export default class Details extends React.Component {
         });
       })
       .then(({ data }) => {
-        newState.complaints = Object.assign(this.state.complaints, data);
+        let defaults = this.defaultComplaints.map((a) => Object.assign({}, a));
+        let newComplaints = data.reduce((acc, b) => {
+          let temp = acc.find((el) => el.name === b.name);
+          temp ? temp.count = b.count : acc.push(b);
+          return acc;
+        }, defaults);
+
+        newState.complaints = newComplaints;
         newState.staticSched = true;
         this.setState(newState);
       })
