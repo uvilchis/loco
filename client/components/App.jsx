@@ -1,4 +1,3 @@
-
 import React from 'react';
 import axios from 'axios';
 import { Route, Link } from 'react-router-dom';
@@ -17,7 +16,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     let dataObj = {};
     axios.get('/api/service?sub=mta')
     .then((data) => {
