@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav from './Nav.jsx';
 import { Link } from 'react-router-dom';
+import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 
 const TrainLine = (props) => (
   <div>
@@ -13,15 +14,10 @@ const TrainLine = (props) => (
       </div>
       <div className={`trainline_user ${props.status === 'GOOD SERVICE' ? 'good' : 'problems'}`}>
       </div>
-      <Link className="trainline_button" to={{
-        pathname: `/${props.redir}/${props.name}`,
-        // state: {
-        //   info: this.props.info,
-        //   line: this.props.line
-        // }
-        }}>
+      <a href={`/${props.redir}/${props.name}`}><MdArrowForward /></a>
+      {/* <Link className="trainline_button" to={`/${props.redir}/${props.name}`}>
         Details
-      </Link>
+      </Link> */}
     </div>
   </div>
 );

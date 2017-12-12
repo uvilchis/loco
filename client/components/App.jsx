@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import TrainLine from './TrainLine.jsx';
 import Util from '../lib/util.js';
+import TrainHeaders from './TrainHeaders.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -18,14 +19,14 @@ export default class App extends React.Component {
   componentDidMount() {
     let dataObj = {};
     axios.get('/api/service?sub=mta')
-    .then((data) => {
-      dataObj.trains = data.data.lines;
+    .then(({ data }) => {
+      dataObj.trains = data.lines;
       return axios.get('/api/routes?sub=mta');
     })
-    .then((data) => {
-      dataObj.routes = data.data;
+    .then(({ data }) => {
+      dataObj.routes = data;
       dataObj.organized = Util.routeOrganizer(dataObj.trains, dataObj.routes);
-      this.setState(dataObj, () => console.log(dataObj));
+      this.setState(dataObj);
     })
     .catch((error) => {
       console.log(error);
@@ -34,18 +35,16 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h3 className="trainline_header">Train Status</h3>
-        <div className="trainline_container">
-          {this.state.trains.map((line, idx) =>
-            <TrainLine
-              key={idx}
-              redir={'nav'}
-              name={line.name}
-              status={line.status}
-            />
-          )}
-        </div>
+      <div className="trainline_container">
+        <TrainHeaders />
+        {this.state.trains.map((line, idx) =>
+          <TrainLine
+            key={idx}
+            redir={'nav'}
+            name={line.name}
+            status={line.status}
+          />)
+        }
       </div>
     );
   }

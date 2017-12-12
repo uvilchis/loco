@@ -11,6 +11,7 @@ import Nav from './components/Nav.jsx';
 import Details from './components/Details.jsx';
 import Survey from './components/Survey.jsx';
 import Complaint from './components/Complaint.jsx';
+import NavBar from './components/NavBar.jsx';
 
 
 class Main extends React.Component {
@@ -40,15 +41,11 @@ class Main extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <BrowserRouter>
         <div className="outer">
-          <div className="navbar">
-            <div className="logo_container">
-              <h1 className="logo"><Link to="/">Loco</Link></h1>
-              {this.state.userId ? <button onClick={this.onLogout}>Logout</button> : <Link to="/login">login</Link>}
-            </div>
-          </div>
+          <NavBar userId={this.state.userId} onLogout={this.onLogout} />
           <Switch>
             <Route exact path="/" component={App} />
             <Route path="/login" render={(props) => <Login userId={this.state.userId} handleLogin={this.handleLogin} {...props}/>} />
