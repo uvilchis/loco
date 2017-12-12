@@ -25,10 +25,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     axios.get('/api/user/start/')
-    .then(({ data }) => {
-      console.log(data);
-      this.setState({ userId: data });
-    })
+    .then(({ data }) => this.setState({ userId: data }))
     .catch((error) => console.log(error));
   }
 
@@ -38,10 +35,7 @@ class Main extends React.Component {
 
   onLogout() {
     axios.get('/api/user/logout')
-    .then((response) => {
-      console.log(response.data)
-      this.setState({ userId: null })
-    })
+    .then((response) => this.setState({ userId: null }))
     .catch((error) => console.log(error));
   }
 
