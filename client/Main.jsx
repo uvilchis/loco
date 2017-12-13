@@ -11,6 +11,7 @@ import Nav from './components/Nav.jsx';
 import Details from './components/Details.jsx';
 import Survey from './components/Survey.jsx';
 import Complaint from './components/Complaint.jsx';
+import NavBar from './components/NavBar.jsx';
 
 
 class Main extends React.Component {
@@ -25,10 +26,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     axios.get('/api/user/start/')
-    .then(({ data }) => {
-      console.log(data);
-      this.setState({ userId: data });
-    })
+    .then(({ data }) => this.setState({ userId: data }))
     .catch((error) => console.log(error));
   }
 
@@ -38,23 +36,16 @@ class Main extends React.Component {
 
   onLogout() {
     axios.get('/api/user/logout')
-    .then((response) => {
-      console.log(response.data)
-      this.setState({ userId: null })
-    })
+    .then((response) => this.setState({ userId: null }))
     .catch((error) => console.log(error));
   }
 
   render() {
+    console.log(this.state);
     return (
       <BrowserRouter>
         <div className="outer">
-          <div className="navbar">
-            <div className="logo_container">
-              <h1 className="logo"><Link to="/">Loco</Link></h1>
-              {this.state.userId ? <button onClick={this.onLogout}>Logout</button> : <Link to="/login">login</Link>}
-            </div>
-          </div>
+          <NavBar userId={this.state.userId} onLogout={this.onLogout} />
           <Switch>
             <Route exact path="/" component={App} />
             <Route path="/login" render={(props) => <Login userId={this.state.userId} handleLogin={this.handleLogin} {...props}/>} />

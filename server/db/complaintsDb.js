@@ -5,6 +5,7 @@ client.on('ready', () => console.log('redis loaded'));
 client.on('error', (error) => console.log('redis error:', error));
 
 /* Constants */
+
 const REPORTS = 'reports';
 
 /* Helper functions */
@@ -17,23 +18,27 @@ const _checkMems = (memStr, params = []) => params.reduce((acc, b) => {
 const _mapPromise = (tasks) => Promise.all(tasks.map((task) => new Promise(task)));
 
 /**
- * Cleaner helper method, runs after the current members are gathered. This is to try and
- * cut down on the inconsistency of the gap of time between executions
+ * Cleaner helper method, runs after the current members are gathered. 
+ * Will clean up old complaint reports, as well as empty members in reports
  */
-const _cleaner = () => {
+const _cleaner = () => client.smembers(REPORTS, (error, members) => {
   let time = Date.now();
-  let searchables;
-  client.smembers(REPORTS, (error, members) => {
-    let time = Date.now();
-    setTimeout(_cleaner, 1000 * 60);
-    members.forEach((mem) => {
-      client.zremrangebyscore(mem, '-inf', Date.now() - (1000 * 60 * 30), (error, result) => {
-        if (error) { throw 'failed to clean'; }
+  setTimeout(_cleaner, 1000 * 60);
+  members.forEach((mem) => {
+    client.zremrangebyscore(mem, '-inf', Date.now() - (1000 * 60 * 30), (error, result) => {
+      if (error) { throw `failed to clean ${mem} sorted set`; }
+      client.zcount(mem, '-inf', 'inf', (error, result) => {
+        if (error) { throw `failed to count ${mem} set`; }
+        if (result === 0) {
+          client.srem(REPORTS, mem, (error, result) => {
+            if (error) { throw `failed to clean ${REPORTS} set`; }
+          });
+        }
       });
     });
-    console.log('cleaned');
   });
-};
+  console.log('cleaned');
+});
 
 // Initialize cleaner
 _cleaner();

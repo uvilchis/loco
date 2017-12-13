@@ -29,8 +29,6 @@ const setPassport = (passportInstance) => {
   router.get('/api/user/logout', controller.users.logOut);
 };
 
-// User routes
-
 
 
 // Stops
