@@ -49,10 +49,13 @@ export default class Details extends React.Component {
 
   // Need to implement some way of checking for types of routes, e.g. WKD vs SAT vs SUN
   handleChange(event) {
-    this.setState({select: false})
-    this.setState({ stopId: event.target.value}, () => {
+    let dayNumber = new Date().getDay();
+    let dayTranslator = { 0:"SUN", 1:"WKD",  2:"WKD",  3:"WKD",  4:"WKD",  5:"WKD", 6:"SAT" }
+    this.setState({ select: false })
+    this.setState({ stopId: event.target.value }, () => {
       let newState = {};
       let time = new Date().toLocaleTimeString('en-GB');
+      let day = dayTranslator[dayNumber]
       axios.get('/api/times/stoproute/', {
         params: {
           sub: 'mta',
@@ -61,7 +64,7 @@ export default class Details extends React.Component {
         }
       })
       .then(({ data }) => {
-        newState.uptownSched = data.filter((el) => el.arrival_time >= time).slice(0, 10);
+        newState.uptownSched = data.filter((el) => el.arrival_time >= time && el.route_type === day).slice(0, 10);
         return axios.get('/api/times/stoproute/', {
           params: {
             sub: 'mta',
@@ -71,7 +74,7 @@ export default class Details extends React.Component {
         });
       })
       .then(({ data }) => {
-        newState.downtownSched = data.filter((el) => el.arrival_time >= time).slice(0, 10);
+        newState.downtownSched = data.filter((el) => el.arrival_time >= time && el.route_type === day).slice(0, 10);
         newState.staticSched = true;
         newState.direction = false;
         newState.select = true;
@@ -84,7 +87,6 @@ export default class Details extends React.Component {
   handleDirectionSelection(event) {
     let newState = {};
     let value = event.target.value;
-    console.log(value)
     this.setState({submissionStopId : value}, ()=> {
       axios.get('/api/report/stoproute', {
         params : {
@@ -94,7 +96,6 @@ export default class Details extends React.Component {
         }
       })
       .then(({ data }) => {
-        console.log('sent back from axios', data)
         let defaults = this.defaultComplaints.map((a) => Object.assign({}, a));
         let newComplaints = data.reduce((acc, b) => {
           let temp = acc.find((el) => el.name === b.name);
@@ -104,16 +105,13 @@ export default class Details extends React.Component {
         newState.complaints = newComplaints;
         newState.direction = true;
         this.setState(newState);
-        console.log('post state change', this.state)
       })
       .catch((error) => console.log(error));
     })
-
   }
 
   handleComplaintSubmit(event) {
     let value = event.target.getAttribute('complaintname');
-    console.log(value)
     axios.post('/api/report/add', {
       sub: 'mta',
       type: value,
