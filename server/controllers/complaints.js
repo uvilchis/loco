@@ -77,7 +77,7 @@ const getTotalComplaintCounts = (req, res) => {
   // } else {
   //   res.sendStatus(404)
   // }
-};
+}
 
 module.exports = {
   addComplaint,
