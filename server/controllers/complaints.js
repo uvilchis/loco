@@ -67,6 +67,10 @@ const getReportsByStopAndRoute = (req, res) => {
 const getTypeComplaintsByRoute = (req, res) => res.sendStatus(200);
 
 const getTotalComplaintCounts = (req, res) => {
+<<<<<<< Updated upstream
+=======
+  console.log(typeof req.query.sub)
+>>>>>>> Stashed changes
   let sub = req.query.sub.toLowerCase();
   let test = instance.getTotalComplaintCounts()
   if (test) {
