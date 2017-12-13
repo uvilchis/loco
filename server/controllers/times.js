@@ -1,16 +1,21 @@
-// const db = require('../db/mtaSched');
 const axios = require('axios')
+
 const instance = axios.create({
-  baseURL : 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
+  baseURL: 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
 });
 
 const schedByStop = (req, res) => {
-  let stopId = req.query.stop_id;
-  let routeType = req.query.route_type;
-  db.getScheduleByStop(stopId, routeType)
-  .then((result) => {
-    res.send(result);
+  let sub = req.query.sub.toLowerCase();
+  let stopId = req.query.stop_id.toLowerCase();
+  // let routeType = req.query.route_type.toLowerCase();
+  // db.getScheduleByStop(stopId, routeType)
+  instance.get('/loco/times/stop', {
+    params: {
+      sub,
+      stop_id: stopId
+    }
   })
+  .then(({ data }) => res.send(data))
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
@@ -18,12 +23,17 @@ const schedByStop = (req, res) => {
 };
 
 const schedByRoute = (req, res) => {
-  let routeId = req.query.route_id;
-  let routeType = req.query.route_type;
-  db.getScheduleByRoute(routeId, routeType)
-  .then((result) => {
-    res.send(result);
+  let sub = req.query.sub.toLowerCase();
+  let routeId = req.query.route_id.toLowerCase();
+  // let routeType = req.query.route_type.toLowerCase();
+  // db.getScheduleByRoute(routeId, routeType)
+  instance.get('/loco/times/route', {
+    params: {
+      sub,
+      route_id: routeId
+    }
   })
+  .then(({ data }) => res.send(data))
   .catch((error) => {
     console.log(error);
     res.sendStatus(404);
@@ -31,12 +41,13 @@ const schedByRoute = (req, res) => {
 };
 
 const schedByStopRoute = (req, res) => {
-  let stopId = req.query.stop_id;
-  let routeId = req.query.route_id;
+  let sub = req.query.sub.toLowerCase();
+  let stopId = req.query.stop_id.toLowerCase();
+  let routeId = req.query.route_id.toLowerCase();
   //let routeType = req.query.route_type;  <== can be weekday, saturday or sunday
-  // db.getScheduleByStopAndRoute(stopId, routeId, routeType)
-  instance.get('/loco/times/stoproute?sub=mta', {
+  instance.get('/loco/times/stoproute', {
     params: {
+      sub,
       stop_id : stopId,
       route_id : routeId
     }

@@ -9,8 +9,9 @@ export default class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      logging: false
-    }
+      logging: false,
+      error: ''
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSignup = this.handleSignup.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -31,17 +32,14 @@ export default class Login extends React.Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleSignup(e) {
-    let signupObj = {
+    axios.post('/api/user/signup', {
       username: this.state.username,
       password: this.state.password
-    };
-    axios.post('/api/user/signup', signupObj)
+    })
     .then(({ data }) => {
       this.props.handleLogin(data);
       this.props.history.push('/');
@@ -50,39 +48,41 @@ export default class Login extends React.Component {
   }
 
   handleLogin() {
-    let loginObj = {
-      username: this.state.username,
-      password: this.state.password
-    };
-    axios.post('/api/user/login', loginObj)
-    .then(({ data }) => {
-      this.props.handleLogin(data);
-      this.props.history.push('/');
+    this.setState({ logging: true }, () => {
+      axios.post('/api/user/login', {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then(({ data }) => {
+        this.props.handleLogin(data);
+        this.props.history.push('/');
+      })
+      .catch((error) => this.setState({
+        logging: false,
+        error: 'Login failed'
+      }));
     })
-    .catch((error) => console.log(error));
   }
 
   render() {
-    return this.state.logging ? (
-        <ChasingDots />
-      ) : (
-        <div className="login-inputs">
-          <input
-            name="username"
-            placeholder="username"
-            value={this.state.username}
-            onChange={this.handleChange}
-          />
-          <input
-            name="password"
-            placeholder="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-          <button onClick={this.handleLogin}>Log in</button>
-          <button onClick={this.handleSignup}>Sign up</button>
-          <a href="/api/user/google">Google</a>
-        </div>
-      )
+    return this.state.logging ?  <ChasingDots /> : (
+      <div className="login-form">
+        <h3 className="login-header">Sign in</h3>
+        <input
+          name="username"
+          placeholder="Username"
+          value={this.state.username}
+          onChange={this.handleChange} />
+        <input
+          name="password"
+          placeholder="Password"
+          value={this.state.password}
+          onChange={this.handleChange} />
+        <button onClick={this.handleLogin}>Log in</button>
+        <button onClick={this.handleSignup}>Sign up</button>
+        <a id="google-auth" href="/api/user/google">Google</a>
+        <div className="login-error">{this.state.error}</div>
+      </div>
+    );
   }
 }
