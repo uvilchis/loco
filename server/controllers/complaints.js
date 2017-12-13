@@ -68,30 +68,18 @@ const getReportsByStopAndRoute = (req, res) => {
 
 const getTypeComplaintsByRoute = (req, res) => res.sendStatus(200);
 
-const getTotalComplaintCounts = (req, res) => {
-<<<<<<< HEAD
-  res.sendStatus(200);
-  // let sub = req.query.sub.toLowerCase();
-  // let test = instance.getTotalComplaintCounts()
-  // if (test) {
-  //   res.send(test)
-  // } else {
-  //   res.sendStatus(404)
-  // }
-=======
-<<<<<<< Updated upstream
-=======
-  console.log(typeof req.query.sub)
->>>>>>> Stashed changes
-  let sub = req.query.sub.toLowerCase();
-  let test = instance.getTotalComplaintCounts()
-  if (test) {
-    res.send(test)
-  } else {
-    res.sendStatus(404)
-  }
->>>>>>> 2eebfac8d6007bacbff094dca2a9e1f429d35f67
-}
+const getTotalComplaintCounts = (req, res) => res.sendStatus(200);
+
+// const getTotalComplaintCounts = (req, res) => {
+//   res.sendStatus(200);
+//   // let sub = req.query.sub.toLowerCase();
+//   // let test = instance.getTotalComplaintCounts()
+//   // if (test) {
+//   //   res.send(test)
+//   // } else {
+//   //   res.sendStatus(404)
+//   // }
+// }
 
 module.exports = {
   addComplaint,
