@@ -21,7 +21,6 @@ var app = express();
 
 var logger = (req, res, next) => {
   console.log(`${req.method} request received at ${req.url}`);
-  // console.log('session data: ', req.session);
   next();
 };
 app.use(logger);
@@ -77,11 +76,11 @@ passport.use(new LocalStrategy(
 
 passport.serializeUser((user, done) => done(null, user._id));
 
-passport.deserializeUser((_id, done) => {
+passport.deserializeUser((_id, done) => 
   User.findById({ _id }).exec()
   .then((user) => done(null, user))
-  .catch((error) => done(error, null));
-});
+  .catch((error) => done(error, null))
+);
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -1,14 +1,7 @@
-// const instance = require('../instance');
 const complaintsDb = require('../db/complaintsDb');
-const axios = require('axios')
-const instance = axios.create({
-  baseURL : 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
-});
 
 // To be done after starting to support user submissions
-const addComplaint = (req, res) => {
-  res.sendStatus(200);
-};
+const addComplaint = (req, res) => res.sendStatus(200);
 
 const addComplaintReport = (req, res) => {
   let sub = req.body.sub.toLowerCase();
@@ -24,17 +17,19 @@ const addComplaintReport = (req, res) => {
 };
 
 // To be implemented, or does this even matter?
+// Need to be able undo a complaint
 const subtractComplaintReport = (req, res) => {
-  let sub = req.body.sub.toLowerCase();
-  let type = req.body.type.toLowerCase();
-  let stopId = req.body.stop_id.toLowerCase();
-  let routeId = req.body.route_id.toLowerCase();
-  let test = instance.subtractComplaintReport(type, stopId, routeId);
-  if (test !== false) {
-    res.send({ count: test });
-  } else {
-    res.sendStatus(400);
-  }
+  res.sendStatus(200);
+  // let sub = req.body.sub.toLowerCase();
+  // let type = req.body.type.toLowerCase();
+  // let stopId = req.body.stop_id.toLowerCase();
+  // let routeId = req.body.route_id.toLowerCase();
+  // let test = instance.subtractComplaintReport(type, stopId, routeId);
+  // if (test !== false) {
+  //   res.send({ count: test });
+  // } else {
+  //   res.sendStatus(400);
+  // }
 };
 
 const getComplaintReport = (req, res) => {
@@ -67,13 +62,14 @@ const getReportsByStopAndRoute = (req, res) => {
 const getTypeComplaintsByRoute = (req, res) => res.sendStatus(200);
 
 const getTotalComplaintCounts = (req, res) => {
-  let sub = req.query.sub.toLowerCase();
-  let test = instance.getTotalComplaintCounts()
-  if (test) {
-    res.send(test)
-  } else {
-    res.sendStatus(404)
-  }
+  res.sendStatus(200);
+  // let sub = req.query.sub.toLowerCase();
+  // let test = instance.getTotalComplaintCounts()
+  // if (test) {
+  //   res.send(test)
+  // } else {
+  //   res.sendStatus(404)
+  // }
 }
 
 module.exports = {

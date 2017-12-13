@@ -5,9 +5,7 @@ const User = mongoose.model('User');
 
 const isLoggedIn = (req) => req.user ? !!req.user : false;
 
-const checkUser = (req, res) => {
-  isLoggedIn(req) ? res.send(req.user) : res.sendStatus(404);
-};
+const checkUser = (req, res) => isLoggedIn(req) ? res.sendStatus(200) : res.sendStatus(404);
 
 // This needs to handle login as well
 const signUp = (req, res) => {
@@ -32,7 +30,7 @@ const associateUser = (req, res) => {
   res.send(200);
 }
 
-const logIn = (req, res) =>  req.user ? res.send(req.user._id) : res.sendStatus(404);
+const logIn = (req, res) => req.user ? res.send(req.user._id) : res.sendStatus(404);
 
 const logOut = (req, res) => {
   req.logout();
@@ -42,9 +40,7 @@ const logOut = (req, res) => {
   });
 };
 
-const checkUserAuth = (req, res) => {
-  checkUser(req, res);
-};
+const checkUserAuth = (req, res) => checkUser(req, res);
 
 const testSession = (req, res) => {
   console.log(req.session);

@@ -22,7 +22,7 @@ export default class Login extends React.Component {
       this.setState({ logging: true }, () => {
         axios.get(`/api/user/google/return${this.props.location.search}`)
         .then(({ data }) => {
-          this.props.handleLogin(data);
+          this.props.handleLogin(true);
           this.props.history.push('/');
         })
         .catch((error) => console.log(error));
@@ -54,7 +54,7 @@ export default class Login extends React.Component {
         password: this.state.password
       })
       .then(({ data }) => {
-        this.props.handleLogin(data);
+        this.props.handleLogin(true);
         this.props.history.push('/');
       })
       .catch((error) => this.setState({

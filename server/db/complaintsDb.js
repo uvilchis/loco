@@ -84,12 +84,17 @@ const getReportsByStopAndRoute = (sub, stopId, routeId) => new Promise((resolve,
   });
 });
 
-const getTypeComplaintsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
-  resolve({ test: true });
+const checkComplaintExists = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
+  let name = `${sub}-${type}-${stopId}-${routeId}`;
+  client.sismember(REPORTS, name, (error, result) => {
+    if (error) { return reject(error); }
+    resolve(!!result);
+  });
 });
 
 module.exports = {
   addComplaintReport,
   getComplaintReport,
-  getReportsByStopAndRoute
+  getReportsByStopAndRoute,
+  checkComplaintExists
 };
