@@ -1,5 +1,3 @@
-// const db = require('../db/mtaSched');
-// THIS IS WHERE WE CAN QUERY FOR EXPRESS ROUTES SHOULD WE NEED THEM
 const axios = require('axios')
 const util = require('../lib/util.js')
 

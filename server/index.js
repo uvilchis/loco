@@ -10,18 +10,14 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const protobuf = require('protobufjs');
 const protoParser = require('./lib/proto');
-const mysql = require('./db/mtaSched');
 const { router, setPassport } = require('./routes');
 const { googleClientID, googleClientSecret } = require('./env/key');
-const txtParser = require('./lib/txt');
-const instance = require('./instance');
 const User = mongoose.model('User');
 
 var app = express();
 
 var logger = (req, res, next) => {
   console.log(`${req.method} request received at ${req.url}`);
-  // console.log('session data: ', req.session);
   next();
 };
 app.use(logger);
@@ -77,11 +73,11 @@ passport.use(new LocalStrategy(
 
 passport.serializeUser((user, done) => done(null, user._id));
 
-passport.deserializeUser((_id, done) => {
+passport.deserializeUser((_id, done) => 
   User.findById({ _id }).exec()
   .then((user) => done(null, user))
-  .catch((error) => done(error, null));
-});
+  .catch((error) => done(error, null))
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -94,8 +90,6 @@ app.use('/', router);
 app.get('*', (req, res) => {
   res.sendFile(__dirname + '/dist/index.html');
 });
-
-instance.initialize(); // Start tracking user input
 
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));

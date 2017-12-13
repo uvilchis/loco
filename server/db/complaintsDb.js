@@ -84,12 +84,29 @@ const getReportsByStopAndRoute = (sub, stopId, routeId) => new Promise((resolve,
   });
 });
 
-const getTypeComplaintsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
-  resolve({ test: true });
+const checkComplaints = (sub, stopId, routeId, userId) => new Promise((resolve, reject) => {
+  client.smembers(REPORTS, (error, members) => {
+    members = members.filter((member) => _checkMems(member, [sub, stopId, routeId]))
+      .map((name) => (cb) => client.zscore(name, userId, (error, result) => cb({ name: name, exists: result})));
+    _mapPromise(members).then((result) => resolve(result));
+  });
 });
+
+// const checkComplaintExists = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
+//   let name = `${sub}-${type}-${stopId}-${routeId}`;
+//   client.sismember(REPORTS, name, (error, result) => {
+//     if (error) { return reject(error); }
+//     resolve(!!result);
+//   });
+// });
+
+// const removeComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
+//   let name = `${sub}-${type}-${stopId}-${routeId}`;
+// });
 
 module.exports = {
   addComplaintReport,
   getComplaintReport,
-  getReportsByStopAndRoute
+  getReportsByStopAndRoute,
+  checkComplaints
 };

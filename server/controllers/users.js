@@ -2,12 +2,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const { googleClientId, googleClientSecret } = require('../env/key');
 const User = mongoose.model('User');
-
-const isLoggedIn = (req) => req.user ? !!req.user : false;
-
-const checkUser = (req, res) => {
-  isLoggedIn(req) ? res.send(req.user) : res.sendStatus(404);
-};
+const Util = require('../util');
 
 // This needs to handle login as well
 const signUp = (req, res) => {
@@ -17,7 +12,7 @@ const signUp = (req, res) => {
   let user = new User(req.body);
   user.save()
   .then((user) => {
-    createSession(req, res, user._id);
+    passport.authenticate('local')(req, res, () => res.redirect('/login'));
   })
   .catch((error) => {
     console.log('signup:', error);
@@ -32,7 +27,7 @@ const associateUser = (req, res) => {
   res.send(200);
 }
 
-const logIn = (req, res) =>  req.user ? res.send(req.user._id) : res.sendStatus(404);
+const logIn = (req, res) => req.user ? res.send(req.user._id) : res.sendStatus(404);
 
 const logOut = (req, res) => {
   req.logout();
@@ -42,9 +37,7 @@ const logOut = (req, res) => {
   });
 };
 
-const checkUserAuth = (req, res) => {
-  checkUser(req, res);
-};
+const checkUserAuth = (req, res) => Util.checkUser(req, res, () => res.sendStatus(200));
 
 const testSession = (req, res) => {
   console.log(req.session);
