@@ -17,7 +17,7 @@ export default class Nav extends React.Component {
     let routeId = this.props.match.params.routeId;
     axios.get(`/api/service/${routeId}`)
     .then(({ data }) => {
-      // console.log(data.lines);
+      console.log('NAV DATA', data);
       this.setState({
         routes: data.name,
         status: data.status,

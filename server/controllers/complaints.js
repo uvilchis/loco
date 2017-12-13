@@ -1,5 +1,9 @@
-const instance = require('../instance');
+// const instance = require('../instance');
 const complaintsDb = require('../db/complaintsDb');
+const axios = require('axios')
+const instance = axios.create({
+  baseURL : 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
+});
 
 // To be done after starting to support user submissions
 const addComplaint = (req, res) => {
@@ -63,7 +67,7 @@ const getReportsByStopAndRoute = (req, res) => {
 const getTypeComplaintsByRoute = (req, res) => res.sendStatus(200);
 
 const getTotalComplaintCounts = (req, res) => {
-  let sub = req.query.sub.tolowerCase();
+  let sub = req.query.sub.toLowerCase();
   let test = instance.getTotalComplaintCounts()
   if (test) {
     res.send(test)
