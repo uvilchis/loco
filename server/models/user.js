@@ -37,7 +37,6 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', function(next) {
   let user = this;
   if (!user.authId) { user.authId = user.username; }
-  console.log(user);
   if (!user.isModified('password')) { return next(); }
   bcrypt.hash(user.password, null, null, function(error, hash) {
     if (error) { return next(error); }

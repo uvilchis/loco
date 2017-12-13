@@ -10,11 +10,8 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const protobuf = require('protobufjs');
 const protoParser = require('./lib/proto');
-const mysql = require('./db/mtaSched');
 const { router, setPassport } = require('./routes');
 const { googleClientID, googleClientSecret } = require('./env/key');
-const txtParser = require('./lib/txt');
-const instance = require('./instance');
 const User = mongoose.model('User');
 
 var app = express();
@@ -93,8 +90,6 @@ app.use('/', router);
 app.get('*', (req, res) => {
   res.sendFile(__dirname + '/dist/index.html');
 });
-
-instance.initialize(); // Start tracking user input
 
 var port = process.env.port || 3000;
 app.listen(port, () => console.log(`now listening on ${port}`));

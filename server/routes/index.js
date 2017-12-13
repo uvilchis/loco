@@ -91,7 +91,7 @@ router.get('/api/report/gettotalcomplaintcounts', controller.complaints.getTotal
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
-router.post('/api/report/add', controller.complaints.addComplaintReport);
+router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
@@ -109,21 +109,22 @@ router.get('/api/service', controller.realtime.getServiceData);
 router.get('/api/service/:route_id', controller.realtime.getServiceRouteData);
 
 
+/* To be fixed later */
 
 // Test endpoints
-router.get('/api/test/proto', controller.test.testProto);
-router.get('/api/test/service', controller.test.testService);
-router.get('/api/test/routes', controller.test.testRoutes);
-router.get('/api/test/stops', controller.test.testStops);
-router.get('/api/test/stoptimes', controller.test.testStopTimes);
-router.get('/api/test/updatedb', controller.test.testUpdateDb); // This should probably be gated
-router.get('/api/test/timesbystop', controller.test.testSchedByStop);
-router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
-router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
+// router.get('/api/test/proto', controller.test.testProto);
+// router.get('/api/test/service', controller.test.testService);
+// router.get('/api/test/routes', controller.test.testRoutes);
+// router.get('/api/test/stops', controller.test.testStops);
+// router.get('/api/test/stoptimes', controller.test.testStopTimes);
+// router.get('/api/test/updatedb', controller.test.testUpdateDb); // This should probably be gated
+// router.get('/api/test/timesbystop', controller.test.testSchedByStop);
+// router.get('/api/test/timesbyroute', controller.test.testSchedByRoute);
+// router.get('/api/test/timesbyboth', controller.test.testSchedByStopRoute);
 
 
 // Session tester
-router.get('/api/test/session', controller.users.testSession);
+// router.get('/api/test/session', controller.users.testSession);
 
 module.exports = {
   router,

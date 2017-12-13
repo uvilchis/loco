@@ -1,12 +1,25 @@
 const mongoose = require('mongoose');
 
 const ComplaintSchema = new mongoose.Schema({
-  name: {
+  sub: {
+    type: String
+  },
+
+  stopId: {
     type: String,
-    unique: true
+  },
+
+  routeId: {
+    type: String
+  },
+
+  createdAt: {
+    type: Date,
+    expires: 60
   }
+
 }, { timestamps: true });
 
-ComplaintSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 }) // To test
+// ComplaintSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 }) // To test
 
 mongoose.model('Complaint', ComplaintSchema);
