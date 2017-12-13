@@ -55,6 +55,7 @@ export default class Details extends React.Component {
     let dayTranslator = { 0: 'SUN', 6: 'SAT' }
     let day = dayTranslator[dayNumber] || 'WKD';
     let time = new Date().toLocaleDateString('en-gb');
+    let value = event.target.value;
     let newState = {
       selected: true,
       stopId: value
