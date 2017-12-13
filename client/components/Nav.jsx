@@ -18,10 +18,6 @@ export default class Nav extends React.Component {
     let routeId = this.props.match.params.routeId;
     axios.get(`/api/service/${routeId}`)
     .then(({ data }) => {
-<<<<<<< HEAD
-      console.log('NAV DATA', data);
-=======
->>>>>>> sweeping ui changes for main and login pages
       this.setState({
         routes: data.name,
         status: data.status,

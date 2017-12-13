@@ -6,8 +6,7 @@ const NavBar = (props) => (
     <div className="logo_container">
       <h1 className="logo"><Link to="/">Loco</Link></h1>
       {props.userId ? <button className="navbar-button" onClick={props.onLogout}>Logout</button> :
-        <Link className="navbar-button" to="/login">Login</Link>
-      }
+        <Link className="navbar-button" to="/login">Login</Link>}
     </div>
   </div>
 );

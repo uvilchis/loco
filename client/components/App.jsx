@@ -1,9 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Route, Link } from 'react-router-dom';
-import TrainLine from './TrainLine.jsx';
+import TrainList from './TrainList.jsx';
 import Util from '../lib/util.js';
-import TrainHeaders from './TrainHeaders.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,17 +33,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="trainline_container">
-        <TrainHeaders />
-        {this.state.trains.map((line, idx) =>
-          <TrainLine
-            key={idx}
-            redir={'nav'}
-            name={line.name}
-            status={line.status}
-          />)
-        }
-      </div>
+      <TrainList trains={this.state.trains} />
     );
   }
 }
