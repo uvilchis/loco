@@ -92,6 +92,11 @@ const checkComplaintExists = (sub, type, stopId, routeId) => new Promise((resolv
   });
 });
 
+const removeComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
+  let name = `${sub}-${type}-${stopId}-${routeId}`;
+  
+});
+
 module.exports = {
   addComplaintReport,
   getComplaintReport,

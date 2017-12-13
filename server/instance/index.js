@@ -1,8 +1,5 @@
 const { setTimeout } = require('timers');
 const serviceParser = require('../lib/txt/service');
-const Models = require('../models/complaint');
-const Complaint = Models.Complaint;
-const Report = Models.Report;
 
 const _instance = {};
 
@@ -12,7 +9,7 @@ const initialize = () => {
   if (initialized) { return; }
   _serviceScheduler();
   let complaintTypes = ['delayed', 'closed', 'accident', 'crowded'];
-  _instance.complaints = complaintTypes.map((type) => new Complaint(type));
+  // _instance.complaints = complaintTypes.map((type) => new Complaint(type));
   console.log('initialized');
   initialized = true;
 };

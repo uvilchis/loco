@@ -41,7 +41,7 @@ export default class Login extends React.Component {
       password: this.state.password
     })
     .then(({ data }) => {
-      this.props.handleLogin(data);
+      this.props.handleLogin(true);
       this.props.history.push('/');
     })
     .catch((error) => console.log(error));

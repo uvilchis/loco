@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const UserSchema = require('../models/user');
+const ComplaintSchema = require('../models/complaint');
 
 const DB_CREDENTIALS = require('../env/key.js').mongo_creds;
 

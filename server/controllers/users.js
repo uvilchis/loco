@@ -15,7 +15,7 @@ const signUp = (req, res) => {
   let user = new User(req.body);
   user.save()
   .then((user) => {
-    createSession(req, res, user._id);
+    passport.authenticate('local')(req, res, () => res.redirect('/login'));
   })
   .catch((error) => {
     console.log('signup:', error);
