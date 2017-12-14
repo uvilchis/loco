@@ -19,6 +19,11 @@ const setPassport = (passportInstance) => {
   }));
   router.get('/api/user/google/return', passport.authenticate('google'), controller.users.googleAuth);
 
+  // Mobile OAuth
+  router.get('/api/user/mobile/google', passport.authenticate('mobile-oauth'), controller.users.googleAuth);
+
+  
+
   // Local Auth
 
   // Signup

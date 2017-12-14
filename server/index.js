@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local').Strategy;
+const CustomStrategy = require('passport-custom');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoDb = require('./db/mongo').db;
@@ -44,7 +45,7 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOne({ authId: profile.id }, (error, user) => {
-      if (error) { return done(error)}
+      if (error) { return done(error); }
       if (user) { return user; }
       let newUser = new User({
         username: profile.displayName,
@@ -65,6 +66,25 @@ passport.use(new LocalStrategy(
       if (error) { return done(error); }
       if (user) { return user.comparePassword(password); } 
       return done('user not found', null);
+    })
+    .then((user) => done(null, user))
+    .catch((error) => done(error, null));
+  }
+));
+
+passport.use('mobile-oauth', new CustomStrategy(
+  function(req, done) {
+    console.log(req.query);
+    let authId = req.query.auth_id;
+    let username = req.query.display_name;
+    User.findOne({ authId }, (error, user) => {
+      if (error) { return done(error); }
+      if (user) { return user; }
+      let newUser = new User({
+        username,
+        authId
+      });
+      return newUser.save();
     })
     .then((user) => done(null, user))
     .catch((error) => done(error, null));
