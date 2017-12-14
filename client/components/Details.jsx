@@ -3,6 +3,7 @@ import axios from 'axios';
 import Schedule from './Schedule.jsx';
 import StationList from './StationList.jsx';
 import ComplaintList from './ComplaintList.jsx';
+import Info from './Info.jsx';
 
 export default class Details extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class Details extends React.Component {
       stopId : '',
       submissionStopId : '',
       // Default complaints
-      complaints: this.defaultComplaints.map((el) => Object.assign({}, el))
+      complaints: this.defaultComplaints.map((el) => Object.assign({}, el)),
+      info : []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleComplaintSubmit = this.handleComplaintSubmit.bind(this);
@@ -34,8 +36,6 @@ export default class Details extends React.Component {
   componentDidMount() {
     // 1) The number of complaints : we have that endpoint
     // 2) when we incorporate a comments page, we'll need to display those too (priority TBD)
-    // TODO: Come up with a way for app to detect whether its a weekday, saturday or sunday
-    // TODO: Come up with a way to change schedules according to whether its satuday, sunday or a weekday
     let routeId = this.props.match.params.routeId === 'SIR' ? 'SI' : this.props.match.params.routeId
     axios.get('/api/route/stops', {
       params: {
@@ -47,9 +47,18 @@ export default class Details extends React.Component {
       this.setState({ routeId, stations: data })
     })
     .catch((error) => console.log(error));
+
+    axios.get('/api/report/reports', {
+      params : {
+        sub : 'mta',
+        route_id : routeId
+      }
+    })
+    .then((data)=> {
+      this.setState({info : data.data})
+    })
   }
 
-  // Need to implement some way of checking for types of routes, e.g. WKD vs SAT vs SUN
   handleChange(event) {
     let dayNumber = new Date().getDay();
     let dayTranslator = { 0: 'SUN', 6: 'SAT' }
@@ -130,6 +139,9 @@ export default class Details extends React.Component {
     return (
       <div>
         <div className="line-logo">Route: {this.state.routeId}</div>
+        {
+          this.state.info.map((element, idx) => <Info key={idx} report={element[0]} count={element[1]} stations={this.state.stations}/>)
+        }
         <StationList stations={this.state.stations.N || []} handleChange={this.handleChange} />
         {this.state.staticSched ?
           <div>
@@ -145,8 +157,8 @@ export default class Details extends React.Component {
               <option value={this.state.stopId.replace(/N$/, 'S')}>Downtown</option>
             </select>
           </div> : null}
-        {this.state.direction ? 
-          <ComplaintList 
+        {this.state.direction ?
+          <ComplaintList
             complaints={this.state.complaints}
             handleComplaintSubmit={this.handleComplaintSubmit} /> : null}
       </div>

@@ -5,7 +5,7 @@ const util = require('../lib/util');
 const connection = mysql.createConnection({
   user: 'root',
   database: 'loco_mta',
-  password: 'Plums1nthe1ceb0x'
+  //password: 'plantlife'
 });
 
 connection.connect((error) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import Nav from './Nav.jsx';
 import { Link } from 'react-router-dom';
 import MdArrowForward from 'react-icons/lib/md/arrow-forward';
+import MdPriorityHigh from 'react-icons/lib/md/priority-high';
 
 const TrainLine = (props) => (
   <div>

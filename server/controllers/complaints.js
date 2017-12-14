@@ -68,18 +68,27 @@ const getReportsByStopAndRoute = (req, res) => {
 
 const getTypeComplaintsByRoute = (req, res) => res.sendStatus(200);
 
-const getTotalComplaintCounts = (req, res) => res.sendStatus(200);
+const getAllComplaintCounts = (req, res) => {
+  complaintsDb.getAllComplaintCounts()
+  .then((result) => {
+    res.send(result)
+  })
+  .catch((error) => {
+    res.sendStatus(404)
+  })
+}
 
-// const getTotalComplaintCounts = (req, res) => {
-//   res.sendStatus(200);
-//   // let sub = req.query.sub.toLowerCase();
-//   // let test = instance.getTotalComplaintCounts()
-//   // if (test) {
-//   //   res.send(test)
-//   // } else {
-//   //   res.sendStatus(404)
-//   // }
-// }
+const getReportsByRoute = (req, res) => {
+  let sub = req.query.sub;
+  let routeId = req.query.route_id
+  complaintsDb.getReportsByRoute(sub, routeId)
+  .then((result) => {
+    res.send(result)
+  })
+  .catch((error) => {
+    res.sendStatus(404)
+  })
+}
 
 module.exports = {
   addComplaint,
@@ -88,5 +97,6 @@ module.exports = {
   getComplaintReport,
   getReportsByStopAndRoute,
   getTypeComplaintsByRoute,
-  getTotalComplaintCounts
+  getAllComplaintCounts,
+  getReportsByRoute
 };
