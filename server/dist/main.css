@@ -146,6 +146,10 @@ body {
   background: #FFFF00;
 }
 
+.fire {
+	background : #FF0000;
+}
+
 .trainline_details {
   display: flex;
   justify-self: center;

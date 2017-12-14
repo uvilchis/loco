@@ -18,7 +18,7 @@ const _checkMems = (memStr, params = []) => params.reduce((acc, b) => {
 const _mapPromise = (tasks) => Promise.all(tasks.map((task) => new Promise(task)));
 
 /**
- * Cleaner helper method, runs after the current members are gathered. 
+ * Cleaner helper method, runs after the current members are gathered.
  * Will clean up old complaint reports, as well as empty members in reports
  */
 const _cleaner = () => client.smembers(REPORTS, (error, members) => {
@@ -92,21 +92,31 @@ const checkComplaints = (sub, stopId, routeId, userId) => new Promise((resolve, 
   });
 });
 
-// const checkComplaintExists = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
-//   let name = `${sub}-${type}-${stopId}-${routeId}`;
-//   client.sismember(REPORTS, name, (error, result) => {
-//     if (error) { return reject(error); }
-//     resolve(!!result);
-//   });
-// });
 
-// const removeComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
-//   let name = `${sub}-${type}-${stopId}-${routeId}`;
-// });
+const getAllComplaintCounts = () => new Promise((resolve, reject) => {
+  let complaintCounts = {};
+  client.smembers(REPORTS, (error, members) => {
+    if (error) { reject(error) }
+      members = members.map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count) => cb(complaintCounts[name.slice(-1)] ? complaintCounts[name.slice(-1)]+=count : complaintCounts[name.slice(-1)] = count)));
+    _mapPromise(members).then((result) => resolve(complaintCounts))
+  })
+})
+
+// call this once you're at a route so you can see which stops are experiencing problems
+const getReportsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
+  let complaints = [];
+  client.smembers(REPORTS, (error, members) => {
+    if (error) { reject(error) }
+      members = members.filter((member) => _checkMems(member, [sub, routeId]))
+      .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count)=> cb(complaints.push( [name.replace(/-\w$/, ''), count])) ))
+    _mapPromise(members).then((result) => resolve(complaints))
+  })
+})
 
 module.exports = {
   addComplaintReport,
   getComplaintReport,
   getReportsByStopAndRoute,
-  checkComplaints
+  getAllComplaintCounts,
+  getReportsByRoute
 };

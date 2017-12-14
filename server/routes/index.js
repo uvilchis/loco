@@ -20,7 +20,7 @@ const setPassport = (passportInstance) => {
   router.get('/api/user/google/return', passport.authenticate('google'), controller.users.googleAuth);
 
   // Local Auth
-  
+
   // Signup
   router.post('/api/user/signup', controller.users.signUp);
 
@@ -87,7 +87,10 @@ router.get('/api/report/stoproute', controller.complaints.getReportsByStopAndRou
 router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
 
 // to be called at the main page so users can see routes experiencing problems at a glance (no params)
-router.get('/api/report/gettotalcomplaintcounts', controller.complaints.getTotalComplaintCounts);
+router.get('/api/report/getallcomplaintcounts', controller.complaints.getAllComplaintCounts);
+
+// TODO: this route will be tantamount to ensuring users know which stops are experiencing issues at the details page
+router.get('/api/report/reports', controller.complaints.getReportsByRoute);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
