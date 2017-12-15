@@ -2,25 +2,26 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
 const UserSchema = new mongoose.Schema({
+  authId: {
+    type: String,
+    unique: true
+  },
+
   username: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    unique: true
   },
 
   password: {
     type: String,
-    required: true
   },
 
-  trains: {
+  routes: {
     type: Array,
     default: []
   },
 
-  stations: {
+  stops: {
     type: Array,
     default: []
   },
@@ -32,13 +33,14 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Change this to arrows?
+// TODO: This needs to be made more robust
 UserSchema.pre('save', function(next) {
   let user = this;
+  if (!user.authId) { user.authId = user.username; }
   if (!user.isModified('password')) { return next(); }
   bcrypt.hash(user.password, null, null, function(error, hash) {
     if (error) { return next(error); }
     user.password = hash;
-    console.log(hash);
     next();
   });
 });
@@ -46,8 +48,8 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.comparePassword = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.password, (error, result) => {
-      if (error) { return reject(error); }
-      resolve(result);
+      if (error || !result) { return reject(error || result); }
+      resolve(this);
     })
   });
 }

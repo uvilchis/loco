@@ -1,24 +1,26 @@
 import React from 'react';
+import Nav from './Nav.jsx';
+import { Link } from 'react-router-dom';
+import MdArrowForward from 'react-icons/lib/md/arrow-forward';
+import MdPriorityHigh from 'react-icons/lib/md/priority-high';
 
-export default class TrainLine extends React.Component {
-  constructor(props) {
-    super(props);
-    this.redirect = this.redirect.bind(this);
-  }
-
-  render() {
-    return (
-      <div className="trainline-row">
-        <div className="line">
-          {this.props.line.route_id}
-        </div>
-        <div className="status">
-          {this.props.line.status}
-        </div>
-        <button onClick={this.redirect}>
-          Details
-        </button>
+const TrainLine = (props) => (
+  <div>
+    <div className="trainline_row">
+      <div className="trainline_routes">
+        {props.name}
       </div>
-    )
-  }
-}
+      <div className="trainline_status">
+        {props.status}
+      </div>
+      <div className={`trainline_user ${props.status === 'GOOD SERVICE' ? 'good' : 'problems'}`}>
+      </div>
+      <a href={`/${props.redir}/${props.name}`}><MdArrowForward /></a>
+      {/* <Link className="trainline_button" to={`/${props.redir}/${props.name}`}>
+        Details
+      </Link> */}
+    </div>
+  </div>
+);
+
+export default TrainLine;
