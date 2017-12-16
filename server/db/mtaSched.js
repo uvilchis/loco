@@ -5,7 +5,7 @@ const util = require('../lib/util');
 const connection = mysql.createConnection({
   user: 'root',
   database: 'loco_mta',
-  //password: 'plantlife'
+  password: 'Plums1nthe1ceb0x'
 });
 
 connection.connect((error) => {
@@ -205,6 +205,16 @@ const getStopsByRoute = (routeId) => new Promise ((resolve, reject) => {
     resolve(util.directionSort(result));
   });
 });
+
+const getStopsByCoords = () => new Promise ((resolve, reject) => {
+  let query = `SELECT * FROM stops RIGHT JOIN stop_routes ON stops.stop_id=stop_routes.stop_id`
+  connection.query(query, (error, result) => {
+    // console.log('error!!', error)
+    if (error) { return reject(error); }
+    // console.log('got result!', result)
+    resolve(result);
+  })
+})
 
 module.exports = {
   updateMtaSchedule,
