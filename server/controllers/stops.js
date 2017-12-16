@@ -1,5 +1,6 @@
 const axios = require('axios');
 const geodist = require('geodist');
+const db = require('../db/mtaSched')
 
 const env = require('../env');
 
@@ -35,28 +36,23 @@ const getStop = (req, res) => {
 };
 
 const testStops = (req, res) => {
-  axios.get('http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com/loco/stops', {
-    params: {
-      sub: 'mta'
-    }
-  })
-  .then(({ data }) => {
-    var stations = [];
+  db.getStopsByCoords()
+  .then((data) => {
+    let stations = [];
     for (var i = 0; i < data.length; i++) {
       let currentLat = Number(data[i].stop_lat); 
       let currentLon = Number(data[i].stop_lon);
       var distance = geodist({lat: req.query.lat, lon: req.query.lon}, {lat: currentLat, lon: currentLon}, {exact: true, unit: 'miles'})
       if (distance <= 0.25) {
         stations.push(data[i])
-      }
-      
-    }
-    console.log(stations.length)
+      }   
+    } 
+    console.log(stations.length)   
     res.send(stations)
   })
   .catch((error) => {
     res.sendStatus(404);
-  });
+  })
 };
 
 module.exports = {
