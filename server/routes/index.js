@@ -34,17 +34,15 @@ const setPassport = (passportInstance) => {
   router.get('/api/user/logout', controller.users.logOut);
 };
 
-
-
 // Stops
   // All stops
 router.get('/api/stops', controller.stops.getStops);
 
+router.get('/api/stops/location', controller.stops.testStops);
+
   // Stop by stop_id
   // e.g. /api/stop?stop_id=101N
 router.get('/api/stop', controller.stops.getStop);
-
-
 
 // Routes
   // All routes
@@ -99,7 +97,8 @@ router.get('/api/report/reports', controller.complaints.getReportsByRoute);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
-router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
+ // router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
+  router.post('/api/report/add', controller.complaints.addComplaintReport);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
