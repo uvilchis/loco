@@ -22,7 +22,7 @@ const setPassport = (passportInstance) => {
   // Mobile OAuth
   router.get('/api/user/mobile/google', passport.authenticate('mobile-oauth'), controller.users.googleAuth);
 
-  
+
 
   // Local Auth
 
@@ -97,8 +97,8 @@ router.get('/api/report/reports', controller.complaints.getReportsByRoute);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
- // router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
-  router.post('/api/report/add', controller.complaints.addComplaintReport);
+router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
+
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
