@@ -79,8 +79,8 @@ const getAllComplaintCounts = (req, res) => {
 }
 
 const getReportsByRoute = (req, res) => {
-  let sub = req.query.sub;
-  let routeId = req.query.route_id
+  let sub = req.query.sub.toLowerCase();
+  let routeId = req.query.route_id.toLowerCase();
   complaintsDb.getReportsByRoute(sub, routeId)
   .then((result) => {
     res.send(result)
