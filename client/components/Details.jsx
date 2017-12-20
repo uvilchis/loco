@@ -106,6 +106,7 @@ export default class Details extends React.Component {
       }
     })
     .then(({ data }) => {
+      console.log('data from complaints request', data)
       let defaults = this.defaultComplaints.map((a) => Object.assign({}, a));
       let newComplaints = data.reduce((acc, b) => {
         let temp = acc.find((el) => el.name === b.name);

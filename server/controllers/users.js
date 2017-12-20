@@ -44,6 +44,31 @@ const testSession = (req, res) => {
   res.sendStatus(200);
 };
 
+const addFavorite = (req, res) => {
+  let routeId = req.body.route_id;
+  let stopId = req.body.stop_id;
+  let stopName = req.body.stop_name;
+  let _id = req.user;
+  Util.checkUser(req, res, () => {
+    User.findOne({ _id }, (err, user) => {
+      if (err){ res.sendStatus(404)}
+      user.addFavorite(routeId, stopId, stopName)
+      .then(data => res.send(data))
+      .catch(err => res.sendStatus(404))
+    })
+  })
+}
+
+const getFavorites = (req, res) => {
+  let _id = req.user;
+  Util.checkUser(req, res, () => {
+    User.findOne({ _id }, (err, user) => {
+      if (err){ res.sendStatus(404) }
+      res.send(user.favorites)
+    })
+  })
+}
+
 module.exports = {
   signUp,
   googleAuth,
@@ -51,5 +76,7 @@ module.exports = {
   logIn,
   logOut,
   testSession,
-  checkUserAuth
+  checkUserAuth,
+  addFavorite,
+  getFavorites
 };

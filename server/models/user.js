@@ -26,6 +26,11 @@ const UserSchema = new mongoose.Schema({
     default: []
   },
 
+  favorites: {
+    type: Array,
+    default: []
+  },
+
   complaints: {
     type: Array,
     default: []
@@ -50,8 +55,19 @@ UserSchema.methods.comparePassword = function(password) {
     bcrypt.compare(password, this.password, (error, result) => {
       if (error || !result) { return reject(error || result); }
       resolve(this);
+    });
+  });
+};
+
+UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
+  return new Promise ((resolve, reject) => {
+    let user = this;
+    user.favorites.push({route_id : routeId, stop_id : stopId, stop_name: stopName})
+    user.save(function (err, product) {
+      if (err) { return reject (err) }
+      resolve (product)
     })
   });
-}
+};
 
 mongoose.model('User', UserSchema);
