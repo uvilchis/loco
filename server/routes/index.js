@@ -115,6 +115,11 @@ router.get('/api/service', controller.realtime.getServiceData);
   // e.g. /api/service/7
 router.get('/api/service/:route_id', controller.realtime.getServiceRouteData);
 
+// Favorites Routes
+router.get('/api/favorites/allfavorites', controller.users.getFavorites);
+router.post('/api/favorites/add', controller.users.addFavorite);
+
+
 
 /* To be fixed later */
 

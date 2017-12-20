@@ -5,11 +5,11 @@ const db = require('../db/mtaSched')
 const env = require('../env');
 
 const instance = axios.create({
-  baseUrl: 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com:3001'
+  baseURL: 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
 });
 
 const getStops = (req, res) => {
-  axios.get('http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com/loco/stops', {
+  instance.get('/loco/stops', {
     params: {
       sub: 'mta'
     }
@@ -40,14 +40,14 @@ const testStops = (req, res) => {
   .then((data) => {
     let stations = [];
     for (var i = 0; i < data.length; i++) {
-      let currentLat = Number(data[i].stop_lat); 
+      let currentLat = Number(data[i].stop_lat);
       let currentLon = Number(data[i].stop_lon);
       var distance = geodist({lat: req.query.lat, lon: req.query.lon}, {lat: currentLat, lon: currentLon}, {exact: true, unit: 'miles'})
       if (distance <= 0.25) {
         stations.push(data[i])
-      }   
-    } 
-    console.log(stations.length)   
+      }
+    }
+    console.log(stations.length)
     res.send(stations)
   })
   .catch((error) => {
