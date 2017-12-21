@@ -74,7 +74,6 @@ passport.use(new LocalStrategy(
 
 passport.use('mobile-oauth', new CustomStrategy(
   function(req, done) {
-    console.log(req.query);
     let authId = req.query.auth_id;
     let username = req.query.display_name;
     User.findOne({ authId }, (error, user) => {
