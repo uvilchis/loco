@@ -9,11 +9,7 @@ const instance = axios.create({
 });
 
 const getStops = (req, res) => {
-  instance.get('/loco/stops', {
-    params: {
-      sub: 'mta'
-    }
-  })
+  instance.get('/loco/stops?sub=mta')
   .then(({ data }) => res.send(data))
   .catch((error) => {
     res.sendStatus(404);
@@ -22,9 +18,8 @@ const getStops = (req, res) => {
 
 const getStop = (req, res) => {
   let stopId = req.query.stop_id;
-  instance.get('/loco/stop', {
+  instance.get('/loco/stop?sub=mta', {
     params: {
-      sub: 'mta',
       stop_id: stopId
     }
   })

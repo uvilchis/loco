@@ -62,12 +62,26 @@ UserSchema.methods.comparePassword = function(password) {
 UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
   return new Promise ((resolve, reject) => {
     let user = this;
-    user.favorites.push({route_id : routeId, stop_id : stopId, stop_name: stopName})
+    if (user.favorites.includes((a) => a.route_id === routeId && a.stop_id === stopId)) {
+      user.favorites.push({ route_id: routeId, stop_id: stopid, stop_name: stopName });
+    }
     user.save(function (err, product) {
-      if (err) { return reject (err) }
-      resolve (product)
+      if (err) { return reject(err) }
+      resolve({ favorites: product.favorites })
     })
   });
 };
+
+UserSchema.methods.deleteFavorite = function (stopId) {
+  return new Promise ((resolve, reject) => {
+    let user = this;
+    let index = user.favorites.findIndex((element) => element.stop_id === stopId);
+    user.favorites.splice(index, 1);
+    user.save(function (err, product) {
+      if (err) { return reject(err) }
+      resolve({ favorites: product.favorites})
+    })
+  })
+}
 
 mongoose.model('User', UserSchema);

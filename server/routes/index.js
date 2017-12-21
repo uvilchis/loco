@@ -118,6 +118,8 @@ router.get('/api/service/:route_id', controller.realtime.getServiceRouteData);
 // Favorites Routes
 router.get('/api/favorites/allfavorites', controller.users.getFavorites);
 router.post('/api/favorites/add', controller.users.addFavorite);
+router.post('/api/favorites/delete', controller.users.deleteFavorite);
+
 
 
 
