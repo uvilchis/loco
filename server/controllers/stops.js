@@ -1,29 +1,25 @@
 const axios = require('axios');
+const geodist = require('geodist');
+const db = require('../db/mtaSched')
 
 const env = require('../env');
 
 const instance = axios.create({
-  baseUrl: 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
+  baseURL: 'http://ec2-18-221-253-159.us-east-2.compute.amazonaws.com'
 });
 
 const getStops = (req, res) => {
-  instance.get('/loco/stops', {
-    params: {
-      sub: 'mta'
-    }
-  })
+  instance.get('/loco/stops?sub=mta')
   .then(({ data }) => res.send(data))
   .catch((error) => {
-    console.log(error);
     res.sendStatus(404);
   });
 };
 
 const getStop = (req, res) => {
   let stopId = req.query.stop_id;
-  instance.get('/loco/stop', {
+  instance.get('/loco/stop?sub=mta', {
     params: {
-      sub: 'mta',
       stop_id: stopId
     }
   })
@@ -34,7 +30,25 @@ const getStop = (req, res) => {
   });
 };
 
+const testStops = (req, res) => {
+  let sub = req.query.sub;
+  let lat = req.query.lat;
+  let lon = req.query.lon;
+  instance.get(`/loco/stop/coords`, {
+    params: {
+      sub,
+      lat,
+      lon
+    }
+  })
+  .then(({ data }) => res.send(data))
+  .catch((error) => {
+    res.sendStatus(404);
+  })
+};
+
 module.exports = {
   getStops,
-  getStop
+  getStop,
+  testStops
 };

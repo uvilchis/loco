@@ -22,7 +22,7 @@ const setPassport = (passportInstance) => {
   // Mobile OAuth
   router.get('/api/user/mobile/google', passport.authenticate('mobile-oauth'), controller.users.googleAuth);
 
-  
+
 
   // Local Auth
 
@@ -34,17 +34,15 @@ const setPassport = (passportInstance) => {
   router.get('/api/user/logout', controller.users.logOut);
 };
 
-
-
 // Stops
   // All stops
 router.get('/api/stops', controller.stops.getStops);
 
+router.get('/api/stops/location', controller.stops.testStops);
+
   // Stop by stop_id
   // e.g. /api/stop?stop_id=101N
 router.get('/api/stop', controller.stops.getStop);
-
-
 
 // Routes
   // All routes
@@ -101,6 +99,7 @@ router.get('/api/report/reports', controller.complaints.getReportsByRoute);
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
 router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
 
+
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
 router.post('/api/report/subtract', controller.complaints.subtractComplaintReport);
@@ -115,6 +114,13 @@ router.get('/api/service', controller.realtime.getServiceData);
   // Params: route_id
   // e.g. /api/service/7
 router.get('/api/service/:route_id', controller.realtime.getServiceRouteData);
+
+// Favorites Routes
+router.get('/api/favorites/allfavorites', controller.users.getFavorites);
+router.post('/api/favorites/add', controller.users.addFavorite);
+router.post('/api/favorites/delete', controller.users.deleteFavorite);
+
+
 
 
 /* To be fixed later */

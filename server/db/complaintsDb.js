@@ -107,7 +107,7 @@ const getReportsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
   let complaints = [];
   client.smembers(REPORTS, (error, members) => {
     if (error) { reject(error) }
-      members = members.filter((member) => _checkMems(member, [sub, routeId]))
+      members = members.filter((member) => member.split('-').pop() === routeId)
       .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count)=> cb(complaints.push( [name.replace(/-\w$/, ''), count])) ))
     _mapPromise(members).then((result) => resolve(complaints))
   })
