@@ -66,8 +66,8 @@ UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
       user.favorites.push({ route_id: routeId, stop_id: stopId, stop_name: stopName });
     }
     user.save(function (err, product) {
-      if (err) { return reject(err) }
-      resolve({ favorites: product.favorites })
+      if (err) { return reject(err); }
+      resolve({ favorites: product.favorites });
     })
   });
 };
@@ -75,12 +75,12 @@ UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
 UserSchema.methods.deleteFavorite = function (routeId, stopId) {
   return new Promise ((resolve, reject) => {
     let user = this;
-    let index = user.favorites.findIndex((el) => el.stop_id === stopId);
+    let index = user.favorites.findIndex((el) => el.route_id === routeId && el.stop_id === stopId);
     user.favorites.splice(index, 1);
     user.save(function (err, product) {
-      if (err) { return reject(err) }
-      resolve({ favorites: product.favorites})
-    })
+      if (err) { return reject(err); }
+      resolve({ favorites: product.favorites});
+    });
   })
 }
 

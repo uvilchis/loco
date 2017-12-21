@@ -31,20 +31,17 @@ const getStop = (req, res) => {
 };
 
 const testStops = (req, res) => {
-  db.getStopsByCoords()
-  .then((data) => {
-    let stations = [];
-    for (var i = 0; i < data.length; i++) {
-      let currentLat = Number(data[i].stop_lat);
-      let currentLon = Number(data[i].stop_lon);
-      var distance = geodist({lat: req.query.lat, lon: req.query.lon}, {lat: currentLat, lon: currentLon}, {exact: true, unit: 'miles'})
-      if (distance <= 0.25) {
-        stations.push(data[i])
-      }
+  let sub = req.query.sub;
+  let lat = req.query.lat;
+  let lon = req.query.lon;
+  instance.get(`/loco/stop/coords`, {
+    params: {
+      sub,
+      lat,
+      lon
     }
-    console.log(stations.length)
-    res.send(stations)
   })
+  .then(({ data }) => res.send(data))
   .catch((error) => {
     res.sendStatus(404);
   })
