@@ -62,7 +62,7 @@ UserSchema.methods.comparePassword = function(password) {
 UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
   return new Promise ((resolve, reject) => {
     let user = this;
-    if (!user.favorites.find((el) => el.stop_id === stopId)) {
+    if (!user.favorites.find((el) => el.stop_id === stopId && el.route_id === routeId)) {
       user.favorites.push({ route_id: routeId, stop_id: stopId, stop_name: stopName });
     }
     user.save(function (err, product) {
