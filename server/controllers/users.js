@@ -71,11 +71,12 @@ const getFavorites = (req, res) => {
 
 const deleteFavorite = (req, res) => {
   let _id = req.user;
+  let routeId = req.body.route_id
   let stopId = req.body.stop_id;
   Util.checkUser(req, res, () => {
     User.findOne({ _id }, (err, user) => {
       if (err) { res.sendStatus(404) }
-      user.deleteFavorite(stopId)
+      user.deleteFavorite(routeId, stopId)
       .then(data => res.send(data))
       .catch(err => res.sendStatus(404))
     })
