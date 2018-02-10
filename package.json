@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "react-dev": "webpack -d --watch",
-    "test": "mocha ./tests",
+    "test": "jest",
     "test-db": "mysql -u root < server/db/schema.sql"
   },
   "repository": {
@@ -28,7 +28,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "geodist": "^0.2.1",
-    "mongoose": "^4.13.7",
+    "mongoose": "^5.0.4",
     "mysql": "^2.15.0",
     "node": "^9.3.0",
     "passport": "^0.4.0",
@@ -51,8 +51,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.24.1",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1",
+    "jest": "^22.2.2",
     "nodemon": "^1.14.1",
     "webpack": "^3.10.0"
   }

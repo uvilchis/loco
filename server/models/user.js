@@ -9,11 +9,12 @@ const UserSchema = new mongoose.Schema({
 
   username: {
     type: String,
-    unique: true
+    unique: true,
+    required: true
   },
 
   password: {
-    type: String,
+    type: String
   },
 
   routes: {
@@ -62,13 +63,16 @@ UserSchema.methods.comparePassword = function(password) {
 UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
   return new Promise ((resolve, reject) => {
     let user = this;
+    if (routeId === undefined || stopId === undefined || stopName === undefined) {
+      reject(`Invalid params, received: routeId = ${routeId}, stopId = ${stopId}, stopName = ${stopName}`);
+    }
     if (!user.favorites.find((el) => el.stop_id === stopId && el.route_id === routeId)) {
       user.favorites.push({ route_id: routeId, stop_id: stopId, stop_name: stopName });
     }
     user.save(function (err, product) {
       if (err) { return reject(err); }
       resolve({ favorites: product.favorites });
-    })
+    });
   });
 };
 
@@ -82,6 +86,6 @@ UserSchema.methods.deleteFavorite = function (routeId, stopId) {
       resolve({ favorites: product.favorites});
     });
   })
-}
+};
 
-mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
