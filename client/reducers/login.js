@@ -1,4 +1,4 @@
-import { CHECK_LOGGED, LOG_IN, LOG_OUT } from '../actions';
+import { CHECK_LOGGED, LOG_IN, LOG_OUT } from '../actions/login';
 
 export default function(state = false, action) {
   switch (action.type) {

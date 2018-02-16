@@ -4,11 +4,12 @@ import { Route, Redirect } from 'react-router';
 import { BrowserRouter, Switch, Link } from 'react-router-dom';
 
 // import TrainList from './TrainList.jsx';
-// import Login from './Login.jsx';
+// import Login from '..jsx';
 // import Nav from './Nav.jsx';
 // import Details from './Details.jsx';
 import Util from './lib'
 import NavBarContainer from '../containers/NavBarContainer';
+import LogInContainer from '../containers/LogInContainer';
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
+    // store.dispatch(checkLogged());
     // let dataObj = {};
     // axios.get('/api/service?sub=mta')
     // .then(({ data }) => {
@@ -38,9 +40,14 @@ export default class Main extends React.Component {
 
   render() {
     return (
-      <div className="outer">
-        <NavBarContainer />
-      </div>
+      <BrowserRouter>
+        <div className="outer">
+          <NavBarContainer />
+          <Switch>
+            <Route path="/login" component={LogInContainer} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 

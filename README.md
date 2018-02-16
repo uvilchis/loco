@@ -32,3 +32,4 @@ Original development team:
   * Add some pretty animations
 * Singular complaint model
 * Unify code style
+* Add caching to server to preserve API calls

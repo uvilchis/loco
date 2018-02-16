@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import axios from 'axios';
 
 import Main from './components/Main.jsx';
+import NavBarContainer from './containers/NavBarContainer';
 
-import { checkLogged } from './actions';
+import { checkLogged } from './actions/login';
 import store from './store';
 
 class App extends Component {
@@ -21,17 +22,6 @@ class App extends Component {
     // .then(({ data }) => this.setState({ logged: true }))
     // .catch((error) => console.log(error));
   }
-
-  handleLogin(logged, cb) {
-    // this.setState({ logged }, cb);
-  }
-
-  onLogout() {
-    // axios.get('/api/user/logout')
-    // .then((response) => this.setState({ logged: false }))
-    // .catch((error) => console.log(error));
-  }
-
 
   render() {
     return (

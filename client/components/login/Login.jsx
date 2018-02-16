@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChasingDots } from 'better-react-spinkit';
+import { browserHistory } from 'react-router';
 import axios from 'axios';
 
 export default class Login extends React.Component {
@@ -8,26 +9,24 @@ export default class Login extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: '',
-      logging: false,
-      error: ''
+      password: ''
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSignup = this.handleSignup.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.onSignUp = this.onSignUp.bind(this);
+    this.onLogin = this.onLogin.bind(this);
   }
 
   componentDidMount() {
-    if (this.props.location.search) {
-      this.setState({ logging: true }, () => {
-        axios.get(`/api/user/google/return${this.props.location.search}`)
-        .then(({ data }) => {
-          this.props.handleLogin(true);
-          this.props.history.push('/');
-        })
-        .catch((error) => console.log(error));
-      });
-    }
+    // if (this.props.location.search) {
+    //   this.setState({ logging: true }, () => {
+    //     axios.get(`/api/user/google/return${this.props.location.search}`)
+    //     .then(({ data }) => {
+    //       this.props.handleLogin(true);
+    //       this.props.history.push('/');
+    //     })
+    //     .catch((error) => console.log(error));
+    //   });
+    // }
   }
 
   handleChange(e) {
@@ -35,37 +34,28 @@ export default class Login extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleSignup(e) {
-    axios.post('/api/user/signup', {
+  onSignUp(e) {
+    this.props.onSignUp({
       username: this.state.username,
       password: this.state.password
-    })
-    .then(({ data }) => {
-      this.props.handleLogin(true);
-      this.props.history.push('/');
-    })
-    .catch((error) => console.log(error));
+    });
   }
 
-  handleLogin() {
-    this.setState({ logging: true }, () => {
-      axios.post('/api/user/login', {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then(({ data }) => {
-        this.props.handleLogin(true);
-        this.props.history.push('/');
-      })
-      .catch((error) => this.setState({
-        logging: false,
-        error: 'Login failed'
-      }));
-    })
+  onLogin() {
+    this.props.onLogin({
+      username: this.state.username,
+      password: this.state.password
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.loggedIn) {
+      this.props.history.push('/');
+    }
   }
 
   render() {
-    return this.state.logging ?  <ChasingDots /> : (
+    return this.state.logging ? <ChasingDots /> : (
       <div className="login-form">
         <h3 className="login-header">Sign in</h3>
         <input
@@ -78,9 +68,8 @@ export default class Login extends React.Component {
           placeholder="Password"
           value={this.state.password}
           onChange={this.handleChange} />
-        <button onClick={this.handleLogin}>Log in</button>
-        <button onClick={this.handleSignup}>Sign up</button>
-        <a id="google-auth" href="/api/user/google">Google</a>
+        <button onClick={this.onLogin}>Log in</button>
+        <button onClick={this.onSignUp}>Sign up</button>
         <div className="login-error">{this.state.error}</div>
       </div>
     );

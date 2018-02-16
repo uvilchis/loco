@@ -2,20 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default class NavBar extends React.Component {
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // return nextProps.logged !== this.props.logged;
-  // }
-
   render() {
     return (
       <div className="navbar">
         <div className="logo_container">
-          <h1 className="logo"><a href="/">Loco</a></h1>
+          <h1 className="logo"><Link to="/">Loco</Link></h1>
           {
             this.props.loggedIn ?
             <button className="navbar-button" onClick={this.props.logOut}>Log Out</button> :
-            <button className="navbar-button" onClick={this.props.logIn}>Log In</button>
+            <Link className="navbar-button" to="/login">Log In</Link>
           }
         </div>
       </div>

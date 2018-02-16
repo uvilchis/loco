@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { logOut, logIn } from '../actions';
+import { tryLogOut } from '../actions/login';
 
 import NavBar from '../components/navbar/NavBar.jsx';
 
@@ -11,7 +10,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ logOut, logIn }, dispatch);
+  return {
+    logOut() {
+      dispatch(tryLogOut());
+    }
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
