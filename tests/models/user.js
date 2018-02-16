@@ -23,4 +23,31 @@ describe('User', () => {
     expect(user.routes).toBeTruthy();
     expect(Array.isArray(user.routes)).toBe(true);
   });
+
+  describe('method addFavorite', () => {
+
+    beforeEach(() => {
+      user.save = (err, b) => {
+
+      };
+    })
+
+    it('should exist', () => {
+      expect(user.addFavorite).toBeTruthy();
+      user.save('1');
+    });
+
+    it('should require 3 parameters', () => {
+      expect(user.addFavorite.length).toBeGreaterThanOrEqual(3);
+
+    });
+  });
+
+  describe('method deleteFavorite', () => {
+    it('should exist', () => {
+      expect(user.addFavorite).toBeTruthy();
+
+    });
+  });
+
 });

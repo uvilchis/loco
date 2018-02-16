@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps, this.props);
     return nextProps.logged !== this.props.logged;
   }
 

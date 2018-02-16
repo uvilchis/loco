@@ -78,6 +78,9 @@ UserSchema.methods.addFavorite = function(routeId, stopId, stopName) {
 
 UserSchema.methods.deleteFavorite = function (routeId, stopId) {
   return new Promise ((resolve, reject) => {
+    if (routeId === undefined || stopId === undefined) {
+      reject(`Invalid params, received: routeId = ${routeId}, stopId = ${stopId}`);
+    }
     let user = this;
     let index = user.favorites.findIndex((el) => el.route_id === routeId && el.stop_id === stopId);
     user.favorites.splice(index, 1);
@@ -85,7 +88,7 @@ UserSchema.methods.deleteFavorite = function (routeId, stopId) {
       if (err) { return reject(err); }
       resolve({ favorites: product.favorites});
     });
-  })
+  });
 };
 
 module.exports = mongoose.model('User', UserSchema);
