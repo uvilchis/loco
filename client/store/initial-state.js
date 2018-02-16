@@ -1,5 +1,4 @@
-const getInitialState = () => ({
-
+export default {
   // Used to show whether or not an async call is being made
   fetching: false,
 
@@ -11,6 +10,4 @@ const getInitialState = () => ({
 
   // Ask API for routes to display
   routes: []
-});
-
-export default getInitialState;
+};

@@ -1,13 +1,13 @@
 import { CHECK_LOGGED, LOG_IN, LOG_OUT } from '../actions';
 
-export default function(state = {}, action) {
+export default function(state = false, action) {
   switch (action.type) {
     case CHECK_LOGGED:
-      return console.log(action.type);
+      return state;
     case LOG_IN:
-      return console.log(action.type);
+      return true;
     case LOG_OUT:
-      return console.log(action.type);
+      return false;
     default:
       return state;
   }

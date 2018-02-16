@@ -8,42 +8,51 @@ import { BrowserRouter, Switch, Link } from 'react-router-dom';
 // import Nav from './Nav.jsx';
 // import Details from './Details.jsx';
 import Util from './lib'
+import NavBarContainer from '../containers/NavBarContainer';
 
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      service: [],
-      routes : [],
-      organized : [],
-      user: null,
-    };
+    // this.state = {
+    //   service: [],
+    //   routes : [],
+    //   organized : [],
+    //   user: null,
+    // };
   }
 
   componentDidMount() {
-    let dataObj = {};
-    axios.get('/api/service?sub=mta')
-    .then(({ data }) => {
-      dataObj.service = data.lines;
-      return axios.get('/api/routes?sub=mta');
-    })
-    .then(({ data }) => {
-      dataObj.routes = data;
-      dataObj.organized = Util.routeOrganizer(dataObj.service, dataObj.routes);
-      this.setState(dataObj);
-    })
-    .catch((error) => console.log(error));
+    // let dataObj = {};
+    // axios.get('/api/service?sub=mta')
+    // .then(({ data }) => {
+    //   dataObj.service = data.lines;
+    //   return axios.get('/api/routes?sub=mta');
+    // })
+    // .then(({ data }) => {
+    //   dataObj.routes = data;
+    //   dataObj.organized = Util.routeOrganizer(dataObj.service, dataObj.routes);
+    //   this.setState(dataObj);
+    // })
+    // .catch((error) => console.log(error));
   }
 
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-
-        </Switch>
-      </BrowserRouter>
+      <div className="outer">
+        <NavBarContainer />
+      </div>
     );
   }
+
+  // render() {
+  //   return (
+  //     <BrowserRouter>
+  //       <Switch>
+
+  //       </Switch>
+  //     </BrowserRouter>
+  //   );
+  // }
 }
 
 /*
