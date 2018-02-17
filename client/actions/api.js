@@ -1,16 +1,22 @@
 import axios from 'axios';
 
 // Get routes data
-export const GET_ROUTES = 'GET_ROUTES';
-export const SET_ROUTES = 'SET_ROUTES';
+export const GET_ROUTES_START = 'GET_ROUTES_START';
+export const GET_ROUTES_SUCCESS = 'GET_ROUTES_SUCCESS';
+export const GET_ROUTES_FAIL = 'GET_ROUTES_FAIL';
 
 // Get service data
-export const GET_SERVICE = 'GET_SERVICE';
-export const SET_SERVICE = 'SET_SERVICE';
+export const GET_SERVICE_START = 'GET_SERVICE_START';
+export const GET_SERVICE_SUCCESS = 'GET_SERVICE_SUCCESS';
+export const GET_SERVICE_FAIL = 'GET_SERVICE_FAIL';
+
+// Organize routes with service grouping
+export const ORGANIZE_ROUTES = 'ORGANIZE_ROUTES';
 
 // Get stops data
-// export const GET_STOPS = 'GET_STOPS';
-// export const SET_STOPS = 'SET_STOPS';
+export const GET_STOPS_START = 'GET_STOPS_START';
+export const GET_STOPS_SUCCESS = 'GET_STOPS_SUCCESS';
+export const GET_STOPS_FAIL = 'GET_STOPS_FAIL';
 
 export const getRoutes = () => (dispatch) => {
   axios.get('/api/routes', {
