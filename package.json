@@ -8,6 +8,7 @@
     "react-dev": "webpack -d --watch",
     "build": "webpack --config webpack.prod.js",
     "test": "jest",
+    "test-watch": "jest --watch",
     "test-db": "mysql -u root < server/db/schema.sql"
   },
   "repository": {

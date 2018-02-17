@@ -3,7 +3,10 @@ export default {
   fetching: false,
 
   // Control user access throughout the app
-  loggedIn: false,
+  user: {
+    loggedIn: false,
+    favorites: []
+  },
 
   // All fetched API data
   api: {

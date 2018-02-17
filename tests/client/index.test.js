@@ -3,4 +3,4 @@
 // jest.unmock('redux-mock-store');
 // jest.unmock('redux-thunk');
 
-const actions = require('./actions/login');
+import * as user from './actions/user';
