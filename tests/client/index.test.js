@@ -3,4 +3,5 @@
 // jest.unmock('redux-mock-store');
 // jest.unmock('redux-thunk');
 
-import * as user from './actions/user';
+import * as userActions from './actions/user';
+import * as userReducers from './reducers/user';

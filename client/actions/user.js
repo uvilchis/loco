@@ -27,8 +27,9 @@ export const signUpSuccess = () => ({ type: SIGN_UP_SUCCESS, loggedIn: true });
 export const signUpFail = () => ({ type: SIGN_UP_FAIL, loggedIn: false });
 export const checkLoggedSuccess = () => ({ type: CHECK_LOGGED_SUCCESS, loggedIn: true });
 export const checkLoggedFail = () => ({ type: CHECK_LOGGED_FAIL, loggedIn: false });
-
 export const logError = (loggedIn) => ({ type: LOG_ERROR, loggedIn })
+
+
 
 // Used within the actions file
 const logInStart = () => ({ type: LOG_IN_START });
