@@ -5,9 +5,13 @@ export default {
   // Control user access throughout the app
   loggedIn: false,
 
-  // Scraped service data from MTA
-  service: [],
+  // All fetched API data
+  api: {
+    
+    // Ask API for routes to display
+    routes: [],
 
-  // Ask API for routes to display
-  routes: []
+    // Scraped service data from MTA
+    service: []
+  }
 };

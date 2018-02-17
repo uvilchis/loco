@@ -4,8 +4,8 @@ export const CHECK_LOGGED = 'CHECK_LOGGED';
 export const TRY_LOG_IN = 'TRY_LOG_IN';
 export const TRY_LOG_OUT = 'TRY_LOG_OUT';
 export const TRY_SIGN_UP = 'TRY_SIGN_UP';
-export const LOG_IN = 'LOGIN';
-export const LOG_OUT = 'LOGOUT';
+export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
 
 export const checkLogged = () => (dispatch) => {
   axios.get('/api/user/start')
@@ -18,7 +18,12 @@ export const checkLogged = () => (dispatch) => {
 };
 
 export const tryLogIn = ({ username, password }) => (dispatch) => {
-  axios.post('/api/user/login', { username, password })
+  // return axios.post('/api/user/login', { username, password })
+  return axios({
+    method: 'post',
+    url: '/api/user/login',
+    data: { username, password }
+  })
   .then((response) => dispatch(logIn()))
   .catch((error) => _failed('login', error, dispatch));
 };

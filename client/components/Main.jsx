@@ -10,6 +10,7 @@ import { BrowserRouter, Switch, Link } from 'react-router-dom';
 import Util from './lib'
 import NavBarContainer from '../containers/NavBarContainer';
 import LogInContainer from '../containers/LogInContainer';
+import RoutesContainer from '../containers/RoutesContainer';
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -23,7 +24,6 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
-    // store.dispatch(checkLogged());
     // let dataObj = {};
     // axios.get('/api/service?sub=mta')
     // .then(({ data }) => {
@@ -44,6 +44,7 @@ export default class Main extends React.Component {
         <div className="outer">
           <NavBarContainer />
           <Switch>
+            <Route path="/" component={RoutesContainer} />
             <Route path="/login" component={LogInContainer} />
           </Switch>
         </div>

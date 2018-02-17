@@ -15,20 +15,7 @@ export default class Login extends React.Component {
     this.onSignUp = this.onSignUp.bind(this);
     this.onLogin = this.onLogin.bind(this);
   }
-
-  componentDidMount() {
-    // if (this.props.location.search) {
-    //   this.setState({ logging: true }, () => {
-    //     axios.get(`/api/user/google/return${this.props.location.search}`)
-    //     .then(({ data }) => {
-    //       this.props.handleLogin(true);
-    //       this.props.history.push('/');
-    //     })
-    //     .catch((error) => console.log(error));
-    //   });
-    // }
-  }
-
+  
   handleChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
