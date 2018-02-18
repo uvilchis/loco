@@ -12,6 +12,9 @@ export const GET_SERVICE_SUCCESS = 'GET_SERVICE_SUCCESS';
 export const GET_SERVICE_FAIL = 'GET_SERVICE_FAIL';
 
 // Organize routes with service grouping
+// This is synchronous but it is only run in an asynchronous context
+// To preserve redux flow, this will also be ran like an async redux call
+export const ORGANIZE_ROUTES_START = 'ORGANIZE_ROUTES_START';
 export const ORGANIZE_ROUTES_SUCCESS = 'ORGANIZE_ROUTES_SUCCESS';
 export const ORGANIZE_ROUTES_FAIL = 'ORGANIZE_ROUTES_FAIL';
 
@@ -19,6 +22,10 @@ export const ORGANIZE_ROUTES_FAIL = 'ORGANIZE_ROUTES_FAIL';
 export const GET_STOPS_START = 'GET_STOPS_START';
 export const GET_STOPS_SUCCESS = 'GET_STOPS_SUCCESS';
 export const GET_STOPS_FAIL = 'GET_STOPS_FAIL';
+
+export const GET_ROUTES_AND_SERVICE_START = 'GET_ROUTES_AND_SERVICE_START';
+export const GET_ROUTES_AND_SERVICE_SUCCESS = 'GET_ROUTES_AND_SERVICE_SUCCESS';
+export const GET_ROUTES_AND_SERVICE_FAIL = 'GET_ROUTES_AND_SERVICE_FAIL';
 
 const getRoutesStart = () => ({ type: GET_ROUTES_START });
 const getRoutesSuccess = (routes) => ({ type: GET_ROUTES_SUCCESS, routes });
@@ -28,8 +35,13 @@ const getServiceStart = () => ({ type: GET_SERVICE_START });
 const getServiceSuccess = (service) => ({ type: GET_SERVICE_SUCCESS, service });
 const getServiceFail = () => ({ type: GET_SERVICE_FAIL });
 
+const organizeRoutesStart = () => ({ type: ORGANIZE_ROUTES_START });
 const organizeRoutesSuccess = (organized) => ({ type: ORGANIZE_ROUTES_SUCCESS, organized });
 const organizeRoutesFail = () => ({ type: ORGANIZE_ROUTES_FAIL });
+
+const getRoutesAndServiceStart = () => ({ type: GET_ROUTES_AND_SERVICE_START });
+const getRoutesAndServiceSuccess = () => ({ type: GET_ROUTES_AND_SERVICE_SUCCESS });
+const getRoutesAndServiceFail = () => ({ type: GET_ROUTES_AND_SERVICE_FAIL });
 
 export const getRoutes = () => (dispatch) => {
   dispatch(getRoutesStart());
@@ -44,22 +56,33 @@ export const getRoutes = () => (dispatch) => {
 export const getService = () => (dispatch) => {
   dispatch(getServiceStart());
   return axios.get('/api/service', { params: { sub: 'mta' } })
-  .then(({ data }) => dispatch(getServiceSuccess(data)))
+  // The nature of MTA service data means the actual interesting data is locked behind lines
+  .then(({ data }) => dispatch(getServiceSuccess(data.lines)))
   .catch((error) => {
     dispatch(getServiceFail());
   });
 };
 
+export const organizeRoutes = () => (dispatch, getState) => {
+  dispatch(organizeRoutesStart())
+  try {
+    let service = getState().service;
+    let routes = getState().routes;
+    let organized = util.routeOrganizer(service, routes);
+    return dispatch(organizeRoutesSuccess(organized));
+  } catch (exception) {
+    dispatch(organizeRoutesFail())
+  }
+};
+
 export const getRoutesAndService = () => (dispatch, getState) => {
   return dispatch(getRoutes())
   .then(() => dispatch(getService()))
-  .then(() => {
-    let service = getState().service.lines || [];
-    let routes = getState().routes || [];
-    dispatch(organizeRoutesSuccess(util.routeOrganizer(service, routes)));
-  })
+  .then(() => dispatch(organizeRoutes()))
+  .then(() => dispatch(getRoutesAndServiceSuccess()))
   .catch((error) => {
-    console.log(error)
-    dispatch(organizeRoutesFail());
+    console.log(error);
+    // The last possible failing point here is organizeRoutes, as getRoutes and getServie catch their own fails
+    dispatch(getRoutesAndServiceFail());
   });
 };
