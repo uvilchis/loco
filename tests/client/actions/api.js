@@ -15,7 +15,7 @@ import * as util from '../../../client/lib/util';
 describe('api actions', () => {
   let store;
   beforeEach(() => {
-    store = mockStore({ routes: [], service: [], organized: [] });
+    store = mockStore({ routes: [], service: [], organized: {} });
     moxios.install()
   });
   afterEach(() => moxios.uninstall());
