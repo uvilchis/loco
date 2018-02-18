@@ -23,6 +23,10 @@ export const GET_STOPS_START = 'GET_STOPS_START';
 export const GET_STOPS_SUCCESS = 'GET_STOPS_SUCCESS';
 export const GET_STOPS_FAIL = 'GET_STOPS_FAIL';
 
+export const GET_A_STOP_START = 'GET_A_STOP_START';
+export const GET_A_STOP_SUCCESS = 'GET_A_STOP_SUCCESS';
+export const GET_A_STOP_FAIL = 'GET_A_STOP_FAIL';
+
 export const GET_ROUTES_AND_SERVICE_START = 'GET_ROUTES_AND_SERVICE_START';
 export const GET_ROUTES_AND_SERVICE_SUCCESS = 'GET_ROUTES_AND_SERVICE_SUCCESS';
 export const GET_ROUTES_AND_SERVICE_FAIL = 'GET_ROUTES_AND_SERVICE_FAIL';
@@ -38,6 +42,8 @@ const getServiceFail = () => ({ type: GET_SERVICE_FAIL });
 const organizeRoutesStart = () => ({ type: ORGANIZE_ROUTES_START });
 const organizeRoutesSuccess = (organized) => ({ type: ORGANIZE_ROUTES_SUCCESS, organized });
 const organizeRoutesFail = () => ({ type: ORGANIZE_ROUTES_FAIL });
+
+const getStopsStart = () => ({ type: GET_STOPS_START });
 
 const getRoutesAndServiceStart = () => ({ type: GET_ROUTES_AND_SERVICE_START });
 const getRoutesAndServiceSuccess = () => ({ type: GET_ROUTES_AND_SERVICE_SUCCESS });
@@ -81,8 +87,12 @@ export const getRoutesAndService = () => (dispatch, getState) => {
   .then(() => dispatch(organizeRoutes()))
   .then(() => dispatch(getRoutesAndServiceSuccess()))
   .catch((error) => {
-    console.log(error);
-    // The last possible failing point here is organizeRoutes, as getRoutes and getServie catch their own fails
+    // The last possible failing point here is here.
+    // Not sure how this would get reached, but just in case
     dispatch(getRoutesAndServiceFail());
   });
+};
+
+export const getStops = () => (dispatch, getState) => {
+
 };

@@ -16,20 +16,6 @@ const getStops = (req, res) => {
   });
 };
 
-const getStop = (req, res) => {
-  let stopId = req.query.stop_id;
-  instance.get('/loco/stop?sub=mta', {
-    params: {
-      stop_id: stopId
-    }
-  })
-  .then(({ data }) => res.send(data))
-  .catch((error) => {
-    console.log(error);
-    res.sendStatus(404);
-  });
-};
-
 const testStops = (req, res) => {
   let sub = req.query.sub;
   let lat = req.query.lat;
@@ -49,6 +35,5 @@ const testStops = (req, res) => {
 
 module.exports = {
   getStops,
-  getStop,
   testStops
 };

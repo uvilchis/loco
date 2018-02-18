@@ -40,10 +40,6 @@ router.get('/api/stops', controller.stops.getStops);
 
 router.get('/api/stops/location', controller.stops.testStops);
 
-  // Stop by stop_id
-  // e.g. /api/stop?stop_id=101N
-router.get('/api/stop', controller.stops.getStop);
-
 // Routes
   // All routes
 router.get('/api/routes', controller.routes.getRoutes);

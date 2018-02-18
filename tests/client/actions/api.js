@@ -10,10 +10,17 @@ import mockRoutes from '../shared/mock-routes.json';
 import mockServiceObj from '../shared/mock-service.json';
 import organizedRoutes from '../shared/organized-routes.json';
 
-// Nature of MTA data means the actually used data is in the lines object
-const mockService = mockServiceObj.lines;
-
 import * as util from '../../../client/lib/util';
+
+// Nature of MTA data means the actually used data is in the lines property
+const mockService = mockServiceObj.lines;
+const initialState = {
+  routes: [],
+  service: [],
+  organized: [],
+  selectedStop: '',
+  selectedRoute: ''
+};
 
 describe('api actions', () => {
   let store;
@@ -116,6 +123,7 @@ describe('api actions', () => {
   });
 
   describe('getRoutesAndService', () => {
+
     it('should dispatch getRoutes, then getService, then organizeRoutes, then GET_ROUTES_AND_SERVICE_SUCCESS if successful', () => {
       moxios.stubRequest('/api/routes?sub=mta', { status: 200, response: mockRoutes });
       moxios.stubRequest('/api/service?sub=mta', { status: 200, response: mockServiceObj });
@@ -135,7 +143,13 @@ describe('api actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
+  });
 
-    // it('should dispatch getRoutes, then getService, then GET_ROU')
+  describe('getStops', () => {
+
+  });
+
+  describe('getStop', () => {
+
   });
 });
