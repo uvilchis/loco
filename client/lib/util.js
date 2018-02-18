@@ -1,11 +1,9 @@
-const routeOrganizer = (trains, routes) => trains.reduce((acc, train) => {
+export const routeOrganizer = (service, routes) => service.reduce((acc, routeGroup) => {
   routes.forEach((route) => {
-    if (train.name.includes(route.route_id)) {
-      if (!acc[train.name]) { acc[train.name] = []; }
-      acc[train.name].push(route);
+    if (routeGroup.name.includes(route.route_id)) {
+      if (!acc[routeGroup.name]) { acc[routeGroup.name] = []; }
+      acc[routeGroup.name].push(route);
     }
   });
   return acc;
 }, {});
-
-export default { routeOrganizer };

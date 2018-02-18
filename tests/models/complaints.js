@@ -1,12 +1,3 @@
-/**
- * To execute these tests, you are going to need to use Mocha
- */
-
-// Testing suitemo
-var chai = require('chai');
-var assert = chai.assert;
-var expect = chai.expect;
-
 // Models
 var complaints = require('../../server/models/complaint');
 var Complaint = complaints.Complaint;

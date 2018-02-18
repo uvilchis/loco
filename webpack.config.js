@@ -3,7 +3,7 @@ const SRC = path.join(__dirname, '/client');
 const DIST = path.join(__dirname, '/server/dist');
 
 module.exports = {
-  entry: "./client/Main.jsx",
+  entry: `${SRC}/App.jsx`,
   output: {
     path: DIST,
     filename: 'bundle.js'
