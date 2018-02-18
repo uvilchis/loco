@@ -1,6 +1,4 @@
 const axios = require('axios');
-const geodist = require('geodist');
-const db = require('../db/mtaSched')
 
 const env = require('../env');
 

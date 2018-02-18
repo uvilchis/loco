@@ -18,18 +18,14 @@ export const ORGANIZE_ROUTES_START = 'ORGANIZE_ROUTES_START';
 export const ORGANIZE_ROUTES_SUCCESS = 'ORGANIZE_ROUTES_SUCCESS';
 export const ORGANIZE_ROUTES_FAIL = 'ORGANIZE_ROUTES_FAIL';
 
+export const GET_ROUTES_AND_SERVICE_START = 'GET_ROUTES_AND_SERVICE_START';
+export const GET_ROUTES_AND_SERVICE_SUCCESS = 'GET_ROUTES_AND_SERVICE_SUCCESS';
+export const GET_ROUTES_AND_SERVICE_FAIL = 'GET_ROUTES_AND_SERVICE_FAIL';
+
 // Get stops data
 export const GET_STOPS_START = 'GET_STOPS_START';
 export const GET_STOPS_SUCCESS = 'GET_STOPS_SUCCESS';
 export const GET_STOPS_FAIL = 'GET_STOPS_FAIL';
-
-export const GET_A_STOP_START = 'GET_A_STOP_START';
-export const GET_A_STOP_SUCCESS = 'GET_A_STOP_SUCCESS';
-export const GET_A_STOP_FAIL = 'GET_A_STOP_FAIL';
-
-export const GET_ROUTES_AND_SERVICE_START = 'GET_ROUTES_AND_SERVICE_START';
-export const GET_ROUTES_AND_SERVICE_SUCCESS = 'GET_ROUTES_AND_SERVICE_SUCCESS';
-export const GET_ROUTES_AND_SERVICE_FAIL = 'GET_ROUTES_AND_SERVICE_FAIL';
 
 const getRoutesStart = () => ({ type: GET_ROUTES_START });
 const getRoutesSuccess = (routes) => ({ type: GET_ROUTES_SUCCESS, routes });
@@ -43,12 +39,17 @@ const organizeRoutesStart = () => ({ type: ORGANIZE_ROUTES_START });
 const organizeRoutesSuccess = (organized) => ({ type: ORGANIZE_ROUTES_SUCCESS, organized });
 const organizeRoutesFail = () => ({ type: ORGANIZE_ROUTES_FAIL });
 
-const getStopsStart = () => ({ type: GET_STOPS_START });
-
 const getRoutesAndServiceStart = () => ({ type: GET_ROUTES_AND_SERVICE_START });
 const getRoutesAndServiceSuccess = () => ({ type: GET_ROUTES_AND_SERVICE_SUCCESS });
 const getRoutesAndServiceFail = () => ({ type: GET_ROUTES_AND_SERVICE_FAIL });
 
+const getStopsStart = () => ({ type: GET_STOPS_START });
+const getStopsSuccess = (stops) => ({ type: GET_STOPS_SUCCESS, stops });
+const getStopsFail = (stops) => ({ type: GET_STOPS_FAIL });
+
+/**
+ * Fetch all available routes from API
+*/
 export const getRoutes = () => (dispatch) => {
   dispatch(getRoutesStart());
   return axios.get('/api/routes', { params: { sub: 'mta' } })
@@ -59,6 +60,9 @@ export const getRoutes = () => (dispatch) => {
   });
 };
 
+/** 
+ * Fetch current service status information
+*/
 export const getService = () => (dispatch) => {
   dispatch(getServiceStart());
   return axios.get('/api/service', { params: { sub: 'mta' } })
@@ -69,6 +73,11 @@ export const getService = () => (dispatch) => {
   });
 };
 
+/**
+ * Organizes data based on service
+ * Helps to pare down routes information
+ * Check out mocked data in test for more information
+*/
 export const organizeRoutes = () => (dispatch, getState) => {
   dispatch(organizeRoutesStart())
   try {
@@ -77,10 +86,14 @@ export const organizeRoutes = () => (dispatch, getState) => {
     let organized = util.routeOrganizer(service, routes);
     return dispatch(organizeRoutesSuccess(organized));
   } catch (exception) {
-    dispatch(organizeRoutesFail())
+    dispatch(organizeRoutesFail());
   }
 };
 
+/**
+ * Summative action to fetch routes and services, then organize them into a new organized object
+ * Though organized is the primary output, we still want routes and service in state
+*/
 export const getRoutesAndService = () => (dispatch, getState) => {
   return dispatch(getRoutes())
   .then(() => dispatch(getService()))
@@ -93,6 +106,22 @@ export const getRoutesAndService = () => (dispatch, getState) => {
   });
 };
 
-export const getStops = () => (dispatch, getState) => {
-
+/**
+ * Fetch all stops available to a certain route by its id
+ * 
+ * Route ID is 
+ * @param {*} routeId 
+ */
+export const getStops = (routeId) => (dispatch, getState) => {
+  dispatch(getStopsStart());
+  return axios.get('/api/stops', {
+    params: {
+      sub: 'mta',
+      route_id: routeId
+    }
+  })
+  .then(({ data }) => dispatch(getStopsSuccess(data)))
+  .catch((error) => {
+    dispatch(getStopsFail());
+  });
 };

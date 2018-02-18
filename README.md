@@ -15,6 +15,8 @@ Development team:
 * <a href="https://github.com/uvilchis">uvilchis</a>
 * <a href="https://github.com/ckong1792">ckong1792</a>
 
+**Check <a href="https://github.com/teamloco/loco/tree/deployed">deployed branch</a> for current status of deployed Loco**
+
 ## Current features
 * See current complaints for many of the main routes and stops!
 * View MTA service status posts!

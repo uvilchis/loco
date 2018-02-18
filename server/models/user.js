@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
     default: []
   },
 
-  complaints: {
+  reports: {
     type: Array,
     default: []
   }

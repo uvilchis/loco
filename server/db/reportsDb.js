@@ -1,11 +1,13 @@
 const redis = require('redis');
-const client = redis.createClient();
-client.on('ready', () => console.log('redis loaded'));
+
+const config = { db: process.env.NODE_ENV === 'test' ? 5 : 0 };
+const client = redis.createClient(config);
+client.on('ready', () => console.log(`redis loaded db ${client.selected_db}`));
 client.on('error', (error) => console.log('redis error:', error));
 
 /*
-  Redis keeps track of complaints removing any that are older than 30 minutes. 
-  Using the DB will typically require a sub, complaint type, stop ID, and route ID. 
+  Redis keeps track of reports removing any that are older than 30 minutes. 
+  Using the DB will typically require a sub, report type, stop ID, and route ID. 
   Some queries will only require some of those params
 
   e.g.
@@ -15,21 +17,25 @@ client.on('error', (error) => console.log('redis error:', error));
     routeId = '7';
 
   The data itself is organized as such:
-    reports: Set -> names of current complaints
+    reports: Set -> names of current reports
       * mta-delay-101n-7
       * mta-delay-102n-7
     
-    mta-delay-101n-7: SortedSet -> time stamps of current complaints
+    mta-delay-101n-7: SortedSet -> time stamps of current reports
       * 1234567: 1234567
       * 1234590: 1234590
   
   The second table (the one with time stamps) uses the time as score and value.
-  When cleaning, we use the ZREMRANGEBYSCORE to simply remove all the complaints older than 30 minutes
+  When cleaning, we use the ZREMRANGEBYSCORE to simply remove all the reports older than 30 minutes
 */
+
+
 
 /* Constants */
 
 const REPORTS = 'reports';
+
+
 
 /* Helper functions */
 
@@ -47,8 +53,6 @@ const _checkMems = (memStr, params = []) => params.reduce((acc, b) => {
   return acc = memStr.includes(b);
 }, true);
 
-
-
 /**
  * Takes an array of asynchronous functions, and returns a Promise tha resolves will an array of results
  * 
@@ -58,15 +62,29 @@ const _mapPromise = (tasks) => Promise.all(tasks.map((task) => new Promise(task)
 
 /**
  * Cleaner helper method, runs after the current members are gathered.
- * Will clean up old complaint reports, as well as empty members in reports
+ * Will clean up old reports, as well as empty members in reports
  */
+let cleanId;
 const _cleaner = () => client.smembers(REPORTS, (error, members) => {
   let time = Date.now();
-  setTimeout(_cleaner, 1000 * 60);
+  let interval;
+  let cleanupRange;
+  
+  if (process.env.NODE_ENV === 'test') {
+    interval = 500;
+    cleanupRange = 1000;
+  } else {
+    interval = 1000 * 60;
+    cleanupRange = interval * 30;
+  }
+
+  if (cleanId !== undefined) { clearTimeout(cleanId); }
+  cleanId = setTimeout(_cleaner, interval);
+
   members.forEach((mem) => {
-    client.zremrangebyscore(mem, '-inf', Date.now() - (1000 * 60 * 30), (error, result) => {
+    client.zremrangebyscore(mem, '-inf', time - cleanupRange, (error, result) => {
       if (error) { throw `failed to clean ${mem} sorted set`; }
-      client.zcount(mem, '-inf', 'inf', (error, result) => {
+      client.zcard(mem, (error, result) => {
         if (error) { throw `failed to count ${mem} set`; }
         if (result === 0) {
           client.srem(REPORTS, mem, (error, result) => {
@@ -82,24 +100,26 @@ const _cleaner = () => client.smembers(REPORTS, (error, members) => {
 _cleaner();
 
 
+
 /* Actual methods */
 
 /**
- * Add a new complaint to the db. Needs all 4 params.
- * Returns a Promise that resolves with new complaint count
+ * Add a new report to the db. Needs all 4 params.
+ * Returns a Promise that resolves with new report count
  * 
  * @param {string} sub transit authority e.g. 'mta'
- * @param {string} type type of complaint e.g. 'delay'
+ * @param {string} type type of report e.g. 'delay'
  * @param {string} stopId id of stop e.g. '101n';
  * @param {string} routeId id of route e.g. '7';
  */
-const addComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
+const addReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
   let name = `${sub}-${type}-${stopId}-${routeId}`;
+  let time = Date.now();
   client.sadd(REPORTS, name, (error, result) => {
     if (error) { return reject(error); }
-    client.zadd(name, Date.now(), Date.now(), (error, result) => {
+    client.zadd(name, time, time, (error, result) => {
       if (error) { return reject(error); }
-      client.zcount(name, '0', 'inf', (error, result) => {
+      client.zcard(name, (error, result) => {
         if (error) { return reject(error); }
         resolve(result);
       });
@@ -108,20 +128,20 @@ const addComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve,
 });
 
 /**
- * See complaint counts for a certain sub, type, stopId, and routeId
+ * See report counts for a certain sub, type, stopId, and routeId
  * Returns a promise that resolves with the complain count
  * 
  * @param {string} sub transit authority e.g. 'mta'
- * @param {string} type type of complaint e.g. 'delay'
+ * @param {string} type type of report e.g. 'delay'
  * @param {string} stopId id of stop e.g. '101n';
  * @param {string} routeId id of route e.g. '7';
  */
-const getComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
+const getReport = (sub, type, stopId, routeId) => new Promise((resolve, reject) => {
   let name = `${sub}-${type}-${stopId}-${routeId}`;
   client.sismember(REPORTS, name, (error, result) => {
     if (error) { return reject(0); }
     if (result === 0) { return resolve(result); }
-    client.zcount(name, 0, 'inf', (error, result) => {
+    client.zcard(name, (error, result) => {
       if (error) { return reject(error); }
       resolve(result);
     });
@@ -130,7 +150,7 @@ const getComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve,
 
 /**
  * Fetch all reports at a specific sub, stop, and route
- * Returns a promise that resolves with an array showing all complaints
+ * Returns a promise that resolves with an array showing all reports
  * 
  * To clarify the map section...
  *   1. Members array is mapped into callbacks holding name as closure variable
@@ -143,17 +163,19 @@ const getComplaintReport = (sub, type, stopId, routeId) => new Promise((resolve,
  */
 const getReportsByStopAndRoute = (sub, stopId, routeId) => new Promise((resolve, reject) => {
   client.smembers(REPORTS, (error, members) => {
+    if (error) { return reject(error); }
     members = members.filter((member) => _checkMems(member, [sub, stopId, routeId]))
-      .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count) => cb({ name: name.split('-')[1], count })));
+      .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count) => {
+        let [sub, type, stopId, routeId] = name.split('-');
+        cb({ type, count });
+      }));
     _mapPromise(members).then((result) => resolve(result));
   });
 });
 
-
-
 /**
  * Gets the grand total number of reports for any given route
- * Returns a promise that resolves with an array of all complaints
+ * Returns a promise that resolves with an array of all reports
  * 
  * To clarify the map section...
  *   1. Members array is first filtered for the correct route ids
@@ -165,20 +187,22 @@ const getReportsByStopAndRoute = (sub, stopId, routeId) => new Promise((resolve,
  * @param {*} routeId id of route e.g. '7'
  */
 const getReportsByRoute = (sub, routeId) => new Promise((resolve, reject) => {
-  let complaints = [];
   client.smembers(REPORTS, (error, members) => {
-    if (error) { reject(error) }
+    if (error) { return reject(error); }
       members = members.filter((member) => member.split('-').pop() === routeId)
-        .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count) => cb(complaints.push([name.replace(/-\w$/, ''), count]))));
-    _mapPromise(members).then((result) => resolve(complaints));
+        .map((name) => (cb) => client.zcount(name, 0, 'inf', (error, count) => {
+          let [sub, type, stopId, routeId] = name.split('-');
+          cb({ type, stopId, count });
+        }));
+    _mapPromise(members).then((result) => resolve(result));
   });
 });
 
 
 
 /**
- * Fetches every available complaint from the db at the time of invocation.
- * Returns a promise that resolves with an object with all the available complaints
+ * Fetches every available report from the db at the time of invocation.
+ * Returns a promise that resolves with an object with all the available reports
  * 
  */
 
@@ -195,7 +219,7 @@ const getAllComplaintCounts = () => new Promise((resolve, reject) => {
 
 
 /**
- * Intended to fetch all the complaints a given user has made.
+ * Intended to fetch all the reports a given user has made.
  * Not yet implemented, still deciding how to best track user ids
  */
 
@@ -210,9 +234,11 @@ const checkComplaints = (sub, stopId, routeId, userId) => new Promise((resolve, 
 */
 
 module.exports = {
-  addComplaintReport,
-  getComplaintReport,
+  REPORTS,
+  addReport,
+  getReport,
   getReportsByStopAndRoute,
-  getAllComplaintCounts,
-  getReportsByRoute
+  // getAllComplaintCounts,
+  getReportsByRoute,
+  client
 };

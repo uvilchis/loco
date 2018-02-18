@@ -72,39 +72,39 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
 // Complaints - type refers to complaint type,
   // Params: type, stop_id, route_id
   // e.g. /api/complaint/stop?type=delay&stop_id=101N&route_id=1
-// router.get('/api/complaint', controller.complaints.getComplaintReport);
+// router.get('/api/complaint', controller.reports.getReport);
 
 // TODO: adding custom complaint
-// router.post('/api/complaint/add', controller.complaints.addComplaint);
+// router.post('/api/complaint/add', controller.complaints.addReport);
 
 
 // Reports - type refers to complaint type, add and subtract return the new count
   // for returning a particular complaint at a particular stop
   // Params: type, stop_id, route_id
-router.get('/api/report', controller.complaints.getComplaintReport);
+router.get('/api/report', controller.reports.getReport);
 
 // to be called when you've reached a train line's detail page, and have selected a route
 // Params : sub, route_id
-router.get('/api/report/stoproute', controller.complaints.getReportsByStopAndRoute);
+router.get('/api/report/stoproute', controller.reports.getReportsByStopAndRoute);
 
-router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
+// router.get('/api/report/typecomplaintsbyroute', controller.reports.getTypeComplaintsByRoute);
 
 // to be called at the main page so users can see routes experiencing problems at a glance (no params)
 
 // SK: I Don't think this i being used or is at all useful right now
-// router.get('/api/report/getallcomplaintcounts', controller.complaints.getAllComplaintCounts);
+// router.get('/api/report/getallcomplaintcounts', controller.reports.getAllComplaintCounts);
 
 // TODO: this route will be tantamount to ensuring users know which stops are experiencing issues at the details page
-router.get('/api/report/reports', controller.complaints.getReportsByRoute);
+router.get('/api/report/reports', controller.reports.getReportsByRoute);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
-router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
+router.post('/api/report/add', checkUser, controller.reports.addReport);
 
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
-router.post('/api/report/subtract', controller.complaints.subtractComplaintReport);
+// router.post('/api/report/subtract', controller.reports.subtractComplaintReport);
 
 
 

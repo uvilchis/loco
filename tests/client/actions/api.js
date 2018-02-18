@@ -146,10 +146,6 @@ describe('api actions', () => {
   });
 
   describe('getStops', () => {
-
-  });
-
-  describe('getStop', () => {
-
+    
   });
 });
