@@ -6,4 +6,6 @@
 import * as userActions from './actions/user';
 import * as userReducers from './reducers/user';
 
+import * as apiActions from './actions/api';
+
 import * as util from './lib/util';
