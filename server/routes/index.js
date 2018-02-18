@@ -35,8 +35,11 @@ const setPassport = (passportInstance) => {
 };
 
 // Stops
-  // All stops
-router.get('/api/stops', controller.stops.getStops);
+  // All stops Unused?
+// router.get('/api/stops', controller.stops.getStops);
+
+// Previously /api/route/stops, but this is the only real use of stops
+router.get('/api/stops', controller.routes.getStopsByRoute);
 
 router.get('/api/stops/location', controller.stops.testStops);
 
@@ -46,9 +49,10 @@ router.get('/api/routes', controller.routes.getRoutes);
 
   // Route by route_id
   // e.g. /api/route?route_id=1
-router.get('/api/route', controller.routes.getRoute);
+  // Unused?
+// router.get('/api/route', controller.routes.getRoute);
 
-router.get('/api/route/stops', controller.routes.getStopsByRoute);
+// router.get('/api/route/stops', controller.routes.getStopsByRoute);
 
 // Stop_times - These will break if you call them without parameters
   // Params: stop_id, route_type
@@ -86,7 +90,9 @@ router.get('/api/report/stoproute', controller.complaints.getReportsByStopAndRou
 router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
 
 // to be called at the main page so users can see routes experiencing problems at a glance (no params)
-router.get('/api/report/getallcomplaintcounts', controller.complaints.getAllComplaintCounts);
+
+// SK: I Don't think this i being used or is at all useful right now
+// router.get('/api/report/getallcomplaintcounts', controller.complaints.getAllComplaintCounts);
 
 // TODO: this route will be tantamount to ensuring users know which stops are experiencing issues at the details page
 router.get('/api/report/reports', controller.complaints.getReportsByRoute);

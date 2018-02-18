@@ -10,7 +10,7 @@ Check out our <a href="https://teamloco.github.io">About us</a> page here!
 Current maintainers:
 * <a href="https://github.com/kwak123">kwak123</a>
 
-Original development team:
+Development team:
 * <a href="https://github.com/kwak123">kwak123</a>
 * <a href="https://github.com/uvilchis">uvilchis</a>
 * <a href="https://github.com/ckong1792">ckong1792</a>
