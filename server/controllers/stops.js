@@ -1,6 +1,4 @@
 const axios = require('axios');
-const geodist = require('geodist');
-const db = require('../db/mtaSched')
 
 const env = require('../env');
 
@@ -12,20 +10,6 @@ const getStops = (req, res) => {
   instance.get('/loco/stops?sub=mta')
   .then(({ data }) => res.send(data))
   .catch((error) => {
-    res.sendStatus(404);
-  });
-};
-
-const getStop = (req, res) => {
-  let stopId = req.query.stop_id;
-  instance.get('/loco/stop?sub=mta', {
-    params: {
-      stop_id: stopId
-    }
-  })
-  .then(({ data }) => res.send(data))
-  .catch((error) => {
-    console.log(error);
     res.sendStatus(404);
   });
 };
@@ -49,6 +33,5 @@ const testStops = (req, res) => {
 
 module.exports = {
   getStops,
-  getStop,
   testStops
 };

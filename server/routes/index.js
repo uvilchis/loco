@@ -35,14 +35,13 @@ const setPassport = (passportInstance) => {
 };
 
 // Stops
-  // All stops
-router.get('/api/stops', controller.stops.getStops);
+  // All stops Unused?
+// router.get('/api/stops', controller.stops.getStops);
+
+// Previously /api/route/stops, but this is the only real use of stops
+router.get('/api/stops', controller.routes.getStopsByRoute);
 
 router.get('/api/stops/location', controller.stops.testStops);
-
-  // Stop by stop_id
-  // e.g. /api/stop?stop_id=101N
-router.get('/api/stop', controller.stops.getStop);
 
 // Routes
   // All routes
@@ -50,9 +49,10 @@ router.get('/api/routes', controller.routes.getRoutes);
 
   // Route by route_id
   // e.g. /api/route?route_id=1
-router.get('/api/route', controller.routes.getRoute);
+  // Unused?
+// router.get('/api/route', controller.routes.getRoute);
 
-router.get('/api/route/stops', controller.routes.getStopsByRoute);
+// router.get('/api/route/stops', controller.routes.getStopsByRoute);
 
 // Stop_times - These will break if you call them without parameters
   // Params: stop_id, route_type
@@ -72,37 +72,39 @@ router.get('/api/times/stoproute', controller.times.schedByStopRoute);
 // Complaints - type refers to complaint type,
   // Params: type, stop_id, route_id
   // e.g. /api/complaint/stop?type=delay&stop_id=101N&route_id=1
-// router.get('/api/complaint', controller.complaints.getComplaintReport);
+// router.get('/api/complaint', controller.reports.getReport);
 
 // TODO: adding custom complaint
-// router.post('/api/complaint/add', controller.complaints.addComplaint);
+// router.post('/api/complaint/add', controller.complaints.addReport);
 
 
 // Reports - type refers to complaint type, add and subtract return the new count
   // for returning a particular complaint at a particular stop
   // Params: type, stop_id, route_id
-router.get('/api/report', controller.complaints.getComplaintReport);
+router.get('/api/report', controller.reports.getReport);
 
 // to be called when you've reached a train line's detail page, and have selected a route
 // Params : sub, route_id
-router.get('/api/report/stoproute', controller.complaints.getReportsByStopAndRoute);
+router.get('/api/report/stoproute', controller.reports.getReportsByStopAndRoute);
 
-router.get('/api/report/typecomplaintsbyroute', controller.complaints.getTypeComplaintsByRoute);
+// router.get('/api/report/typecomplaintsbyroute', controller.reports.getTypeComplaintsByRoute);
 
 // to be called at the main page so users can see routes experiencing problems at a glance (no params)
-router.get('/api/report/getallcomplaintcounts', controller.complaints.getAllComplaintCounts);
+
+// SK: I Don't think this i being used or is at all useful right now
+// router.get('/api/report/getallcomplaintcounts', controller.reports.getAllComplaintCounts);
 
 // TODO: this route will be tantamount to ensuring users know which stops are experiencing issues at the details page
-router.get('/api/report/reports', controller.complaints.getReportsByRoute);
+router.get('/api/report/reports', controller.reports.getReportsByRoute);
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/add?type=delayed&stop_id=101N&route_id=1
-router.post('/api/report/add', checkUser, controller.complaints.addComplaintReport);
+router.post('/api/report/add', checkUser, controller.reports.addReport);
 
 
   // Params: type, stop_id, route_id
   // e.g. /api/report/subtract?type=delay&stop_id=101N&route_id=1
-router.post('/api/report/subtract', controller.complaints.subtractComplaintReport);
+// router.post('/api/report/subtract', controller.reports.subtractComplaintReport);
 
 
 

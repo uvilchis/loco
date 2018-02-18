@@ -26,7 +26,7 @@ const _serviceScheduler = () => {
   .catch((error) => console.log(error));
 }
 
-const addComplaintReport = (type, stopId, routeId) => {
+const addReport = (type, stopId, routeId) => {
   let complaint = _instance.complaints.find((a) => a.type === type);
   if (complaint) {
     let count = complaint.addReport({ stopId, routeId });
@@ -46,7 +46,7 @@ const subtractComplaintReport = (type, stopId, routeId) => {
   }
 };
 
-const getComplaintReport = (type, stopId, routeId) => {
+const getReport = (type, stopId, routeId) => {
   let complaint = _instance.complaints.find((a) => a.type === type);
   if (complaint) {
     return complaint.getReport({ stopId, routeId }); // Will send null if not found
@@ -122,9 +122,9 @@ const getServiceRouteData = (routeId) => {
 
 module.exports = {
   initialize,
-  addComplaintReport,
+  addReport,
   subtractComplaintReport,
-  getComplaintReport,
+  getReport,
   getServiceData,
   getServiceRouteData,
   getTypeComplaintsByRoute,

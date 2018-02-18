@@ -1,0 +1,354 @@
+[
+  {
+    "id": 468,
+    "route_id": "7",
+    "stop_id": "701S",
+    "stop_name": "Flushing - Main St",
+    "stop_lat": "40.7596",
+    "stop_lon": "-73.83003"
+  },
+  {
+    "id": 471,
+    "route_id": "7",
+    "stop_id": "702S",
+    "stop_name": "Mets - Willets Point",
+    "stop_lat": "40.754622",
+    "stop_lon": "-73.845625"
+  },
+  {
+    "id": 474,
+    "route_id": "7",
+    "stop_id": "705S",
+    "stop_name": "111 St",
+    "stop_lat": "40.75173",
+    "stop_lon": "-73.855334"
+  },
+  {
+    "id": 477,
+    "route_id": "7",
+    "stop_id": "706S",
+    "stop_name": "103 St - Corona Plaza",
+    "stop_lat": "40.749865",
+    "stop_lon": "-73.8627"
+  },
+  {
+    "id": 480,
+    "route_id": "7",
+    "stop_id": "707S",
+    "stop_name": "Junction Blvd",
+    "stop_lat": "40.749145",
+    "stop_lon": "-73.869527"
+  },
+  {
+    "id": 483,
+    "route_id": "7",
+    "stop_id": "708S",
+    "stop_name": "90 St - Elmhurst Av",
+    "stop_lat": "40.748408",
+    "stop_lon": "-73.876613"
+  },
+  {
+    "id": 486,
+    "route_id": "7",
+    "stop_id": "709S",
+    "stop_name": "82 St - Jackson Hts",
+    "stop_lat": "40.747659",
+    "stop_lon": "-73.883697"
+  },
+  {
+    "id": 489,
+    "route_id": "7",
+    "stop_id": "710S",
+    "stop_name": "74 St - Broadway",
+    "stop_lat": "40.746848",
+    "stop_lon": "-73.891394"
+  },
+  {
+    "id": 492,
+    "route_id": "7",
+    "stop_id": "711S",
+    "stop_name": "69 St",
+    "stop_lat": "40.746325",
+    "stop_lon": "-73.896403"
+  },
+  {
+    "id": 495,
+    "route_id": "7",
+    "stop_id": "712S",
+    "stop_name": "Woodside - 61 St",
+    "stop_lat": "40.74563",
+    "stop_lon": "-73.902984"
+  },
+  {
+    "id": 498,
+    "route_id": "7",
+    "stop_id": "713S",
+    "stop_name": "52 St",
+    "stop_lat": "40.744149",
+    "stop_lon": "-73.912549"
+  },
+  {
+    "id": 501,
+    "route_id": "7",
+    "stop_id": "714S",
+    "stop_name": "46 St",
+    "stop_lat": "40.743132",
+    "stop_lon": "-73.918435"
+  },
+  {
+    "id": 504,
+    "route_id": "7",
+    "stop_id": "715S",
+    "stop_name": "40 St",
+    "stop_lat": "40.743781",
+    "stop_lon": "-73.924016"
+  },
+  {
+    "id": 507,
+    "route_id": "7",
+    "stop_id": "716S",
+    "stop_name": "33 St",
+    "stop_lat": "40.744587",
+    "stop_lon": "-73.930997"
+  },
+  {
+    "id": 510,
+    "route_id": "7",
+    "stop_id": "718S",
+    "stop_name": "Queensboro Plaza",
+    "stop_lat": "40.750582",
+    "stop_lon": "-73.940202"
+  },
+  {
+    "id": 513,
+    "route_id": "7",
+    "stop_id": "719S",
+    "stop_name": "Court Sq",
+    "stop_lat": "40.747023",
+    "stop_lon": "-73.945264"
+  },
+  {
+    "id": 516,
+    "route_id": "7",
+    "stop_id": "720S",
+    "stop_name": "Hunters Point Av",
+    "stop_lat": "40.742216",
+    "stop_lon": "-73.948916"
+  },
+  {
+    "id": 519,
+    "route_id": "7",
+    "stop_id": "721S",
+    "stop_name": "Vernon Blvd - Jackson Av",
+    "stop_lat": "40.742626",
+    "stop_lon": "-73.953581"
+  },
+  {
+    "id": 522,
+    "route_id": "7",
+    "stop_id": "723S",
+    "stop_name": "Grand Central - 42 St",
+    "stop_lat": "40.751431",
+    "stop_lon": "-73.976041"
+  },
+  {
+    "id": 525,
+    "route_id": "7",
+    "stop_id": "724S",
+    "stop_name": "5 Av",
+    "stop_lat": "40.753821",
+    "stop_lon": "-73.981963"
+  },
+  {
+    "id": 528,
+    "route_id": "7",
+    "stop_id": "725S",
+    "stop_name": "Times Sq - 42 St",
+    "stop_lat": "40.755477",
+    "stop_lon": "-73.987691"
+  },
+  {
+    "id": 531,
+    "route_id": "7",
+    "stop_id": "726S",
+    "stop_name": "34 St - 11 Av",
+    "stop_lat": "40.755882",
+    "stop_lon": "-74.001910"
+  },
+  {
+    "id": 530,
+    "route_id": "7",
+    "stop_id": "726N",
+    "stop_name": "34 St - 11 Av",
+    "stop_lat": "40.755882",
+    "stop_lon": "-74.001910"
+  },
+  {
+    "id": 527,
+    "route_id": "7",
+    "stop_id": "725N",
+    "stop_name": "Times Sq - 42 St",
+    "stop_lat": "40.755477",
+    "stop_lon": "-73.987691"
+  },
+  {
+    "id": 524,
+    "route_id": "7",
+    "stop_id": "724N",
+    "stop_name": "5 Av",
+    "stop_lat": "40.753821",
+    "stop_lon": "-73.981963"
+  },
+  {
+    "id": 521,
+    "route_id": "7",
+    "stop_id": "723N",
+    "stop_name": "Grand Central - 42 St",
+    "stop_lat": "40.751431",
+    "stop_lon": "-73.976041"
+  },
+  {
+    "id": 518,
+    "route_id": "7",
+    "stop_id": "721N",
+    "stop_name": "Vernon Blvd - Jackson Av",
+    "stop_lat": "40.742626",
+    "stop_lon": "-73.953581"
+  },
+  {
+    "id": 515,
+    "route_id": "7",
+    "stop_id": "720N",
+    "stop_name": "Hunters Point Av",
+    "stop_lat": "40.742216",
+    "stop_lon": "-73.948916"
+  },
+  {
+    "id": 512,
+    "route_id": "7",
+    "stop_id": "719N",
+    "stop_name": "Court Sq",
+    "stop_lat": "40.747023",
+    "stop_lon": "-73.945264"
+  },
+  {
+    "id": 509,
+    "route_id": "7",
+    "stop_id": "718N",
+    "stop_name": "Queensboro Plaza",
+    "stop_lat": "40.750582",
+    "stop_lon": "-73.940202"
+  },
+  {
+    "id": 506,
+    "route_id": "7",
+    "stop_id": "716N",
+    "stop_name": "33 St",
+    "stop_lat": "40.744587",
+    "stop_lon": "-73.930997"
+  },
+  {
+    "id": 503,
+    "route_id": "7",
+    "stop_id": "715N",
+    "stop_name": "40 St",
+    "stop_lat": "40.743781",
+    "stop_lon": "-73.924016"
+  },
+  {
+    "id": 500,
+    "route_id": "7",
+    "stop_id": "714N",
+    "stop_name": "46 St",
+    "stop_lat": "40.743132",
+    "stop_lon": "-73.918435"
+  },
+  {
+    "id": 497,
+    "route_id": "7",
+    "stop_id": "713N",
+    "stop_name": "52 St",
+    "stop_lat": "40.744149",
+    "stop_lon": "-73.912549"
+  },
+  {
+    "id": 494,
+    "route_id": "7",
+    "stop_id": "712N",
+    "stop_name": "Woodside - 61 St",
+    "stop_lat": "40.74563",
+    "stop_lon": "-73.902984"
+  },
+  {
+    "id": 491,
+    "route_id": "7",
+    "stop_id": "711N",
+    "stop_name": "69 St",
+    "stop_lat": "40.746325",
+    "stop_lon": "-73.896403"
+  },
+  {
+    "id": 488,
+    "route_id": "7",
+    "stop_id": "710N",
+    "stop_name": "74 St - Broadway",
+    "stop_lat": "40.746848",
+    "stop_lon": "-73.891394"
+  },
+  {
+    "id": 485,
+    "route_id": "7",
+    "stop_id": "709N",
+    "stop_name": "82 St - Jackson Hts",
+    "stop_lat": "40.747659",
+    "stop_lon": "-73.883697"
+  },
+  {
+    "id": 482,
+    "route_id": "7",
+    "stop_id": "708N",
+    "stop_name": "90 St - Elmhurst Av",
+    "stop_lat": "40.748408",
+    "stop_lon": "-73.876613"
+  },
+  {
+    "id": 479,
+    "route_id": "7",
+    "stop_id": "707N",
+    "stop_name": "Junction Blvd",
+    "stop_lat": "40.749145",
+    "stop_lon": "-73.869527"
+  },
+  {
+    "id": 476,
+    "route_id": "7",
+    "stop_id": "706N",
+    "stop_name": "103 St - Corona Plaza",
+    "stop_lat": "40.749865",
+    "stop_lon": "-73.8627"
+  },
+  {
+    "id": 473,
+    "route_id": "7",
+    "stop_id": "705N",
+    "stop_name": "111 St",
+    "stop_lat": "40.75173",
+    "stop_lon": "-73.855334"
+  },
+  {
+    "id": 470,
+    "route_id": "7",
+    "stop_id": "702N",
+    "stop_name": "Mets - Willets Point",
+    "stop_lat": "40.754622",
+    "stop_lon": "-73.845625"
+  },
+  {
+    "id": 467,
+    "route_id": "7",
+    "stop_id": "701N",
+    "stop_name": "Flushing - Main St",
+    "stop_lat": "40.7596",
+    "stop_lon": "-73.83003"
+  }
+]

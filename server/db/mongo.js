@@ -9,9 +9,7 @@ db.on('error', (error) => console.log(error));
 db.once('open', () => console.log('mongo loaded'));
 
 mongoose.Promise = global.Promise;
-mongoose.connect(DB_CREDENTIALS, {
-  useMongoClient: true
-});
+mongoose.connect(DB_CREDENTIALS);
 
 module.exports = {
   mongoose,
